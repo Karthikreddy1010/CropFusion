@@ -1,0 +1,31 @@
+# Configuration files
+config.py
+code/config.py
+**/config.py
+
+# Reports and outputs
+reports/
+outputs/reports/
+**/reports/
+
+# Literature Review
+Literature_Review_Paper3*
+*Literature_Review_Paper3*
+
+# Methodology files
+Paper3_Methodology*
+*methodology*
+
+# Datasets
+*.csv
+Paper3_MegaDataset*
+*dataset*
+
+# Python & Environment artifacts
+__pycache__/
+*.py[cod]
+catboost_info/
+.pytest_cache/
+.venv/
+env/
+venv/
