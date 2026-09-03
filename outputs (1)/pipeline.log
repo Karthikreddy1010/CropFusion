@@ -1,0 +1,677 @@
+[2026-09-02 19:05:00] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:05:00] INFO     paper3 :: ======================================================================
+[2026-09-02 19:05:00] INFO     paper3 :: PAPER 3: ADAPTIVE CONFORMAL INFERENCE PIPELINE (FULL COMPLIANCE)
+[2026-09-02 19:05:00] INFO     paper3 :: ======================================================================
+[2026-09-02 19:05:00] INFO     paper3 :: 
+══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:05:00] INFO     paper3 :: PHASE 1: DATA LOADING & METHODOLOGY VALIDATION
+[2026-09-02 19:05:00] INFO     paper3 :: ══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:05:00] INFO     paper3 :: Loading dataset from /content/Paper3_MegaDataset_SPEI_FINAL.csv
+[2026-09-02 19:05:00] INFO     paper3 :: Loaded 26364 rows × 85 columns
+[2026-09-02 19:05:00] INFO     paper3 :: Schema validation passed for all 10 column groups
+[2026-09-02 19:05:00] INFO     paper3 :: Report saved -> /content/outputs/reports/dataset_schema_report.json
+[2026-09-02 19:05:00] INFO     paper3 :: Dataset schema validation report saved (schema_passed: True)
+[2026-09-02 19:05:00] INFO     paper3 :: Running automatic methodology compliance checks (§6.2)
+[2026-09-02 19:05:00] INFO     paper3 ::   ✓ SPEI-30 index detected in dataset (§4.1)
+[2026-09-02 19:05:00] INFO     paper3 ::   ✓ GDD_Accumulated and Tmax_Days_Above_35 validated (§4.1)
+[2026-09-02 19:05:00] INFO     paper3 ::   ✓ Temporal splits validated: Train 20956, Val 2028, Test 3380 (§5.1)
+[2026-09-02 19:05:00] INFO     paper3 ::   ✓ ACI sliding window size (3) and CQR quantiles (0.05, 0.95) validated (§4.2, §4.3)
+[2026-09-02 19:05:00] INFO     paper3 :: Year range validated: 1985 – 2023
+[2026-09-02 19:05:00] INFO     paper3 :: Dropped states ['Nebraska']: 26364 -> 22737 rows
+[2026-09-02 19:05:00] INFO     paper3 :: States: ['Illinois', 'Indiana', 'Iowa', 'Minnesota', 'Missouri', 'Ohio']
+[2026-09-02 19:05:00] INFO     paper3 :: DECISION [data_loading] -> Dataset loaded and methodology compliance verified | Reason: Schema, year range, state checks, and SPEI/ET0/GDD variables validated | Details: {"rows": 22737, "cols": 85, "states": ["Illinois", "Indiana", "Iowa", "Minnesota", "Missouri", "Ohio"]}
+[2026-09-02 19:05:00] INFO     paper3 :: Running automatic methodology compliance checks (§6.2)
+[2026-09-02 19:05:00] INFO     paper3 ::   ✓ SPEI-30 index detected in dataset (§4.1)
+[2026-09-02 19:05:00] INFO     paper3 ::   ✓ GDD_Accumulated and Tmax_Days_Above_35 validated (§4.1)
+[2026-09-02 19:05:00] INFO     paper3 ::   ✓ Temporal splits validated: Train 18073, Val 1749, Test 2915 (§5.1)
+[2026-09-02 19:05:00] INFO     paper3 ::   ✓ ACI sliding window size (3) and CQR quantiles (0.05, 0.95) validated (§4.2, §4.3)
+[2026-09-02 19:05:00] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:00] INFO     paper3 :: RUNNING EXPLORATORY DATA ANALYSIS
+[2026-09-02 19:05:00] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:00] INFO     paper3 :: Dimensions: 22737 × 85 (numerical: 81, categorical: 4)
+[2026-09-02 19:05:00] INFO     paper3 :: Columns with missing values: 15
+[2026-09-02 19:05:00] INFO     paper3 :: Constant columns: ['Storm_Heat_Count', 'Storm_Drought_Event_Count', 'Has_ERA5_daily', 'Has_CDHW', 'Has_SPEI']
+[2026-09-02 19:05:00] INFO     paper3 :: Near-zero variance columns: []
+[2026-09-02 19:05:01] INFO     paper3 :: Report saved -> /content/outputs/reports/eda_report.json
+[2026-09-02 19:05:01] INFO     paper3 :: EDA complete. Report saved.
+[2026-09-02 19:05:01] INFO     paper3 :: 
+══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:05:01] INFO     paper3 :: PHASE 2: DETERMINISTIC FEATURE ENGINEERING & PROFILING
+[2026-09-02 19:05:01] INFO     paper3 :: ══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:05:01] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:01] INFO     paper3 :: FEATURE ENGINEERING PIPELINE (§4.1)
+[2026-09-02 19:05:01] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:01] INFO     paper3 :: Fourier temporal encodings computed for periods [1.0, 3.0, 5.0, 7.0, 11.0, 19.0] (reference origin=1985.0) -> Added 12 features
+[2026-09-02 19:05:01] INFO     paper3 :: Climate interaction features added: ['Inter_SPEI_Tmax', 'Inter_Heat_Precip', 'Inter_CDHW_GDD']
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [feature_engineering] -> Engineered 20 deterministic features (Fourier encodings, phenology-aligned CDHW severity, climate interactions) before dataset splitting | Reason: Preserves deterministic features pre-split while deferring target lags and rolling climate to split-aware stage
+[2026-09-02 19:05:01] INFO     paper3 :: Report saved -> /content/outputs/reports/feature_engineering_report.json
+[2026-09-02 19:05:01] INFO     paper3 :: Report saved -> /content/outputs/reports/feature_validation_report.json
+[2026-09-02 19:05:01] INFO     paper3 :: Report saved -> /content/outputs/reports/feature_lineage_report.json
+[2026-09-02 19:05:01] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:01] INFO     paper3 :: HANDLING MISSING VALUES
+[2026-09-02 19:05:01] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Zero-fill Storm_Events_Total (11979 → 0) | Reason: Structural missingness: pre-2000 NOAA Storm Events not collected. Has_Storm indicator flag preserved as companion feature.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Zero-fill Storm_Hail_Count (11979 → 0) | Reason: Structural missingness: pre-2000 NOAA Storm Events not collected. Has_Storm indicator flag preserved as companion feature.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Zero-fill Storm_Flood_Count (11979 → 0) | Reason: Structural missingness: pre-2000 NOAA Storm Events not collected. Has_Storm indicator flag preserved as companion feature.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Zero-fill constant column Storm_Heat_Count | Reason: Column is constant (all zeros where present) and missing is structural (pre-2000 NOAA data gap)
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Zero-fill constant column Storm_Drought_Event_Count | Reason: Column is constant (all zeros where present) and missing is structural (pre-2000 NOAA data gap)
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Zero-fill Storm_Tornado_Count (11979 → 0) | Reason: Structural missingness: pre-2000 NOAA Storm Events not collected. Has_Storm indicator flag preserved as companion feature.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Zero-fill Storm_Wind_Count (11979 → 0) | Reason: Structural missingness: pre-2000 NOAA Storm Events not collected. Has_Storm indicator flag preserved as companion feature.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Zero-fill DSCI_growseason_mean (11660 → 0) | Reason: Structural missingness: pre-2000 US Drought Monitor not available. Has_Drought indicator flag preserved.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Zero-fill DSCI_growseason_max (11660 → 0) | Reason: Structural missingness: pre-2000 US Drought Monitor not available. Has_Drought indicator flag preserved.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Zero-fill Drought_Severe_Flag (11660 → 0) | Reason: Structural missingness: pre-2000 US Drought Monitor not available. Has_Drought indicator flag preserved.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Deferred learned state-median imputation for Soil_Sand_Mean (3861 missing) | Reason: Learned statistics (state medians & global medians) must be fitted strictly on train data only via TrainFittedPreprocessor to prevent data leakage.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Target Corn_Yield_tha: 2232 missing values PRESERVED (no imputation) | Reason: Target variables are never imputed. Missing rows are excluded during crop-specific model fitting.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Target Corn_Yield_buacre: 2232 missing values PRESERVED (no imputation) | Reason: Target variables are never imputed. Missing rows are excluded during crop-specific model fitting.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Target Soy_Yield_tha: 2699 missing values PRESERVED (no imputation) | Reason: Target variables are never imputed. Missing rows are excluded during crop-specific model fitting.
+[2026-09-02 19:05:01] INFO     paper3 :: DECISION [missing_values] -> Target Soy_Yield_buacre: 2699 missing values PRESERVED (no imputation) | Reason: Target variables are never imputed. Missing rows are excluded during crop-specific model fitting.
+[2026-09-02 19:05:01] INFO     paper3 :: Remaining columns with missing values (to be handled by TrainFittedPreprocessor): {'Corn_Yield_tha': 2232, 'Corn_Yield_buacre': 2232, 'Soy_Yield_tha': 2699, 'Soy_Yield_buacre': 2699, 'Soil_Sand_Mean': 3861}
+[2026-09-02 19:05:01] INFO     paper3 :: Report saved -> /content/outputs/reports/missing_values_report.json
+[2026-09-02 19:05:01] INFO     paper3 :: Report saved -> /content/outputs/reports/missing_data_audit.json
+[2026-09-02 19:05:01] INFO     paper3 :: Missing data audit report saved to missing_data_audit.json
+[2026-09-02 19:05:01] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:01] INFO     paper3 :: OUTLIER ANALYSIS
+[2026-09-02 19:05:01] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:02] INFO     paper3 :: Isolation Forest: 1137 / 22737 flagged as anomalies (5.0%) — diagnostic only
+[2026-09-02 19:05:02] INFO     paper3 :: No physically impossible values detected — no rows removed
+[2026-09-02 19:05:02] INFO     paper3 :: DECISION [outlier_analysis] -> Preserve all climate extremes | Reason: Extreme weather events are scientifically essential for CDHW/ACI evaluation; only physically impossible values removed | Details: {"rows_removed": 0}
+[2026-09-02 19:05:02] INFO     paper3 :: Report saved -> /content/outputs/reports/outlier_report.json
+[2026-09-02 19:05:02] INFO     paper3 :: Report saved -> /content/outputs/reports/outlier_audit.json
+[2026-09-02 19:05:02] INFO     paper3 :: Outlier audit report saved to outlier_audit.json
+[2026-09-02 19:05:02] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:02] INFO     paper3 :: MULTICOLLINEARITY ANALYSIS
+[2026-09-02 19:05:02] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:02] INFO     paper3 :: Analyzing 83 numerical features for multicollinearity
+[2026-09-02 19:05:02] INFO     paper3 :: High Pearson correlation pairs (|r| > 0.90): 22
+[2026-09-02 19:05:04] INFO     paper3 :: High Spearman correlation pairs (|ρ| > 0.90): 27
+[2026-09-02 19:05:10] INFO     paper3 :: Features with VIF > 10: 68
+[2026-09-02 19:05:10] INFO     paper3 :: DECISION [multicollinearity] -> Drop redundant unit column Corn_Yield_buacre | Reason: Perfect linear transform of t/ha target; provides no additional information
+[2026-09-02 19:05:10] INFO     paper3 :: DECISION [multicollinearity] -> Drop redundant unit column Soy_Yield_buacre | Reason: Perfect linear transform of t/ha target; provides no additional information
+[2026-09-02 19:05:10] INFO     paper3 :: Near-perfect correlation: CDHW_Severity_vegetative ↔ CDHW_Veg_Severity (r=1.0000) — RETAINED (both may be scientifically meaningful)
+[2026-09-02 19:05:10] INFO     paper3 :: Near-perfect correlation: CDHW_Severity_silking ↔ CDHW_Silking_Severity (r=1.0000) — RETAINED (both may be scientifically meaningful)
+[2026-09-02 19:05:10] INFO     paper3 :: Near-perfect correlation: CDHW_Severity_grainfill ↔ CDHW_GrainFill_Severity (r=1.0000) — RETAINED (both may be scientifically meaningful)
+[2026-09-02 19:05:10] INFO     paper3 :: Near-perfect correlation: ET0_growseason_mm ↔ ET0_growseason_mean (r=1.0000) — RETAINED (both may be scientifically meaningful)
+[2026-09-02 19:05:10] INFO     paper3 :: Near-perfect correlation: ENSO_Anomalous_Year ↔ ENSO_Neutral (r=-1.0000) — RETAINED (both may be scientifically meaningful)
+[2026-09-02 19:05:10] INFO     paper3 :: Near-perfect correlation: CDHW_Severity_silking ↔ Inter_CDHW_GDD (r=0.9981) — RETAINED (both may be scientifically meaningful)
+[2026-09-02 19:05:10] INFO     paper3 :: Near-perfect correlation: CDHW_Silking_Severity ↔ Inter_CDHW_GDD (r=0.9981) — RETAINED (both may be scientifically meaningful)
+[2026-09-02 19:05:10] INFO     paper3 :: Dropped 2 redundant columns: ['Corn_Yield_buacre', 'Soy_Yield_buacre']
+[2026-09-02 19:05:11] INFO     paper3 :: Report saved -> /content/outputs/reports/multicollinearity_report.json
+[2026-09-02 19:05:15] INFO     paper3 :: Processed dataset saved -> /content/outputs/Paper3_Processed.csv
+[2026-09-02 19:05:15] INFO     paper3 :: 
+══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:05:15] INFO     paper3 :: PHASE 3: TEMPORAL SPLIT & LEAKAGE-FREE MODEL TRAINING (§4.2)
+[2026-09-02 19:05:15] INFO     paper3 :: ══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:05:15] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:15] INFO     paper3 :: TEMPORAL SPLIT (§5.1)
+[2026-09-02 19:05:15] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:15] INFO     paper3 :: Temporal split sizes — Train: 18073 (16727 with valid target), Val: 1749 (1433), Test: 2915 (2345)
+[2026-09-02 19:05:15] INFO     paper3 :: DECISION [splitting] -> Temporal split applied | Reason: Follows §5.1: train 1985-2015, val 2016-2018, test 2019-2023 | Details: {"train_total": 18073, "train_valid": 16727, "val_total": 1749, "val_valid": 1433, "test_total": 2915, "test_valid": 2345}
+[2026-09-02 19:05:15] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/leakage_audit_report.md
+[2026-09-02 19:05:15] INFO     paper3 :: Report saved -> /content/outputs/reports/leakage_audit_report.json
+[2026-09-02 19:05:15] INFO     paper3 :: Pre-training leakage audit saved -> leakage_audit_report.md (passed: True)
+[2026-09-02 19:05:15] INFO     paper3 :: Split-aware lag features constructed (split_type='temporal', tr=16727, va=1433, te=2345)
+[2026-09-02 19:05:16] INFO     paper3 :: Split-aware rolling climate features constructed (split_type='temporal', tr=16727, va=1433, te=2345)
+[2026-09-02 19:05:16] INFO     paper3 :: TrainFittedPreprocessor fitted on 16727 training rows. (Target median fallback: 8.3391)
+[2026-09-02 19:05:16] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:16] INFO     paper3 :: STRICT 4-METHOD CONSENSUS FEATURE SELECTION
+[2026-09-02 19:05:16] INFO     paper3 :: ============================================================
+[2026-09-02 19:05:16] INFO     paper3 :: Evaluating 95 candidate features
+[2026-09-02 19:05:16] INFO     paper3 ::   Computing Mutual Information Regression scores...
+[2026-09-02 19:05:25] INFO     paper3 ::   Computing LightGBM feature importances...
+[2026-09-02 19:05:41] INFO     paper3 ::   Computing Random Forest feature importances...
+[2026-09-02 19:06:05] INFO     paper3 ::   Computing Permutation Importance...
+[2026-09-02 19:06:37] INFO     paper3 :: CSV report saved -> /content/outputs/reports/feature_selection_ranks.csv
+[2026-09-02 19:06:37] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/feature_selection_report.md
+[2026-09-02 19:06:37] INFO     paper3 :: Report saved -> /content/outputs/reports/feature_selection_report.json
+[2026-09-02 19:06:37] INFO     paper3 :: Consensus feature selection report exported -> feature_selection_report.md
+[2026-09-02 19:06:38] INFO     paper3 :: MULTICOLLINEARITY: 83 -> 73 features (corr>0.95 + VIF>10)
+[2026-09-02 19:06:38] INFO     paper3 ::   corr-dropped: ['Developed_highintensity_frac', 'ENSO_Neutral', 'ERA5d_Tmax_mean_C', 'ERA5d_Tmin_mean_C', 'ET0_growseason_mean', 'Inter_CDHW_GDD', 'Inter_Heat_Precip', 'ONI_annual_mean', 'Precip_growseason_mm', 'Rolling3yr_GDD_Accumulated_mean', 'SPEI_30_min']
+[2026-09-02 19:06:38] INFO     paper3 ::   vif-dropped: []
+[2026-09-02 19:06:38] INFO     paper3 :: COUNTY BASELINE added (train-only, leakage-free).
+[2026-09-02 19:06:38] INFO     paper3 :: Fitted robust scaler strictly on training split (16727 samples, 74 features)
+[2026-09-02 19:06:38] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:06:38] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:06:38] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:06:39] INFO     paper3 :: DETREND: trend=0.1188 t/ha/yr (train-only). Modeling anomaly.
+[2026-09-02 19:06:39] INFO     paper3 :: ============================================================
+[2026-09-02 19:06:39] INFO     paper3 :: GENERATING VISUALIZATIONS
+[2026-09-02 19:06:39] INFO     paper3 :: ============================================================
+[2026-09-02 19:06:39] INFO     paper3 :: Plot saved → /content/outputs/figures/missing_values_heatmap.png
+[2026-09-02 19:06:41] INFO     paper3 :: Plot saved → /content/outputs/figures/correlation_pearson.png
+[2026-09-02 19:06:43] INFO     paper3 :: Plot saved → /content/outputs/figures/correlation_spearman.png
+[2026-09-02 19:06:44] INFO     paper3 :: Plot saved → /content/outputs/figures/vif_analysis.png
+[2026-09-02 19:06:44] INFO     paper3 :: Plot saved → /content/outputs/figures/feature_importance_lightgbm_feature_importance.png
+[2026-09-02 19:06:45] INFO     paper3 :: Plot saved → /content/outputs/figures/feature_importance_mutual_information_scores.png
+[2026-09-02 19:06:47] INFO     paper3 :: Plot saved → /content/outputs/figures/target_distributions.png
+[2026-09-02 19:06:47] INFO     paper3 :: Generated 7 plots
+[2026-09-02 19:06:48] INFO     paper3 :: Plot saved → /content/outputs/figures/yield_trends_by_state.png
+[2026-09-02 19:06:48] INFO     paper3 :: Fetching boundary data: https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json
+[2026-09-02 19:06:49] INFO     paper3 :: Plot saved -> /content/outputs/figures/study_region_map.png
+[2026-09-02 19:06:50] INFO     paper3 :: Plot saved -> /content/outputs/figures/yield_choropleth_corn_yield_tha.png
+[2026-09-02 19:06:50] INFO     paper3 :: Fetching boundary data: https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json
+[2026-09-02 19:06:51] INFO     paper3 :: Plot saved -> /content/outputs/figures/yield_volatility_choropleth.png
+[2026-09-02 19:06:51] INFO     paper3 :: Geographic maps: 3/3 generated successfully.
+[2026-09-02 19:06:51] INFO     paper3 :: Computing Feature Drift Analysis (Wasserstein, KS Test, PSI)
+[2026-09-02 19:06:51] INFO     paper3 :: Report saved -> /content/outputs/reports/feature_drift_report.json
+[2026-09-02 19:06:51] INFO     paper3 :: Report saved -> /content/outputs/reports/covariate_shift_report.json
+[2026-09-02 19:06:51] INFO     paper3 :: Feature drift report exported -> feature_drift_report.json (Severe: 16, Moderate: 10)
+[2026-09-02 19:06:51] INFO     paper3 :: 
+--- Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End §4.2) ---
+[2026-09-02 19:06:51] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:06:51] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=rmse)
+[2026-09-02 19:07:07] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 2.2495, Val RMSE: 1.8073, Val Pinball: 1.4996, Stop Metric: 1.8073
+[2026-09-02 19:07:16] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 1.6022, Val RMSE: 1.4234, Val Pinball: 1.0342, Stop Metric: 1.4234
+[2026-09-02 19:07:25] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 1.4453, Val RMSE: 1.3574, Val Pinball: 0.9684, Stop Metric: 1.3574
+[2026-09-02 19:07:34] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 1.3469, Val RMSE: 1.3445, Val Pinball: 0.9873, Stop Metric: 1.3445
+[2026-09-02 19:07:43] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 1.2790, Val RMSE: 1.3318, Val Pinball: 0.9834, Stop Metric: 1.3318
+[2026-09-02 19:07:52] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.2248, Val RMSE: 1.3862, Val Pinball: 1.0482, Stop Metric: 1.3862
+[2026-09-02 19:08:01] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.1760, Val RMSE: 1.4236, Val Pinball: 1.0819, Stop Metric: 1.4236
+[2026-09-02 19:08:10] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.1384, Val RMSE: 1.4550, Val Pinball: 1.1279, Stop Metric: 1.4550
+[2026-09-02 19:08:19] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.1172, Val RMSE: 1.4671, Val Pinball: 1.1266, Stop Metric: 1.4671
+[2026-09-02 19:08:28] INFO     paper3 ::   Epoch 100/200 -> Train Loss: 1.0812, Val RMSE: 1.5270, Val Pinball: 1.1857, Stop Metric: 1.5270
+[2026-09-02 19:08:36] INFO     paper3 ::   Early stopping triggered at epoch 109 (mode: rmse, best stop metric: 1.3184)
+[2026-09-02 19:08:36] INFO     paper3 :: DETREND: trend added back to predictions and intervals.
+[2026-09-02 19:08:36] INFO     paper3 :: Diagnosing source of negative out-of-sample R²...
+[2026-09-02 19:08:36] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/negative_r2_diagnostic_report.md
+[2026-09-02 19:08:36] INFO     paper3 :: Report saved -> /content/outputs/reports/negative_r2_diagnostic_report.json
+[2026-09-02 19:08:36] INFO     paper3 :: Negative R2 diagnostic report exported -> negative_r2_diagnostic_report.md
+[2026-09-02 19:08:37] INFO     paper3 :: Plot saved -> /content/outputs/figures/residual_choropleth.png
+[2026-09-02 19:08:37] INFO     paper3 :: Running Residual Statistical Diagnostic Tests (§11)...
+[2026-09-02 19:08:37] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/residual_diagnostic_report.md
+[2026-09-02 19:08:37] INFO     paper3 :: Report saved -> /content/outputs/reports/residual_diagnostic_report.json
+[2026-09-02 19:08:37] INFO     paper3 :: Residual diagnostic report exported -> residual_diagnostic_report.md
+[2026-09-02 19:09:35] INFO     paper3 :: Plot saved → /content/outputs/figures/residual_diagnostics_suite.png
+[2026-09-02 19:09:35] INFO     paper3 :: 
+--- Applying Conformal Calibration Methods ---
+[2026-09-02 19:09:35] INFO     paper3 :: Calibrating with Static Conformal (Paper 18 baseline)
+[2026-09-02 19:09:35] INFO     paper3 ::   Static threshold: 0.7950
+[2026-09-02 19:09:35] INFO     paper3 :: Calibrating with Phenology-Stratified Static CQR (Paper 21)
+[2026-09-02 19:09:35] INFO     paper3 ::   Phenology thresholds: {'Grain_Fill': 0.7949837472731979, 'Silking_R1': 0.9291999636408727}
+[2026-09-02 19:09:35] INFO     paper3 :: Calibrating with Weighted/Covariate-Shift Conformal (Paper 9)
+[2026-09-02 19:09:35] INFO     paper3 ::   Weighted threshold: 0.8119
+[2026-09-02 19:09:35] INFO     paper3 :: Calibrating with Locally Adaptive Conformal (Paper 17)
+[2026-09-02 19:09:35] INFO     paper3 ::   Normalized threshold: 0.2957
+[2026-09-02 19:09:35] INFO     paper3 :: Calibrating with Adaptive Conformal Inference (ACI §4.3)
+[2026-09-02 19:09:35] INFO     paper3 ::   gamma0=0.0500, default_window=3, nominal_alpha=0.10
+[2026-09-02 19:09:35] INFO     paper3 ::   Year 2019 ACI -> PICP: 0.9390, err: 0.0610, α_t: 0.1020, DynWindow: 5, threshold: 0.7950, MPIW: 4.7770
+[2026-09-02 19:09:35] INFO     paper3 ::   Year 2020 ACI -> PICP: 0.9549, err: 0.0451, α_t: 0.1039, DynWindow: 5, threshold: 0.7502, MPIW: 4.3729
+[2026-09-02 19:09:35] INFO     paper3 ::   Year 2021 ACI -> PICP: 0.8178, err: 0.1822, α_t: 0.1015, DynWindow: 5, threshold: 0.6836, MPIW: 4.4424
+[2026-09-02 19:09:35] INFO     paper3 ::   Year 2022 ACI -> PICP: 0.9511, err: 0.0489, α_t: 0.1028, DynWindow: 5, threshold: 0.7473, MPIW: 4.9014
+[2026-09-02 19:09:35] INFO     paper3 ::   Year 2023 ACI -> PICP: 0.8939, err: 0.1061, α_t: 0.1027, DynWindow: 5, threshold: 0.6946, MPIW: 4.9160
+[2026-09-02 19:09:35] INFO     paper3 ::   ✓ Automated Conformal Independence Assertion PASSED: All calibration methods use distinct memory pools and distinct prediction intervals.
+[2026-09-02 19:09:35] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/conformal_validation_report.md
+[2026-09-02 19:09:35] INFO     paper3 :: Report saved -> /content/outputs/reports/conformal_validation_report.json
+[2026-09-02 19:09:35] INFO     paper3 :: Conformal validation report saved -> conformal_validation_report.md
+[2026-09-02 19:09:35] INFO     paper3 :: ============================================================
+[2026-09-02 19:09:35] INFO     paper3 :: RUNNING FULL EVALUATION (§5)
+[2026-09-02 19:09:35] INFO     paper3 :: ============================================================
+[2026-09-02 19:09:35] INFO     paper3 :: Running County Block Bootstrap (2000 iterations, §4.4 & §5.3)
+[2026-09-02 19:09:46] INFO     paper3 :: Running Year Block Bootstrap (2000 iterations, §4.4 & §5.3)
+[2026-09-02 19:09:48] INFO     paper3 :: Report saved -> /content/outputs/reports/evaluation_report.json
+[2026-09-02 19:09:48] INFO     paper3 :: 
+--- Running Multi-Backbone Benchmark (Neural, LightGBM, CatBoost, XGBoost) ---
+[2026-09-02 19:09:48] INFO     paper3 :: Report saved -> /content/outputs/reports/model_NeuralCQR_metadata.json
+[2026-09-02 19:10:06] INFO     paper3 :: Report saved -> /content/outputs/reports/model_LightGBM_metadata.json
+[2026-09-02 19:10:30] INFO     paper3 :: Report saved -> /content/outputs/reports/model_CatBoost_metadata.json
+[2026-09-02 19:10:45] INFO     paper3 :: Report saved -> /content/outputs/reports/model_XGBoost_metadata.json
+[2026-09-02 19:10:45] INFO     paper3 :: Report saved -> /content/outputs/reports/model_failures.json
+[2026-09-02 19:10:45] INFO     paper3 :: Report saved -> /content/outputs/reports/hyperparameter_report.json
+[2026-09-02 19:10:45] INFO     paper3 :: Calibrating with Adaptive Conformal Inference (ACI §4.3)
+[2026-09-02 19:10:45] INFO     paper3 ::   gamma0=0.0500, default_window=3, nominal_alpha=0.10
+[2026-09-02 19:10:45] INFO     paper3 ::   Year 2019 ACI -> PICP: 0.9390, err: 0.0610, α_t: 0.1020, DynWindow: 5, threshold: 0.7950, MPIW: 4.7770
+[2026-09-02 19:10:45] INFO     paper3 ::   Year 2020 ACI -> PICP: 0.9549, err: 0.0451, α_t: 0.1039, DynWindow: 5, threshold: 0.7502, MPIW: 4.3729
+[2026-09-02 19:10:45] INFO     paper3 ::   Year 2021 ACI -> PICP: 0.8178, err: 0.1822, α_t: 0.1015, DynWindow: 5, threshold: 0.6836, MPIW: 4.4424
+[2026-09-02 19:10:45] INFO     paper3 ::   Year 2022 ACI -> PICP: 0.9511, err: 0.0489, α_t: 0.1028, DynWindow: 5, threshold: 0.7473, MPIW: 4.9014
+[2026-09-02 19:10:45] INFO     paper3 ::   Year 2023 ACI -> PICP: 0.8939, err: 0.1061, α_t: 0.1027, DynWindow: 5, threshold: 0.6946, MPIW: 4.9160
+[2026-09-02 19:10:48] INFO     paper3 :: Calibrating with Adaptive Conformal Inference (ACI §4.3)
+[2026-09-02 19:10:48] INFO     paper3 ::   gamma0=0.0500, default_window=3, nominal_alpha=0.10
+[2026-09-02 19:10:48] INFO     paper3 ::   Year 2019 ACI -> PICP: 0.9683, err: 0.0317, α_t: 0.1034, DynWindow: 5, threshold: 1.2162, MPIW: 4.2527
+[2026-09-02 19:10:48] INFO     paper3 ::   Year 2020 ACI -> PICP: 0.9699, err: 0.0301, α_t: 0.1059, DynWindow: 5, threshold: 1.1281, MPIW: 4.2865
+[2026-09-02 19:10:48] INFO     paper3 ::   Year 2021 ACI -> PICP: 0.9533, err: 0.0467, α_t: 0.1074, DynWindow: 5, threshold: 1.0275, MPIW: 4.9013
+[2026-09-02 19:10:48] INFO     paper3 ::   Year 2022 ACI -> PICP: 0.9532, err: 0.0468, α_t: 0.1088, DynWindow: 5, threshold: 0.9534, MPIW: 4.3716
+[2026-09-02 19:10:48] INFO     paper3 ::   Year 2023 ACI -> PICP: 0.9286, err: 0.0714, α_t: 0.1094, DynWindow: 5, threshold: 0.9024, MPIW: 4.7912
+[2026-09-02 19:10:48] INFO     paper3 :: Calibrating with Adaptive Conformal Inference (ACI §4.3)
+[2026-09-02 19:10:48] INFO     paper3 ::   gamma0=0.0500, default_window=3, nominal_alpha=0.10
+[2026-09-02 19:10:48] INFO     paper3 ::   Year 2019 ACI -> PICP: 0.9780, err: 0.0220, α_t: 0.1039, DynWindow: 5, threshold: 1.2882, MPIW: 4.5227
+[2026-09-02 19:10:48] INFO     paper3 ::   Year 2020 ACI -> PICP: 0.9774, err: 0.0226, α_t: 0.1066, DynWindow: 5, threshold: 1.1370, MPIW: 4.7686
+[2026-09-02 19:10:48] INFO     paper3 ::   Year 2021 ACI -> PICP: 0.9578, err: 0.0422, α_t: 0.1083, DynWindow: 5, threshold: 1.0227, MPIW: 4.6788
+[2026-09-02 19:10:48] INFO     paper3 ::   Year 2022 ACI -> PICP: 0.9430, err: 0.0570, α_t: 0.1094, DynWindow: 5, threshold: 0.9722, MPIW: 4.5882
+[2026-09-02 19:10:48] INFO     paper3 ::   Year 2023 ACI -> PICP: 0.8961, err: 0.1039, α_t: 0.1093, DynWindow: 5, threshold: 0.9209, MPIW: 4.7574
+[2026-09-02 19:10:49] INFO     paper3 :: Calibrating with Adaptive Conformal Inference (ACI §4.3)
+[2026-09-02 19:10:49] INFO     paper3 ::   gamma0=0.0500, default_window=3, nominal_alpha=0.10
+[2026-09-02 19:10:49] INFO     paper3 ::   Year 2019 ACI -> PICP: 0.9659, err: 0.0341, α_t: 0.1033, DynWindow: 5, threshold: 0.9028, MPIW: 4.6405
+[2026-09-02 19:10:49] INFO     paper3 ::   Year 2020 ACI -> PICP: 0.9624, err: 0.0376, α_t: 0.1055, DynWindow: 5, threshold: 0.8117, MPIW: 4.5476
+[2026-09-02 19:10:49] INFO     paper3 ::   Year 2021 ACI -> PICP: 0.9200, err: 0.0800, α_t: 0.1061, DynWindow: 5, threshold: 0.7300, MPIW: 4.4730
+[2026-09-02 19:10:49] INFO     paper3 ::   Year 2022 ACI -> PICP: 0.9389, err: 0.0611, α_t: 0.1070, DynWindow: 5, threshold: 0.7079, MPIW: 4.3848
+[2026-09-02 19:10:49] INFO     paper3 ::   Year 2023 ACI -> PICP: 0.8896, err: 0.1104, α_t: 0.1068, DynWindow: 5, threshold: 0.6716, MPIW: 4.4866
+[2026-09-02 19:10:49] INFO     paper3 :: ENSEMBLE (NeuralCQR w=0.80 + LightGBM w=0.20, weight tuned on VAL) -> Test R2: 0.5370 (NeuralCQR alone: 0.5024, LightGBM alone: 0.4885), Test RMSE: 1.1534
+[2026-09-02 19:10:49] INFO     paper3 :: Report saved -> /content/outputs/reports/ensemble_blend_report.json
+[2026-09-02 19:10:49] INFO     paper3 :: CSV report saved -> /content/outputs/reports/backbone_benchmark.csv
+[2026-09-02 19:10:49] INFO     paper3 :: Report saved -> /content/outputs/reports/backbone_metrics.json
+[2026-09-02 19:10:49] INFO     paper3 :: 
+
+======================================================================
+[2026-09-02 19:10:49] INFO     paper3 :: BACKBONE ROBUSTNESS CHECK: 3 seeds [42, 7, 123]
+[2026-09-02 19:10:49] INFO     paper3 :: ======================================================================
+[2026-09-02 19:10:49] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:10:49] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=rmse)
+[2026-09-02 19:10:58] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 2.2495, Val RMSE: 1.8073, Val Pinball: 1.4996, Stop Metric: 1.8073
+[2026-09-02 19:11:08] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 1.6022, Val RMSE: 1.4234, Val Pinball: 1.0342, Stop Metric: 1.4234
+[2026-09-02 19:11:16] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 1.4453, Val RMSE: 1.3574, Val Pinball: 0.9684, Stop Metric: 1.3574
+[2026-09-02 19:11:25] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 1.3469, Val RMSE: 1.3445, Val Pinball: 0.9873, Stop Metric: 1.3445
+[2026-09-02 19:11:34] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 1.2790, Val RMSE: 1.3318, Val Pinball: 0.9834, Stop Metric: 1.3318
+[2026-09-02 19:11:44] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.2248, Val RMSE: 1.3862, Val Pinball: 1.0482, Stop Metric: 1.3862
+[2026-09-02 19:11:53] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.1760, Val RMSE: 1.4236, Val Pinball: 1.0819, Stop Metric: 1.4236
+[2026-09-02 19:12:02] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.1384, Val RMSE: 1.4550, Val Pinball: 1.1279, Stop Metric: 1.4550
+[2026-09-02 19:12:11] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.1172, Val RMSE: 1.4671, Val Pinball: 1.1266, Stop Metric: 1.4671
+[2026-09-02 19:12:20] INFO     paper3 ::   Epoch 100/200 -> Train Loss: 1.0812, Val RMSE: 1.5270, Val Pinball: 1.1857, Stop Metric: 1.5270
+[2026-09-02 19:12:29] INFO     paper3 ::   Early stopping triggered at epoch 109 (mode: rmse, best stop metric: 1.3184)
+[2026-09-02 19:12:47] INFO     paper3 ::   seed   42 (119s) -> NeuralCQR: val R2=0.4059 test R2=0.4866 | Ensemble (w=0.80): val R2=0.4163 test R2=0.5224, RMSE=1.1534
+[2026-09-02 19:12:47] INFO     paper3 :: Global random seed set to 7
+[2026-09-02 19:12:47] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=7, es_mode=rmse)
+[2026-09-02 19:12:56] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 2.3468, Val RMSE: 1.7544, Val Pinball: 1.6490, Stop Metric: 1.7544
+[2026-09-02 19:13:05] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 1.6623, Val RMSE: 1.5439, Val Pinball: 1.2622, Stop Metric: 1.5439
+[2026-09-02 19:13:14] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 1.4649, Val RMSE: 1.4561, Val Pinball: 1.0622, Stop Metric: 1.4561
+[2026-09-02 19:13:24] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 1.3422, Val RMSE: 1.4616, Val Pinball: 1.0861, Stop Metric: 1.4616
+[2026-09-02 19:13:33] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 1.2728, Val RMSE: 1.4940, Val Pinball: 1.1292, Stop Metric: 1.4940
+[2026-09-02 19:13:42] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.2149, Val RMSE: 1.5194, Val Pinball: 1.1434, Stop Metric: 1.5194
+[2026-09-02 19:13:51] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.1743, Val RMSE: 1.5470, Val Pinball: 1.1886, Stop Metric: 1.5470
+[2026-09-02 19:14:00] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.1489, Val RMSE: 1.5467, Val Pinball: 1.1966, Stop Metric: 1.5467
+[2026-09-02 19:14:09] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.1178, Val RMSE: 1.5752, Val Pinball: 1.2026, Stop Metric: 1.5752
+[2026-09-02 19:14:19] INFO     paper3 ::   Epoch 100/200 -> Train Loss: 1.0984, Val RMSE: 1.6142, Val Pinball: 1.2529, Stop Metric: 1.6142
+[2026-09-02 19:14:20] INFO     paper3 ::   Early stopping triggered at epoch 102 (mode: rmse, best stop metric: 1.4465)
+[2026-09-02 19:14:38] INFO     paper3 ::   seed    7 (111s) -> NeuralCQR: val R2=0.2848 test R2=0.4152 | Ensemble (w=0.60): val R2=0.3175 test R2=0.4993, RMSE=1.1810
+[2026-09-02 19:14:38] INFO     paper3 :: Global random seed set to 123
+[2026-09-02 19:14:38] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=123, es_mode=rmse)
+[2026-09-02 19:14:47] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 3.0415, Val RMSE: 1.9430, Val Pinball: 1.8309, Stop Metric: 1.9430
+[2026-09-02 19:14:57] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 1.8994, Val RMSE: 1.6099, Val Pinball: 1.3949, Stop Metric: 1.6099
+[2026-09-02 19:15:06] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 1.5982, Val RMSE: 1.4764, Val Pinball: 1.1147, Stop Metric: 1.4764
+[2026-09-02 19:15:15] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 1.4675, Val RMSE: 1.4442, Val Pinball: 1.0443, Stop Metric: 1.4442
+[2026-09-02 19:15:24] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 1.3791, Val RMSE: 1.4411, Val Pinball: 1.0390, Stop Metric: 1.4411
+[2026-09-02 19:15:33] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.3081, Val RMSE: 1.4403, Val Pinball: 1.0488, Stop Metric: 1.4403
+[2026-09-02 19:15:42] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.2543, Val RMSE: 1.4715, Val Pinball: 1.0834, Stop Metric: 1.4715
+[2026-09-02 19:15:51] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.2107, Val RMSE: 1.4807, Val Pinball: 1.1143, Stop Metric: 1.4807
+[2026-09-02 19:16:00] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.1791, Val RMSE: 1.5008, Val Pinball: 1.1335, Stop Metric: 1.5008
+[2026-09-02 19:16:10] INFO     paper3 ::   Epoch 100/200 -> Train Loss: 1.1505, Val RMSE: 1.4797, Val Pinball: 1.1395, Stop Metric: 1.4797
+[2026-09-02 19:16:16] INFO     paper3 ::   Early stopping triggered at epoch 107 (mode: rmse, best stop metric: 1.4139)
+[2026-09-02 19:16:35] INFO     paper3 ::   seed  123 (117s) -> NeuralCQR: val R2=0.3167 test R2=0.4212 | Ensemble (w=0.60): val R2=0.3567 test R2=0.5075, RMSE=1.1713
+[2026-09-02 19:16:35] INFO     paper3 :: CSV report saved -> /content/outputs/reports/backbone_robustness_by_seed.csv
+[2026-09-02 19:16:35] INFO     paper3 :: Report saved -> /content/outputs/reports/backbone_robustness_summary.json
+[2026-09-02 19:16:35] INFO     paper3 :: 
+BACKBONE ROBUSTNESS SUMMARY -> Ensemble Test R2 = 0.5097 +/- 0.0096 (n=3 seeds, range [0.4993, 0.5224])
+[2026-09-02 19:16:35] INFO     paper3 :: Validation-vs-test R2 rank correlation across seeds: rho=1.000 (p=0.000) -- low/negative values indicate the val window does not reliably predict test-time performance across seeds.
+[2026-09-02 19:16:36] INFO     paper3 :: Plot saved → /content/outputs/figures/backbone_comparison.png
+[2026-09-02 19:16:36] INFO     paper3 :: Computing real feature attributions & SHAP consistency across 4 backbones
+[2026-09-02 19:16:36] INFO     paper3 :: CSV report saved -> /content/outputs/reports/shap_consistency_report.csv
+[2026-09-02 19:16:36] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/shap_consistency_report.md
+[2026-09-02 19:16:36] INFO     paper3 :: Report saved -> /content/outputs/reports/shap_consistency_report.json
+[2026-09-02 19:16:36] INFO     paper3 :: Plot saved → /content/outputs/figures/shap_cross_backbone_comparison.png
+[2026-09-02 19:16:37] INFO     paper3 :: Plot saved → /content/outputs/figures/shap_bar_plot.png
+[2026-09-02 19:16:37] INFO     paper3 :: Report saved -> /content/outputs/reports/calibration_report.json
+[2026-09-02 19:16:37] INFO     paper3 :: Plot saved → /content/outputs/figures/calibration_curves.png
+[2026-09-02 19:16:38] INFO     paper3 :: Report saved -> /content/outputs/reports/evaluation_report.json
+[2026-09-02 19:16:38] INFO     paper3 :: CSV report saved -> /content/outputs/reports/evaluation_summary.csv
+[2026-09-02 19:16:38] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/evaluation_summary.md
+[2026-09-02 19:16:38] INFO     paper3 :: CSV report saved -> /content/outputs/reports/predictions.csv
+[2026-09-02 19:16:38] INFO     paper3 :: Exported 11725 prediction records -> predictions.csv
+[2026-09-02 19:16:38] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/statistical_tests_report.md
+[2026-09-02 19:16:38] INFO     paper3 :: Fitted robust scaler strictly on training split (16727 samples, 68 features)
+[2026-09-02 19:16:38] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:16:38] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:16:38] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:16:38] INFO     paper3 :: Fitted robust scaler strictly on training split (16727 samples, 68 features)
+[2026-09-02 19:16:38] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:16:38] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:16:38] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:16:38] INFO     paper3 :: Fitted robust scaler strictly on training split (16727 samples, 68 features)
+[2026-09-02 19:16:38] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:16:38] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:16:38] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:16:38] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:16:38] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=rmse)
+[2026-09-02 19:16:48] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 16.0701, Val RMSE: 10.0261, Val Pinball: 14.7424, Stop Metric: 10.0261
+[2026-09-02 19:16:56] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 12.4910, Val RMSE: 8.6283, Val Pinball: 13.0472, Stop Metric: 8.6283
+[2026-09-02 19:17:06] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 8.9086, Val RMSE: 6.8877, Val Pinball: 10.8761, Stop Metric: 6.8877
+[2026-09-02 19:17:15] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 5.3506, Val RMSE: 4.6072, Val Pinball: 7.8367, Stop Metric: 4.6072
+[2026-09-02 19:17:24] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 2.8973, Val RMSE: 2.8269, Val Pinball: 4.5035, Stop Metric: 2.8269
+[2026-09-02 19:17:33] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.9283, Val RMSE: 2.3127, Val Pinball: 2.5010, Stop Metric: 2.3127
+[2026-09-02 19:17:43] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.6091, Val RMSE: 2.1857, Val Pinball: 1.8031, Stop Metric: 2.1857
+[2026-09-02 19:17:52] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.4902, Val RMSE: 2.0913, Val Pinball: 1.6006, Stop Metric: 2.0913
+[2026-09-02 19:18:02] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.4040, Val RMSE: 1.9229, Val Pinball: 1.4105, Stop Metric: 1.9229
+[2026-09-02 19:18:11] INFO     paper3 ::   Epoch 100/200 -> Train Loss: 1.3514, Val RMSE: 1.9877, Val Pinball: 1.5043, Stop Metric: 1.9877
+[2026-09-02 19:18:21] INFO     paper3 ::   Epoch 110/200 -> Train Loss: 1.3109, Val RMSE: 1.9079, Val Pinball: 1.3986, Stop Metric: 1.9079
+[2026-09-02 19:18:30] INFO     paper3 ::   Epoch 120/200 -> Train Loss: 1.2827, Val RMSE: 1.8638, Val Pinball: 1.3706, Stop Metric: 1.8638
+[2026-09-02 19:18:39] INFO     paper3 ::   Epoch 130/200 -> Train Loss: 1.2588, Val RMSE: 1.8715, Val Pinball: 1.3606, Stop Metric: 1.8715
+[2026-09-02 19:18:48] INFO     paper3 ::   Epoch 140/200 -> Train Loss: 1.2172, Val RMSE: 1.8500, Val Pinball: 1.3525, Stop Metric: 1.8500
+[2026-09-02 19:18:57] INFO     paper3 ::   Epoch 150/200 -> Train Loss: 1.2147, Val RMSE: 1.8574, Val Pinball: 1.3929, Stop Metric: 1.8574
+[2026-09-02 19:19:07] INFO     paper3 ::   Epoch 160/200 -> Train Loss: 1.2000, Val RMSE: 1.7982, Val Pinball: 1.3172, Stop Metric: 1.7982
+[2026-09-02 19:19:15] INFO     paper3 ::   Epoch 170/200 -> Train Loss: 1.1819, Val RMSE: 1.7738, Val Pinball: 1.2774, Stop Metric: 1.7738
+[2026-09-02 19:19:25] INFO     paper3 ::   Epoch 180/200 -> Train Loss: 1.1703, Val RMSE: 1.7593, Val Pinball: 1.2797, Stop Metric: 1.7593
+[2026-09-02 19:19:34] INFO     paper3 ::   Epoch 190/200 -> Train Loss: 1.1655, Val RMSE: 1.7725, Val Pinball: 1.2996, Stop Metric: 1.7725
+[2026-09-02 19:19:43] INFO     paper3 ::   Epoch 200/200 -> Train Loss: 1.1562, Val RMSE: 1.8415, Val Pinball: 1.3835, Stop Metric: 1.8415
+[2026-09-02 19:19:43] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/objective_O1_report.md
+[2026-09-02 19:19:43] INFO     paper3 :: Report saved -> /content/outputs/reports/objective_O1_report.json
+[2026-09-02 19:19:43] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/objective_O4_report.md
+[2026-09-02 19:19:43] INFO     paper3 :: Report saved -> /content/outputs/reports/objective_O4_report.json
+[2026-09-02 19:19:43] INFO     paper3 :: CSV report saved -> /content/outputs/reports/objective_o5_report.csv
+[2026-09-02 19:19:43] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/objective_o5_report.md
+[2026-09-02 19:19:43] INFO     paper3 :: Report saved -> /content/outputs/reports/objective_o5_report.json
+[2026-09-02 19:19:43] INFO     paper3 :: Objective O5 report exported -> objective_o5_report.md (Slope: 0.0911, R2: 0.1023)
+[2026-09-02 19:19:43] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/objective_O6_report.md
+[2026-09-02 19:19:43] INFO     paper3 :: Report saved -> /content/outputs/reports/objective_O6_report.json
+[2026-09-02 19:19:44] INFO     paper3 :: Plot saved → /content/outputs/figures/objective_o5_regression_95ci.png
+[2026-09-02 19:19:44] INFO     paper3 :: Plot saved → /content/outputs/figures/objective_o5_density.png
+[2026-09-02 19:19:45] INFO     paper3 :: Plot saved → /content/outputs/figures/objective_o5_boxplots_by_severity.png
+[2026-09-02 19:19:46] INFO     paper3 :: Plot saved → /content/outputs/figures/objective_o5_phenology_attribution.png
+[2026-09-02 19:19:46] INFO     paper3 :: Report saved -> /content/outputs/reports/enso_year_type_winkler_report.json
+[2026-09-02 19:19:46] INFO     paper3 :: Report saved -> /content/outputs/reports/exchangeability_diagnostics_report.json
+[2026-09-02 19:19:46] INFO     paper3 :: Plot saved → /content/outputs/figures/picp_comparison.png
+[2026-09-02 19:19:46] INFO     paper3 :: Plot saved → /content/outputs/figures/mpiw_comparison.png
+[2026-09-02 19:19:48] INFO     paper3 :: Plot saved → /content/outputs/figures/interval_width_by_yeartype.png
+[2026-09-02 19:19:48] INFO     paper3 :: Plot saved → /content/outputs/figures/residuals_neuralcqr_test.png
+[2026-09-02 19:19:49] INFO     paper3 :: Plot saved → /content/outputs/figures/aci_tracking.png
+[2026-09-02 19:19:49] INFO     paper3 :: 
+══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:19:49] INFO     paper3 :: PHASE 3B: RANDOM ROW-LEVEL SPLIT EVALUATION (Interpolation Benchmark)
+[2026-09-02 19:19:49] INFO     paper3 :: ══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:19:49] INFO     paper3 :: ============================================================
+[2026-09-02 19:19:49] INFO     paper3 :: RANDOM ROW-LEVEL SPLIT (70/10/20, seed=42)
+[2026-09-02 19:19:49] INFO     paper3 :: ============================================================
+[2026-09-02 19:19:50] INFO     paper3 :: Random Row Split — Train: 14353 (70.0%), Val: 2050 (10.0%), Test: 4102 (20.0%) -> Saved /content/outputs/splits/random_row_split_assignments.csv
+[2026-09-02 19:19:50] INFO     paper3 :: Split-aware lag features constructed (split_type='random_row', tr=14353, va=2050, te=4102)
+[2026-09-02 19:19:51] INFO     paper3 :: Split-aware rolling climate features constructed (split_type='random_row', tr=14353, va=2050, te=4102)
+[2026-09-02 19:19:51] INFO     paper3 :: TrainFittedPreprocessor fitted on 14353 training rows. (Target median fallback: 8.8031)
+[2026-09-02 19:19:52] INFO     paper3 :: Fitted robust scaler strictly on training split (14353 samples, 74 features)
+[2026-09-02 19:19:52] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:19:52] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:19:52] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:19:52] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:19:52] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=rmse)
+[2026-09-02 19:20:00] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 2.5591, Val RMSE: 1.7919, Val Pinball: 1.3195, Stop Metric: 1.7919
+[2026-09-02 19:20:08] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 1.7465, Val RMSE: 1.4573, Val Pinball: 0.9552, Stop Metric: 1.4573
+[2026-09-02 19:20:16] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 1.5298, Val RMSE: 1.3293, Val Pinball: 0.8287, Stop Metric: 1.3293
+[2026-09-02 19:20:24] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 1.4363, Val RMSE: 1.2824, Val Pinball: 0.7849, Stop Metric: 1.2824
+[2026-09-02 19:20:32] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 1.3702, Val RMSE: 1.2469, Val Pinball: 0.7522, Stop Metric: 1.2469
+[2026-09-02 19:20:40] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.3123, Val RMSE: 1.2280, Val Pinball: 0.7305, Stop Metric: 1.2280
+[2026-09-02 19:20:48] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.2782, Val RMSE: 1.2144, Val Pinball: 0.7132, Stop Metric: 1.2144
+[2026-09-02 19:20:56] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.2423, Val RMSE: 1.1730, Val Pinball: 0.7078, Stop Metric: 1.1730
+[2026-09-02 19:21:04] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.2146, Val RMSE: 1.1524, Val Pinball: 0.6822, Stop Metric: 1.1524
+[2026-09-02 19:21:13] INFO     paper3 ::   Epoch 100/200 -> Train Loss: 1.1878, Val RMSE: 1.1566, Val Pinball: 0.6698, Stop Metric: 1.1566
+[2026-09-02 19:21:20] INFO     paper3 ::   Epoch 110/200 -> Train Loss: 1.1676, Val RMSE: 1.1232, Val Pinball: 0.6788, Stop Metric: 1.1232
+[2026-09-02 19:21:29] INFO     paper3 ::   Epoch 120/200 -> Train Loss: 1.1461, Val RMSE: 1.1152, Val Pinball: 0.6697, Stop Metric: 1.1152
+[2026-09-02 19:21:37] INFO     paper3 ::   Epoch 130/200 -> Train Loss: 1.1316, Val RMSE: 1.0949, Val Pinball: 0.6566, Stop Metric: 1.0949
+[2026-09-02 19:21:45] INFO     paper3 ::   Epoch 140/200 -> Train Loss: 1.1189, Val RMSE: 1.0856, Val Pinball: 0.6455, Stop Metric: 1.0856
+[2026-09-02 19:21:53] INFO     paper3 ::   Epoch 150/200 -> Train Loss: 1.1024, Val RMSE: 1.0797, Val Pinball: 0.6489, Stop Metric: 1.0797
+[2026-09-02 19:22:01] INFO     paper3 ::   Epoch 160/200 -> Train Loss: 1.0815, Val RMSE: 1.0820, Val Pinball: 0.6492, Stop Metric: 1.0820
+[2026-09-02 19:22:08] INFO     paper3 ::   Epoch 170/200 -> Train Loss: 1.0763, Val RMSE: 1.0619, Val Pinball: 0.6330, Stop Metric: 1.0619
+[2026-09-02 19:22:17] INFO     paper3 ::   Epoch 180/200 -> Train Loss: 1.0796, Val RMSE: 1.0580, Val Pinball: 0.6334, Stop Metric: 1.0580
+[2026-09-02 19:22:24] INFO     paper3 ::   Epoch 190/200 -> Train Loss: 1.0693, Val RMSE: 1.0564, Val Pinball: 0.6266, Stop Metric: 1.0564
+[2026-09-02 19:22:32] INFO     paper3 ::   Epoch 200/200 -> Train Loss: 1.0601, Val RMSE: 1.0512, Val Pinball: 0.6320, Stop Metric: 1.0512
+[2026-09-02 19:22:51] INFO     paper3 :: Report saved -> /content/outputs/reports/random_split_evaluation.json
+[2026-09-02 19:22:51] INFO     paper3 :: Random Row-Level Split -> NeuralCQR R2: 0.8115 | LightGBM R2: 0.9149 | Ensemble R2: 0.9149 (w_neural=0.00)
+[2026-09-02 19:22:51] INFO     paper3 :: CSV report saved -> /content/outputs/comparisons/temporal_vs_random_split_comparison.csv
+[2026-09-02 19:22:52] INFO     paper3 :: Plot saved → /content/outputs/figures/temporal_vs_random_split_comparison.png
+[2026-09-02 19:22:52] INFO     paper3 :: 
+══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:22:52] INFO     paper3 :: PHASE 4: LEAVE-ONE-STATE-OUT CROSS-VALIDATION (§5.2)
+[2026-09-02 19:22:52] INFO     paper3 :: ══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:22:52] INFO     paper3 :: ============================================================
+[2026-09-02 19:22:52] INFO     paper3 :: LEAVE-ONE-STATE-OUT CV (§5.2)
+[2026-09-02 19:22:52] INFO     paper3 :: ============================================================
+[2026-09-02 19:22:53] INFO     paper3 :: LOSO Fold 1: Hold out Illinois — Train: 13621 rows, Val: 3063 rows, Test: 3821 rows (5 dev states)
+[2026-09-02 19:22:53] INFO     paper3 :: --- LOSO Fold: Illinois ---
+[2026-09-02 19:22:53] INFO     paper3 :: Split-aware lag features constructed (split_type='loso', tr=13621, va=3063, te=3821)
+[2026-09-02 19:22:54] INFO     paper3 :: Split-aware rolling climate features constructed (split_type='loso', tr=13621, va=3063, te=3821)
+[2026-09-02 19:22:54] INFO     paper3 :: TrainFittedPreprocessor fitted on 13621 training rows. (Target median fallback: 8.2137)
+[2026-09-02 19:22:54] INFO     paper3 :: Fitted robust scaler strictly on training split (13621 samples, 73 features)
+[2026-09-02 19:22:54] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:22:54] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:22:54] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:22:54] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:22:54] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=pinball)
+[2026-09-02 19:23:17] INFO     paper3 ::   Epoch 10/40 -> Train Loss: 0.8991, Val RMSE: 2.1529, Val Pinball: 1.8362, Stop Metric: 1.8362
+[2026-09-02 19:23:39] INFO     paper3 ::   Epoch 20/40 -> Train Loss: 0.7273, Val RMSE: 2.7222, Val Pinball: 2.6363, Stop Metric: 2.6363
+[2026-09-02 19:23:46] INFO     paper3 ::   Early stopping triggered at epoch 23 (mode: pinball, best stop metric: 1.7010)
+[2026-09-02 19:24:03] INFO     paper3 ::   Illinois -> ensembled with LightGBM (NeuralCQR w=0.10), val R2 -0.0807 -> 0.1166
+[2026-09-02 19:24:03] INFO     paper3 :: Calibrating with Static Conformal (Paper 18 baseline)
+[2026-09-02 19:24:03] INFO     paper3 ::   Static threshold: 1.5285
+[2026-09-02 19:24:03] INFO     paper3 ::   Illinois -> RMSE=1.4170, R2=0.6590, PICP=0.9275, MPIW=5.6868
+[2026-09-02 19:24:04] INFO     paper3 :: LOSO Fold 2: Hold out Indiana — Train: 13982 rows, Val: 3146 rows, Test: 3377 rows (5 dev states)
+[2026-09-02 19:24:04] INFO     paper3 :: --- LOSO Fold: Indiana ---
+[2026-09-02 19:24:04] INFO     paper3 :: Split-aware lag features constructed (split_type='loso', tr=13982, va=3146, te=3377)
+[2026-09-02 19:24:05] INFO     paper3 :: Split-aware rolling climate features constructed (split_type='loso', tr=13982, va=3146, te=3377)
+[2026-09-02 19:24:05] INFO     paper3 :: TrainFittedPreprocessor fitted on 13982 training rows. (Target median fallback: 8.2639)
+[2026-09-02 19:24:05] INFO     paper3 :: Fitted robust scaler strictly on training split (13982 samples, 73 features)
+[2026-09-02 19:24:05] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:24:05] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:24:05] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:24:05] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:24:05] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=pinball)
+[2026-09-02 19:24:28] INFO     paper3 ::   Epoch 10/40 -> Train Loss: 0.9404, Val RMSE: 2.6817, Val Pinball: 2.4938, Stop Metric: 2.4938
+[2026-09-02 19:24:52] INFO     paper3 ::   Epoch 20/40 -> Train Loss: 0.7643, Val RMSE: 2.5005, Val Pinball: 2.3796, Stop Metric: 2.3796
+[2026-09-02 19:24:56] INFO     paper3 ::   Early stopping triggered at epoch 22 (mode: pinball, best stop metric: 1.4169)
+[2026-09-02 19:25:15] INFO     paper3 ::   Indiana -> ensembled with LightGBM (NeuralCQR w=0.10), val R2 0.0512 -> 0.3199
+[2026-09-02 19:25:15] INFO     paper3 :: Calibrating with Static Conformal (Paper 18 baseline)
+[2026-09-02 19:25:15] INFO     paper3 ::   Static threshold: 1.2123
+[2026-09-02 19:25:15] INFO     paper3 ::   Indiana -> RMSE=1.0864, R2=0.7093, PICP=0.9748, MPIW=5.1185
+[2026-09-02 19:25:16] INFO     paper3 :: LOSO Fold 3: Hold out Iowa — Train: 13662 rows, Val: 3040 rows, Test: 3803 rows (5 dev states)
+[2026-09-02 19:25:16] INFO     paper3 :: --- LOSO Fold: Iowa ---
+[2026-09-02 19:25:16] INFO     paper3 :: Split-aware lag features constructed (split_type='loso', tr=13662, va=3040, te=3803)
+[2026-09-02 19:25:16] INFO     paper3 :: Split-aware rolling climate features constructed (split_type='loso', tr=13662, va=3040, te=3803)
+[2026-09-02 19:25:17] INFO     paper3 :: TrainFittedPreprocessor fitted on 13662 training rows. (Target median fallback: 8.1385)
+[2026-09-02 19:25:17] INFO     paper3 :: Fitted robust scaler strictly on training split (13662 samples, 73 features)
+[2026-09-02 19:25:17] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:25:17] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:25:17] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:25:17] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:25:17] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=pinball)
+[2026-09-02 19:25:40] INFO     paper3 ::   Epoch 10/40 -> Train Loss: 0.9324, Val RMSE: 2.5567, Val Pinball: 2.3285, Stop Metric: 2.3285
+[2026-09-02 19:26:03] INFO     paper3 ::   Epoch 20/40 -> Train Loss: 0.7524, Val RMSE: 2.4524, Val Pinball: 2.3792, Stop Metric: 2.3792
+[2026-09-02 19:26:07] INFO     paper3 ::   Early stopping triggered at epoch 22 (mode: pinball, best stop metric: 1.7538)
+[2026-09-02 19:26:27] INFO     paper3 ::   Iowa -> ensembled with LightGBM (NeuralCQR w=0.00), val R2 -0.1060 -> 0.3872
+[2026-09-02 19:26:27] INFO     paper3 :: Calibrating with Static Conformal (Paper 18 baseline)
+[2026-09-02 19:26:27] INFO     paper3 ::   Static threshold: 1.4585
+[2026-09-02 19:26:27] INFO     paper3 ::   Iowa -> RMSE=1.4094, R2=0.5980, PICP=0.9166, MPIW=5.5103
+[2026-09-02 19:26:28] INFO     paper3 :: LOSO Fold 4: Hold out Minnesota — Train: 14330 rows, Val: 3228 rows, Test: 2947 rows (5 dev states)
+[2026-09-02 19:26:28] INFO     paper3 :: --- LOSO Fold: Minnesota ---
+[2026-09-02 19:26:28] INFO     paper3 :: Split-aware lag features constructed (split_type='loso', tr=14330, va=3228, te=2947)
+[2026-09-02 19:26:29] INFO     paper3 :: Split-aware rolling climate features constructed (split_type='loso', tr=14330, va=3228, te=2947)
+[2026-09-02 19:26:29] INFO     paper3 :: TrainFittedPreprocessor fitted on 14330 training rows. (Target median fallback: 8.3391)
+[2026-09-02 19:26:29] INFO     paper3 :: Fitted robust scaler strictly on training split (14330 samples, 73 features)
+[2026-09-02 19:26:29] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:26:29] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:26:29] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:26:29] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:26:29] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=pinball)
+[2026-09-02 19:26:54] INFO     paper3 ::   Epoch 10/40 -> Train Loss: 0.9310, Val RMSE: 2.8467, Val Pinball: 2.6999, Stop Metric: 2.6999
+[2026-09-02 19:27:18] INFO     paper3 ::   Epoch 20/40 -> Train Loss: 0.7460, Val RMSE: 2.6255, Val Pinball: 2.5264, Stop Metric: 2.5264
+[2026-09-02 19:27:21] INFO     paper3 ::   Early stopping triggered at epoch 21 (mode: pinball, best stop metric: 1.8695)
+[2026-09-02 19:27:38] INFO     paper3 ::   Minnesota -> ensembled with LightGBM (NeuralCQR w=0.00), val R2 -0.7325 -> 0.1831
+[2026-09-02 19:27:38] INFO     paper3 :: Calibrating with Static Conformal (Paper 18 baseline)
+[2026-09-02 19:27:38] INFO     paper3 ::   Static threshold: 1.3726
+[2026-09-02 19:27:38] INFO     paper3 ::   Minnesota -> RMSE=1.5341, R2=0.6228, PICP=0.8741, MPIW=5.1874
+[2026-09-02 19:27:39] INFO     paper3 :: LOSO Fold 5: Hold out Missouri — Train: 13906 rows, Val: 3248 rows, Test: 3351 rows (5 dev states)
+[2026-09-02 19:27:39] INFO     paper3 :: --- LOSO Fold: Missouri ---
+[2026-09-02 19:27:39] INFO     paper3 :: Split-aware lag features constructed (split_type='loso', tr=13906, va=3248, te=3351)
+[2026-09-02 19:27:40] INFO     paper3 :: Split-aware rolling climate features constructed (split_type='loso', tr=13906, va=3248, te=3351)
+[2026-09-02 19:27:40] INFO     paper3 :: TrainFittedPreprocessor fitted on 13906 training rows. (Target median fallback: 8.5899)
+[2026-09-02 19:27:40] INFO     paper3 :: Fitted robust scaler strictly on training split (13906 samples, 73 features)
+[2026-09-02 19:27:40] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:27:40] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:27:40] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:27:40] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:27:40] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=pinball)
+[2026-09-02 19:28:04] INFO     paper3 ::   Epoch 10/40 -> Train Loss: 0.8770, Val RMSE: 2.5902, Val Pinball: 2.5506, Stop Metric: 2.5506
+[2026-09-02 19:28:28] INFO     paper3 ::   Epoch 20/40 -> Train Loss: 0.7049, Val RMSE: 2.6194, Val Pinball: 2.6780, Stop Metric: 2.6780
+[2026-09-02 19:28:40] INFO     paper3 ::   Early stopping triggered at epoch 25 (mode: pinball, best stop metric: 1.7530)
+[2026-09-02 19:29:00] INFO     paper3 ::   Missouri -> ensembled with LightGBM (NeuralCQR w=0.00), val R2 -0.2474 -> 0.2065
+[2026-09-02 19:29:00] INFO     paper3 :: Calibrating with Static Conformal (Paper 18 baseline)
+[2026-09-02 19:29:00] INFO     paper3 ::   Static threshold: 1.2475
+[2026-09-02 19:29:00] INFO     paper3 ::   Missouri -> RMSE=1.4438, R2=0.5235, PICP=0.9087, MPIW=5.4260
+[2026-09-02 19:29:01] INFO     paper3 :: LOSO Fold 6: Hold out Ohio — Train: 14134 rows, Val: 3165 rows, Test: 3206 rows (5 dev states)
+[2026-09-02 19:29:01] INFO     paper3 :: --- LOSO Fold: Ohio ---
+[2026-09-02 19:29:01] INFO     paper3 :: Split-aware lag features constructed (split_type='loso', tr=14134, va=3165, te=3206)
+[2026-09-02 19:29:02] INFO     paper3 :: Split-aware rolling climate features constructed (split_type='loso', tr=14134, va=3165, te=3206)
+[2026-09-02 19:29:02] INFO     paper3 :: TrainFittedPreprocessor fitted on 14134 training rows. (Target median fallback: 8.4018)
+[2026-09-02 19:29:02] INFO     paper3 :: Fitted robust scaler strictly on training split (14134 samples, 73 features)
+[2026-09-02 19:29:02] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:29:02] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:29:02] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:29:02] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:29:02] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=pinball)
+[2026-09-02 19:29:27] INFO     paper3 ::   Epoch 10/40 -> Train Loss: 0.8916, Val RMSE: 2.2930, Val Pinball: 2.0082, Stop Metric: 2.0082
+[2026-09-02 19:29:50] INFO     paper3 ::   Epoch 20/40 -> Train Loss: 0.7198, Val RMSE: 2.4390, Val Pinball: 2.2992, Stop Metric: 2.2992
+[2026-09-02 19:30:00] INFO     paper3 ::   Early stopping triggered at epoch 24 (mode: pinball, best stop metric: 1.4328)
+[2026-09-02 19:30:19] INFO     paper3 ::   Ohio -> ensembled with LightGBM (NeuralCQR w=0.30), val R2 0.1705 -> 0.3079
+[2026-09-02 19:30:19] INFO     paper3 :: Calibrating with Static Conformal (Paper 18 baseline)
+[2026-09-02 19:30:19] INFO     paper3 ::   Static threshold: 1.1162
+[2026-09-02 19:30:19] INFO     paper3 ::   Ohio -> RMSE=1.1930, R2=0.6389, PICP=0.9410, MPIW=4.7625
+[2026-09-02 19:30:20] INFO     paper3 :: LOSO split assignments saved -> /content/outputs/splits/loso_split_assignments.csv
+[2026-09-02 19:30:20] INFO     paper3 :: LOSO-CV rmse: mean=1.3473, std=0.1553
+[2026-09-02 19:30:20] INFO     paper3 :: LOSO-CV mae: mean=1.0453, std=0.1293
+[2026-09-02 19:30:20] INFO     paper3 :: LOSO-CV r_squared: mean=0.6252, std=0.0570
+[2026-09-02 19:30:20] INFO     paper3 :: LOSO-CV picp: mean=0.9238, std=0.0307
+[2026-09-02 19:30:20] INFO     paper3 :: LOSO-CV mpiw: mean=5.2819, std=0.3006
+[2026-09-02 19:30:20] INFO     paper3 :: Report saved -> /content/outputs/reports/loso_cv_report.json
+[2026-09-02 19:30:21] INFO     paper3 :: Plot saved → /content/outputs/figures/loso_cv_results.png
+[2026-09-02 19:30:21] INFO     paper3 :: CSV report saved -> /content/outputs/reports/loso_summary.csv
+[2026-09-02 19:30:21] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/loso_summary_report.md
+[2026-09-02 19:30:21] INFO     paper3 :: LOSO summary report saved -> loso_summary_report.md
+[2026-09-02 19:30:21] INFO     paper3 :: Plot saved -> /content/outputs/figures/loso_r2_choropleth.png
+[2026-09-02 19:30:22] INFO     paper3 :: Plot saved -> /content/outputs/figures/loso_picp_choropleth.png
+[2026-09-02 19:30:22] INFO     paper3 :: Plot saved -> /content/outputs/figures/ensemble_weight_choropleth.png
+[2026-09-02 19:30:22] INFO     paper3 :: 
+══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:30:22] INFO     paper3 :: PHASE 5: ABLATION STUDY (§4.6)
+[2026-09-02 19:30:22] INFO     paper3 :: ══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:30:22] INFO     paper3 :: Ablation config: 1_backbone_only
+[2026-09-02 19:30:23] INFO     paper3 :: Fitted robust scaler strictly on training split (16727 samples, 68 features)
+[2026-09-02 19:30:23] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:30:23] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:30:23] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:30:23] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:30:23] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Post-Hoc mode, §4.2, seed=42, es_mode=rmse)
+[2026-09-02 19:30:32] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 2.2506, Val RMSE: 1.7123, Val Pinball: 1.4036, Stop Metric: 1.7123
+[2026-09-02 19:30:41] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 1.6124, Val RMSE: 1.4478, Val Pinball: 0.9704, Stop Metric: 1.4478
+[2026-09-02 19:30:50] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 1.4323, Val RMSE: 1.4152, Val Pinball: 0.9217, Stop Metric: 1.4152
+[2026-09-02 19:31:00] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 1.3382, Val RMSE: 1.4361, Val Pinball: 0.9308, Stop Metric: 1.4361
+[2026-09-02 19:31:09] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 1.2512, Val RMSE: 1.4647, Val Pinball: 0.9564, Stop Metric: 1.4647
+[2026-09-02 19:31:19] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.2037, Val RMSE: 1.5036, Val Pinball: 1.0142, Stop Metric: 1.5036
+[2026-09-02 19:31:28] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.1600, Val RMSE: 1.5480, Val Pinball: 1.0497, Stop Metric: 1.5480
+[2026-09-02 19:31:38] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.1245, Val RMSE: 1.5684, Val Pinball: 1.0741, Stop Metric: 1.5684
+[2026-09-02 19:31:48] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.0992, Val RMSE: 1.5693, Val Pinball: 1.0670, Stop Metric: 1.5693
+[2026-09-02 19:31:52] INFO     paper3 ::   Early stopping triggered at epoch 95 (mode: rmse, best stop metric: 1.3946)
+[2026-09-02 19:31:52] INFO     paper3 ::   -> {'config': '1_backbone_only', 'n_features': 68, 'joint_training': False, 'rmse': 1.1777, 'mae': 0.911, 'r_squared': 0.5173, 'picp': 'n/a', 'mpiw': 'n/a'}
+[2026-09-02 19:31:52] INFO     paper3 :: Ablation config: 2_plus_cdhw
+[2026-09-02 19:31:52] INFO     paper3 :: Fitted robust scaler strictly on training split (16727 samples, 74 features)
+[2026-09-02 19:31:52] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:31:52] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:31:52] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:31:52] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:31:52] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Post-Hoc mode, §4.2, seed=42, es_mode=rmse)
+[2026-09-02 19:32:02] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 2.2495, Val RMSE: 1.8073, Val Pinball: 1.4996, Stop Metric: 1.8073
+[2026-09-02 19:32:12] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 1.6022, Val RMSE: 1.4234, Val Pinball: 1.0342, Stop Metric: 1.4234
+[2026-09-02 19:32:21] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 1.4453, Val RMSE: 1.3574, Val Pinball: 0.9684, Stop Metric: 1.3574
+[2026-09-02 19:32:30] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 1.3469, Val RMSE: 1.3445, Val Pinball: 0.9873, Stop Metric: 1.3445
+[2026-09-02 19:32:40] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 1.2790, Val RMSE: 1.3318, Val Pinball: 0.9834, Stop Metric: 1.3318
+[2026-09-02 19:32:50] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.2248, Val RMSE: 1.3862, Val Pinball: 1.0482, Stop Metric: 1.3862
+[2026-09-02 19:32:59] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.1760, Val RMSE: 1.4236, Val Pinball: 1.0819, Stop Metric: 1.4236
+[2026-09-02 19:33:09] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.1384, Val RMSE: 1.4550, Val Pinball: 1.1279, Stop Metric: 1.4550
+[2026-09-02 19:33:18] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.1172, Val RMSE: 1.4671, Val Pinball: 1.1266, Stop Metric: 1.4671
+[2026-09-02 19:33:28] INFO     paper3 ::   Epoch 100/200 -> Train Loss: 1.0812, Val RMSE: 1.5270, Val Pinball: 1.1857, Stop Metric: 1.5270
+[2026-09-02 19:33:36] INFO     paper3 ::   Early stopping triggered at epoch 109 (mode: rmse, best stop metric: 1.3184)
+[2026-09-02 19:33:36] INFO     paper3 ::   -> {'config': '2_plus_cdhw', 'n_features': 74, 'joint_training': False, 'rmse': 1.1958, 'mae': 0.9424, 'r_squared': 0.5024, 'picp': 'n/a', 'mpiw': 'n/a'}
+[2026-09-02 19:33:36] INFO     paper3 :: Ablation config: 3_plus_cqr
+[2026-09-02 19:33:36] INFO     paper3 :: Fitted robust scaler strictly on training split (16727 samples, 74 features)
+[2026-09-02 19:33:36] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:33:36] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:33:36] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:33:36] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:33:36] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Post-Hoc mode, §4.2, seed=42, es_mode=rmse)
+[2026-09-02 19:33:45] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 2.2495, Val RMSE: 1.8073, Val Pinball: 1.4996, Stop Metric: 1.8073
+[2026-09-02 19:33:55] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 1.6022, Val RMSE: 1.4234, Val Pinball: 1.0342, Stop Metric: 1.4234
+[2026-09-02 19:34:05] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 1.4453, Val RMSE: 1.3574, Val Pinball: 0.9684, Stop Metric: 1.3574
+[2026-09-02 19:34:14] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 1.3469, Val RMSE: 1.3445, Val Pinball: 0.9873, Stop Metric: 1.3445
+[2026-09-02 19:34:23] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 1.2790, Val RMSE: 1.3318, Val Pinball: 0.9834, Stop Metric: 1.3318
+[2026-09-02 19:34:33] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.2248, Val RMSE: 1.3862, Val Pinball: 1.0482, Stop Metric: 1.3862
+[2026-09-02 19:34:42] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.1760, Val RMSE: 1.4236, Val Pinball: 1.0819, Stop Metric: 1.4236
+[2026-09-02 19:34:51] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.1384, Val RMSE: 1.4550, Val Pinball: 1.1279, Stop Metric: 1.4550
+[2026-09-02 19:35:01] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.1172, Val RMSE: 1.4671, Val Pinball: 1.1266, Stop Metric: 1.4671
+[2026-09-02 19:35:11] INFO     paper3 ::   Epoch 100/200 -> Train Loss: 1.0812, Val RMSE: 1.5270, Val Pinball: 1.1857, Stop Metric: 1.5270
+[2026-09-02 19:35:19] INFO     paper3 ::   Early stopping triggered at epoch 109 (mode: rmse, best stop metric: 1.3184)
+[2026-09-02 19:35:19] INFO     paper3 :: Calibrating with Static Conformal (Paper 18 baseline)
+[2026-09-02 19:35:19] INFO     paper3 ::   Static threshold: 0.7950
+[2026-09-02 19:35:19] INFO     paper3 ::   -> {'config': '3_plus_cqr', 'n_features': 74, 'joint_training': False, 'rmse': 1.1958, 'mae': 0.9424, 'r_squared': 0.5024, 'picp': 0.9228, 'mpiw': 4.7971, 'ace': 0.0228, 'winkler_score': 5.4879}
+[2026-09-02 19:35:19] INFO     paper3 :: Ablation config: 4_plus_aci
+[2026-09-02 19:35:19] INFO     paper3 :: Fitted robust scaler strictly on training split (16727 samples, 74 features)
+[2026-09-02 19:35:19] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:35:19] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:35:19] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:35:19] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:35:19] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Post-Hoc mode, §4.2, seed=42, es_mode=rmse)
+[2026-09-02 19:35:28] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 2.2495, Val RMSE: 1.8073, Val Pinball: 1.4996, Stop Metric: 1.8073
+[2026-09-02 19:35:38] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 1.6022, Val RMSE: 1.4234, Val Pinball: 1.0342, Stop Metric: 1.4234
+[2026-09-02 19:35:47] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 1.4453, Val RMSE: 1.3574, Val Pinball: 0.9684, Stop Metric: 1.3574
+[2026-09-02 19:35:56] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 1.3469, Val RMSE: 1.3445, Val Pinball: 0.9873, Stop Metric: 1.3445
+[2026-09-02 19:36:05] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 1.2790, Val RMSE: 1.3318, Val Pinball: 0.9834, Stop Metric: 1.3318
+[2026-09-02 19:36:15] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.2248, Val RMSE: 1.3862, Val Pinball: 1.0482, Stop Metric: 1.3862
+[2026-09-02 19:36:25] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.1760, Val RMSE: 1.4236, Val Pinball: 1.0819, Stop Metric: 1.4236
+[2026-09-02 19:36:34] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.1384, Val RMSE: 1.4550, Val Pinball: 1.1279, Stop Metric: 1.4550
+[2026-09-02 19:36:43] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.1172, Val RMSE: 1.4671, Val Pinball: 1.1266, Stop Metric: 1.4671
+[2026-09-02 19:36:53] INFO     paper3 ::   Epoch 100/200 -> Train Loss: 1.0812, Val RMSE: 1.5270, Val Pinball: 1.1857, Stop Metric: 1.5270
+[2026-09-02 19:37:01] INFO     paper3 ::   Early stopping triggered at epoch 109 (mode: rmse, best stop metric: 1.3184)
+[2026-09-02 19:37:01] INFO     paper3 :: Calibrating with Adaptive Conformal Inference (ACI §4.3)
+[2026-09-02 19:37:01] INFO     paper3 ::   gamma0=0.0500, default_window=3, nominal_alpha=0.10
+[2026-09-02 19:37:01] INFO     paper3 ::   Year 2019 ACI -> PICP: 0.9390, err: 0.0610, α_t: 0.1020, DynWindow: 5, threshold: 0.7950, MPIW: 4.7770
+[2026-09-02 19:37:01] INFO     paper3 ::   Year 2020 ACI -> PICP: 0.9549, err: 0.0451, α_t: 0.1039, DynWindow: 5, threshold: 0.7502, MPIW: 4.3729
+[2026-09-02 19:37:01] INFO     paper3 ::   Year 2021 ACI -> PICP: 0.8178, err: 0.1822, α_t: 0.1015, DynWindow: 5, threshold: 0.6836, MPIW: 4.4424
+[2026-09-02 19:37:01] INFO     paper3 ::   Year 2022 ACI -> PICP: 0.9511, err: 0.0489, α_t: 0.1028, DynWindow: 5, threshold: 0.7473, MPIW: 4.9014
+[2026-09-02 19:37:01] INFO     paper3 ::   Year 2023 ACI -> PICP: 0.8939, err: 0.1061, α_t: 0.1027, DynWindow: 5, threshold: 0.6946, MPIW: 4.9160
+[2026-09-02 19:37:01] INFO     paper3 ::   -> {'config': '4_plus_aci', 'n_features': 74, 'joint_training': False, 'rmse': 1.1958, 'mae': 0.9424, 'r_squared': 0.5024, 'picp': 0.913, 'mpiw': 4.6745, 'ace': 0.013, 'winkler_score': 5.4929}
+[2026-09-02 19:37:01] INFO     paper3 :: Ablation config: 5_full_joint
+[2026-09-02 19:37:01] INFO     paper3 :: Fitted robust scaler strictly on training split (16727 samples, 74 features)
+[2026-09-02 19:37:01] INFO     paper3 :: DECISION [scaling] -> Fitted robust scaler on training data only | Reason: Zero data leakage: validation/testing statistics are strictly excluded from scaler fitting
+[2026-09-02 19:37:01] INFO     paper3 :: Report saved -> /content/outputs/reports/scaling_report.json
+[2026-09-02 19:37:01] INFO     paper3 :: Scaling report saved to scaling_report.json
+[2026-09-02 19:37:01] INFO     paper3 :: Global random seed set to 42
+[2026-09-02 19:37:01] INFO     paper3 :: Training PyTorch Multi-Task Neural CQR Net (Joint End-to-End mode, §4.2, seed=42, es_mode=rmse)
+[2026-09-02 19:37:10] INFO     paper3 ::   Epoch 10/200 -> Train Loss: 2.2495, Val RMSE: 1.8073, Val Pinball: 1.4996, Stop Metric: 1.8073
+[2026-09-02 19:37:20] INFO     paper3 ::   Epoch 20/200 -> Train Loss: 1.6022, Val RMSE: 1.4234, Val Pinball: 1.0342, Stop Metric: 1.4234
+[2026-09-02 19:37:29] INFO     paper3 ::   Epoch 30/200 -> Train Loss: 1.4453, Val RMSE: 1.3574, Val Pinball: 0.9684, Stop Metric: 1.3574
+[2026-09-02 19:37:39] INFO     paper3 ::   Epoch 40/200 -> Train Loss: 1.3469, Val RMSE: 1.3445, Val Pinball: 0.9873, Stop Metric: 1.3445
+[2026-09-02 19:37:48] INFO     paper3 ::   Epoch 50/200 -> Train Loss: 1.2790, Val RMSE: 1.3318, Val Pinball: 0.9834, Stop Metric: 1.3318
+[2026-09-02 19:37:58] INFO     paper3 ::   Epoch 60/200 -> Train Loss: 1.2248, Val RMSE: 1.3862, Val Pinball: 1.0482, Stop Metric: 1.3862
+[2026-09-02 19:38:07] INFO     paper3 ::   Epoch 70/200 -> Train Loss: 1.1760, Val RMSE: 1.4236, Val Pinball: 1.0819, Stop Metric: 1.4236
+[2026-09-02 19:38:17] INFO     paper3 ::   Epoch 80/200 -> Train Loss: 1.1384, Val RMSE: 1.4550, Val Pinball: 1.1279, Stop Metric: 1.4550
+[2026-09-02 19:38:26] INFO     paper3 ::   Epoch 90/200 -> Train Loss: 1.1172, Val RMSE: 1.4671, Val Pinball: 1.1266, Stop Metric: 1.4671
+[2026-09-02 19:38:35] INFO     paper3 ::   Epoch 100/200 -> Train Loss: 1.0812, Val RMSE: 1.5270, Val Pinball: 1.1857, Stop Metric: 1.5270
+[2026-09-02 19:38:44] INFO     paper3 ::   Early stopping triggered at epoch 109 (mode: rmse, best stop metric: 1.3184)
+[2026-09-02 19:38:44] INFO     paper3 :: Calibrating with Adaptive Conformal Inference (ACI §4.3)
+[2026-09-02 19:38:44] INFO     paper3 ::   gamma0=0.0500, default_window=3, nominal_alpha=0.10
+[2026-09-02 19:38:44] INFO     paper3 ::   Year 2019 ACI -> PICP: 0.9390, err: 0.0610, α_t: 0.1020, DynWindow: 5, threshold: 0.7950, MPIW: 4.7770
+[2026-09-02 19:38:44] INFO     paper3 ::   Year 2020 ACI -> PICP: 0.9549, err: 0.0451, α_t: 0.1039, DynWindow: 5, threshold: 0.7502, MPIW: 4.3729
+[2026-09-02 19:38:44] INFO     paper3 ::   Year 2021 ACI -> PICP: 0.8178, err: 0.1822, α_t: 0.1015, DynWindow: 5, threshold: 0.6836, MPIW: 4.4424
+[2026-09-02 19:38:44] INFO     paper3 ::   Year 2022 ACI -> PICP: 0.9511, err: 0.0489, α_t: 0.1028, DynWindow: 5, threshold: 0.7473, MPIW: 4.9014
+[2026-09-02 19:38:44] INFO     paper3 ::   Year 2023 ACI -> PICP: 0.8939, err: 0.1061, α_t: 0.1027, DynWindow: 5, threshold: 0.6946, MPIW: 4.9160
+[2026-09-02 19:38:44] INFO     paper3 ::   -> {'config': '5_full_joint', 'n_features': 74, 'joint_training': True, 'rmse': 1.1958, 'mae': 0.9424, 'r_squared': 0.5024, 'picp': 0.913, 'mpiw': 4.6745, 'ace': 0.013, 'winkler_score': 5.4929}
+[2026-09-02 19:38:44] INFO     paper3 :: Report saved -> /content/outputs/reports/ablation_report.json
+[2026-09-02 19:38:44] INFO     paper3 :: 
+══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:38:44] INFO     paper3 :: PIPELINE COMPLETE — Total time: 2024.3 seconds
+[2026-09-02 19:38:44] INFO     paper3 :: ══════════════════════════════════════════════════════════════════════
+[2026-09-02 19:38:44] INFO     paper3 :: Report saved -> /content/outputs/reports/reproducibility_report.json
+[2026-09-02 19:38:44] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/reproducibility_report.md
+[2026-09-02 19:38:44] INFO     paper3 :: Reproducibility report generated -> reproducibility_report.md
+[2026-09-02 19:38:44] INFO     paper3 :: Report saved -> /content/outputs/reports/artifact_integrity_report.json
+[2026-09-02 19:38:44] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/artifact_integrity_report.md
+[2026-09-02 19:38:44] INFO     paper3 :: Artifact integrity validation completed (87% complete -> PARTIAL_COMPLIANCE)
+[2026-09-02 19:38:44] INFO     paper3 :: Report saved -> /content/outputs/reports/pipeline_summary.json
+[2026-09-02 19:38:44] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/paper3_final_summary.md
+[2026-09-02 19:38:44] INFO     paper3 :: Paper 3 Final Master Report saved -> paper3_final_summary.md
+[2026-09-02 19:38:44] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/methodology_compliance_report.md
+[2026-09-02 19:38:44] INFO     paper3 :: Methodology compliance report saved -> methodology_compliance_report.md
+[2026-09-02 19:38:44] INFO     paper3 :: CSV report saved -> /content/outputs/reports/methodology_traceability_matrix.csv
+[2026-09-02 19:38:44] INFO     paper3 :: Methodology traceability matrix saved -> methodology_traceability_matrix.csv
+[2026-09-02 19:38:44] INFO     paper3 :: Report saved -> /content/outputs/reports/methodology_validation_report.json
+[2026-09-02 19:38:44] INFO     paper3 :: Markdown report saved -> /content/outputs/reports/methodology_validation_report.md
+[2026-09-02 19:38:44] INFO     paper3 :: Methodology validation report saved -> methodology_validation_report.md

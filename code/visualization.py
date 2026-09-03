@@ -841,3 +841,84 @@ def plot_feature_selection_stability_visualizations() -> List[Path]:
     return paths
 
 
+# ─────────────────────────────────────────────────────────────
+# Split comparison: Temporal (out-of-time) vs Random row-level split
+# ─────────────────────────────────────────────────────────────
+
+def plot_split_comparison(split_comparison_df: pd.DataFrame) -> Path:
+    """Grouped bar chart contrasting R2 (and RMSE) between the temporal
+    (out-of-time forecast) split and the random row-level (interpolation
+    benchmark) split, for each model. Makes the "these answer different
+    questions" point from PHASE 3B's docstring visually obvious: random
+    split R2 should be visibly higher, since it's an easier interpolation
+    task, not a fairer benchmark.
+    """
+    fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+    models = split_comparison_df["Model"].unique().tolist()
+    split_types = split_comparison_df["Split_Type"].unique().tolist()
+    x = np.arange(len(models))
+    width = 0.8 / max(1, len(split_types))
+    colors = sns.color_palette("Set2", len(split_types))
+
+    for ax, metric, ylabel in [(axes[0], "R2", "R\u00b2 (higher is better)"),
+                                (axes[1], "RMSE", "RMSE, t/ha (lower is better)")]:
+        for i, split_type in enumerate(split_types):
+            sub = split_comparison_df[split_comparison_df["Split_Type"] == split_type]
+            vals = [sub[sub["Model"] == m][metric].values[0] if m in sub["Model"].values and
+                    pd.notna(sub[sub["Model"] == m][metric].values[0]) else np.nan
+                    for m in models]
+            ax.bar(x + i * width, vals, width, label=split_type, color=colors[i])
+        ax.set_xticks(x + width * (len(split_types) - 1) / 2)
+        ax.set_xticklabels(models, rotation=15, ha="right")
+        ax.margins(x=0.15)
+        ax.set_ylabel(ylabel)
+        ax.set_title(f"{metric}: Temporal vs. Random Split")
+
+    axes[0].legend(loc="upper right", fontsize=8, ncol=1)
+    fig.suptitle(
+        "Temporal (out-of-time forecast) vs. Random row-level (interpolation) split\n"
+        "Random-split R\u00b2 is expected to be higher -- it answers a different, easier question",
+        fontsize=11,
+    )
+    fig.tight_layout(rect=[0, 0, 1, 0.94])
+    return _save(fig, "temporal_vs_random_split_comparison")
+
+
+# ─────────────────────────────────────────────────────────────
+# Yield trends over time by state
+# ─────────────────────────────────────────────────────────────
+
+def plot_yield_trends_by_state(
+    df: pd.DataFrame,
+    target_col: str = None,
+    train_years: tuple = None,
+    val_years: tuple = None,
+    test_years: tuple = None,
+) -> Path:
+    """Mean yield per state per year, with the train/val/test temporal
+    split boundaries shaded, so the reader can see both the underlying
+    upward yield trend (motivating DETREND_TARGET) and where the
+    forecast horizon (test period) sits relative to it."""
+    target_col = target_col or cfg.PRIMARY_TARGET
+    train_years = train_years or cfg.TRAIN_YEARS
+    val_years = val_years or cfg.VAL_YEARS
+    test_years = test_years or cfg.TEST_YEARS
+
+    trend = df.groupby(["Year", "State"])[target_col].mean().reset_index()
+
+    fig, ax = plt.subplots(figsize=(13, 7))
+    for state, sub in trend.groupby("State"):
+        ax.plot(sub["Year"], sub[target_col], marker="o", markersize=3, linewidth=1.5, label=state)
+
+    ax.axvspan(val_years[0], val_years[1], color="orange", alpha=0.12, label="Validation (2016-2018)")
+    ax.axvspan(test_years[0], test_years[1], color="red", alpha=0.10, label="Test (2019-2023)")
+
+    ax.set_xlabel("Year")
+    ax.set_ylabel(f"Mean {target_col}")
+    ax.set_title(f"State-level mean {target_col} over time, with temporal split boundaries")
+    ax.legend(loc="upper left", fontsize=8, ncol=2)
+    fig.tight_layout()
+    return _save(fig, "yield_trends_by_state")
+
+
