@@ -220,12 +220,37 @@ def main() -> None:
         _tr_trend = _va_trend = _te_trend = None
         y_test_raw = y_test
 
+    # Snapshot the exact (detrended-or-not) target scale the primary
+    # model is about to be trained on, for run_backbone_robustness_check()
+    # below -- y_train/y_val/y_test get mutated back to raw scale further
+    # down, so this must be captured here, not re-derived later.
+    _robustness_y_train = y_train.copy()
+    _robustness_y_val = y_val.copy()
+    _robustness_y_test = y_test.copy()
+
     # Visualizations
     vif_data = multicol_report.get("vif", [])
     lgbm_imp = feat_sel_report.get("lgbm_importance", [])
     mi_data = feat_sel_report.get("mutual_information", [])
     run_all_visualizations(df, vif_results=vif_data,
                            importance_data=lgbm_imp, mi_data=mi_data)
+
+    # Geographic study-region map + yield trends by state. Both only
+    # need the raw dataset. Geo maps need outbound network access
+    # (fetches US Census county boundaries once, cached under
+    # outputs/geo_cache/) -- degrades gracefully to a logged warning
+    # and None if unavailable, never raises.
+    from visualization import plot_yield_trends_by_state
+    try:
+        plot_yield_trends_by_state(df)
+    except Exception as _e_trend:
+        logger.warning("plot_yield_trends_by_state failed (continuing pipeline): %s", _e_trend)
+
+    from geo_maps import run_all_geo_maps
+    try:
+        run_all_geo_maps(df)
+    except Exception as _e_geo:
+        logger.warning("Geographic maps failed (continuing pipeline): %s", _e_geo)
 
     # Run Feature Drift & Covariate Shift Diagnostics (§4)
     from diagnostics import compute_feature_drift_diagnostics, diagnose_r2_source, run_residual_diagnostics
@@ -266,6 +291,17 @@ def main() -> None:
 
     # Run Negative R2 Diagnostic (§1)
     r2_diag_report = diagnose_r2_source(train_df, test_df, y_test, preds_test)
+
+    # County-level residual choropleth -- direct visualization of the
+    # negative-R2 diagnostic's finding that spatial heterogeneity (not
+    # temporal drift) dominates the backbone's test-set error. If the
+    # residuals are spatially clustered (not scattered noise) here,
+    # that's the visual evidence for the diagnostic's claim.
+    from geo_maps import plot_residual_choropleth
+    try:
+        plot_residual_choropleth(test_df, y_test, preds_test)
+    except Exception as _e_resid_map:
+        logger.warning("plot_residual_choropleth failed (continuing pipeline): %s", _e_resid_map)
 
     # Run Residual Statistical Diagnostic Tests (§11)
     res_diag_report = run_residual_diagnostics(y_test, preds_test, test_df)
@@ -509,6 +545,25 @@ def main() -> None:
     backbone_df = pd.DataFrame(backbone_benchmark_rows)
     save_report_csv(backbone_df, "backbone_benchmark.csv")
     save_report({"backbones": backbone_benchmark_rows}, "backbone_metrics.json")
+
+    # ══════════════════════════════════════════════════════════════════
+    # MULTI-SEED ROBUSTNESS CHECK (see ROBUSTNESS_NOTES.md). Retrains the
+    # backbone + ensemble across cfg.ROBUSTNESS_SEEDS on the identical
+    # split/features/scale used above, and reports mean +/- std so the
+    # headline R2 in the paper isn't a single seed's result. Does NOT
+    # change primary_models / any downstream calibration -- purely
+    # additive reporting.
+    # ══════════════════════════════════════════════════════════════════
+    if getattr(cfg, "ENABLE_BACKBONE_ROBUSTNESS_CHECK", False):
+        try:
+            run_backbone_robustness_check(
+                X_train, _robustness_y_train,
+                X_val, _robustness_y_val,
+                X_test, _robustness_y_test,
+                feature_cols, scaler,
+            )
+        except Exception as _e_rob:
+            logger.warning("Backbone robustness check failed (continuing pipeline): %s", _e_rob)
     from visualization import (
         plot_backbone_comparison, export_shap_consistency_report,
         plot_all_calibration_curves, plot_objective_o5_complete_suite,
@@ -699,6 +754,12 @@ def main() -> None:
     ])
     save_report_csv(split_comparison_df, "temporal_vs_random_split_comparison.csv", subdir="comparisons")
 
+    from visualization import plot_split_comparison
+    try:
+        plot_split_comparison(split_comparison_df)
+    except Exception as _e_split:
+        logger.warning("plot_split_comparison failed (continuing pipeline): %s", _e_split)
+
     # ══════════════════════════════════════════════════════════
     # PHASE 4: LEAVE-ONE-STATE-OUT CV (§5.2) — STRICT PER-FOLD SCALING
     # ══════════════════════════════════════════════════════════
@@ -710,6 +771,27 @@ def main() -> None:
     save_report({"folds": loso_metrics}, "loso_cv_report.json")
     plot_loso_cv_results(loso_metrics)
     aggregate_loso_results(loso_metrics)
+
+    from geo_maps import plot_loso_r2_choropleth, plot_loso_picp_choropleth, plot_ensemble_weight_choropleth
+    for _map_fn, _map_name in [
+        (plot_loso_r2_choropleth, "loso_r2_choropleth"),
+        (plot_loso_picp_choropleth, "loso_picp_choropleth"),
+        (plot_ensemble_weight_choropleth, "ensemble_weight_choropleth"),
+    ]:
+        try:
+            _map_fn(loso_metrics)
+        except Exception as _e_loso_map:
+            logger.warning("%s failed (continuing pipeline): %s", _map_name, _e_loso_map)
+
+    # Optional multi-seed LOSO robustness check (expensive: N full 6-fold
+    # runs). Off by default -- see cfg.ENABLE_LOSO_ROBUSTNESS_CHECK and
+    # ROBUSTNESS_NOTES.md. The primary loso_metrics above (single seed,
+    # cfg.RANDOM_SEED) is unaffected either way.
+    if getattr(cfg, "ENABLE_LOSO_ROBUSTNESS_CHECK", False):
+        try:
+            run_loso_robustness_check(df, feature_cols)
+        except Exception as _e_lrob:
+            logger.warning("LOSO robustness check failed (continuing pipeline): %s", _e_lrob)
 
     # ══════════════════════════════════════════════════════════
     # PHASE 5: ABLATION STUDY (§4.6) — STRICT PER-CONFIG SCALING
@@ -817,6 +899,145 @@ def _export_evaluation_csv_md(eval_report: Dict[str, Any]) -> None:
             md += pt_df.to_string(index=False) + "\n\n"
 
     save_report_markdown(md, "evaluation_summary.md")
+
+
+def run_backbone_robustness_check(
+    X_train: np.ndarray, y_train: np.ndarray,
+    X_val: np.ndarray, y_val: np.ndarray,
+    X_test: np.ndarray, y_test: np.ndarray,
+    feature_cols: List[str], scaler: Any,
+) -> Dict[str, Any]:
+    """Retrain NeuralCQR (and the NeuralCQR+LightGBM ensemble) across
+    cfg.ROBUSTNESS_SEEDS on the SAME temporal split already computed by
+    main(), and report mean +/- std for Test R2/RMSE/PICP, plus the
+    Spearman correlation between each seed's validation R2 and test R2.
+
+    This does not change the primary reported model (still the
+    cfg.RANDOM_SEED run wired into the rest of the pipeline) -- it is a
+    supplementary check to confirm the headline number is not a lucky
+    draw, per the paper's own §5.5 statistical-rigor standard. See
+    ROBUSTNESS_NOTES.md for why this was added and what an earlier
+    exploratory run found.
+
+    X_train/y_train/... must already be on whatever scale main() used
+    when it called this (detrended or not) -- this function only
+    retrains and re-blends, it does not touch detrending itself.
+    """
+    from model_training import train_neural_cqr, predict_intervals, train_lgbm_quantile
+    from evaluation import rmse, r_squared, picp
+    from scipy import stats as sp_stats
+
+    logger = logging.getLogger("paper3")
+    seeds = list(dict.fromkeys([cfg.RANDOM_SEED] + list(cfg.ROBUSTNESS_SEEDS)))  # RANDOM_SEED first, de-duped
+    logger.info("\n\n%s", "=" * 70)
+    logger.info("BACKBONE ROBUSTNESS CHECK: %d seeds %s", len(seeds), seeds)
+    logger.info("%s", "=" * 70)
+
+    per_seed_rows: List[Dict[str, Any]] = []
+
+    for seed in seeds:
+        t0 = time.time()
+        neural_models = train_neural_cqr(
+            X_train, y_train, X_val, y_val, feature_cols,
+            epochs=cfg.BASELINE_MAX_EPOCHS, batch_size=cfg.BATCH_SIZE, lr=cfg.LEARNING_RATE,
+            weight_decay=cfg.WEIGHT_DECAY, early_stopping_mode=cfg.EARLY_STOPPING_MODE,
+            patience=cfg.EARLY_STOPPING_PATIENCE, joint_training=True, scaler=scaler, seed=seed,
+        )
+        p_val, qlo_val, qhi_val = predict_intervals(neural_models, X_val)
+        p_te, qlo_te, qhi_te = predict_intervals(neural_models, X_test)
+
+        try:
+            lgb_models = train_lgbm_quantile(X_train, y_train, X_val, y_val, feature_cols)
+            l_val, _, _ = predict_intervals(lgb_models, X_val)
+            l_te, _, _ = predict_intervals(lgb_models, X_test)
+            best_w, best_val_r2 = 1.0, r_squared(y_val, p_val)
+            for _w in np.arange(0.0, 1.01, 0.1):
+                _r2v = r_squared(y_val, _w * p_val + (1 - _w) * l_val)
+                if _r2v > best_val_r2:
+                    best_val_r2, best_w = _r2v, round(float(_w), 2)
+            ens_te = best_w * p_te + (1 - best_w) * l_te
+            ens_val = best_w * p_val + (1 - best_w) * l_val
+        except Exception as _e:
+            logger.warning("  seed %d: LightGBM ensemble skipped (%s)", seed, _e)
+            ens_te, ens_val, best_w = p_te, p_val, 1.0
+
+        val_r2_neural = r_squared(y_val, p_val)
+        test_r2_neural = r_squared(y_test, p_te)
+        val_r2_ens = r_squared(y_val, ens_val)
+        test_r2_ens = r_squared(y_test, ens_te)
+        test_rmse_ens = rmse(y_test, ens_te)
+        test_picp_ens = picp(y_test, qlo_te, qhi_te)  # intervals not re-blended; point-blend metric only
+
+        logger.info(
+            "  seed %4d (%.0fs) -> NeuralCQR: val R2=%.4f test R2=%.4f | "
+            "Ensemble (w=%.2f): val R2=%.4f test R2=%.4f, RMSE=%.4f",
+            seed, time.time() - t0, val_r2_neural, test_r2_neural,
+            best_w, val_r2_ens, test_r2_ens, test_rmse_ens,
+        )
+
+        per_seed_rows.append({
+            "seed": seed,
+            "neuralcqr_val_r2": round(val_r2_neural, 4),
+            "neuralcqr_test_r2": round(test_r2_neural, 4),
+            "ensemble_weight_neuralcqr": best_w,
+            "ensemble_val_r2": round(val_r2_ens, 4),
+            "ensemble_test_r2": round(test_r2_ens, 4),
+            "ensemble_test_rmse": round(test_rmse_ens, 4),
+            "ensemble_test_picp": round(test_picp_ens, 4),
+        })
+
+    seed_df = pd.DataFrame(per_seed_rows)
+    save_report_csv(seed_df, "backbone_robustness_by_seed.csv")
+
+    ens_r2_vals = seed_df["ensemble_test_r2"].values
+    neural_r2_vals = seed_df["neuralcqr_test_r2"].values
+
+    val_test_corr, val_test_p = float("nan"), float("nan")
+    if len(seed_df) >= 3:
+        val_test_corr, val_test_p = sp_stats.spearmanr(
+            seed_df["neuralcqr_val_r2"], seed_df["neuralcqr_test_r2"]
+        )
+
+    summary = {
+        "seeds_tested": seeds,
+        "primary_reported_seed": cfg.RANDOM_SEED,
+        "neuralcqr_test_r2_mean": round(float(np.mean(neural_r2_vals)), 4),
+        "neuralcqr_test_r2_std": round(float(np.std(neural_r2_vals)), 4),
+        "neuralcqr_test_r2_min": round(float(np.min(neural_r2_vals)), 4),
+        "neuralcqr_test_r2_max": round(float(np.max(neural_r2_vals)), 4),
+        "ensemble_test_r2_mean": round(float(np.mean(ens_r2_vals)), 4),
+        "ensemble_test_r2_std": round(float(np.std(ens_r2_vals)), 4),
+        "ensemble_test_r2_min": round(float(np.min(ens_r2_vals)), 4),
+        "ensemble_test_r2_max": round(float(np.max(ens_r2_vals)), 4),
+        "ensemble_test_rmse_mean": round(float(seed_df["ensemble_test_rmse"].mean()), 4),
+        "ensemble_test_rmse_std": round(float(seed_df["ensemble_test_rmse"].std()), 4),
+        "ensemble_test_picp_mean": round(float(seed_df["ensemble_test_picp"].mean()), 4),
+        "val_vs_test_r2_spearman_corr": round(float(val_test_corr), 4) if val_test_corr == val_test_corr else None,
+        "val_vs_test_r2_spearman_p": round(float(val_test_p), 4) if val_test_p == val_test_p else None,
+        "interpretation": (
+            "A low or negative val_vs_test_r2_spearman_corr means the validation "
+            "window (2016-2018) does not reliably rank models by 2019-2023 test "
+            "performance -- i.e. genuine distribution shift, not just noise. This "
+            "is reported as supporting evidence for the paper's central claim, not "
+            "a flaw to be tuned away. See ROBUSTNESS_NOTES.md."
+        ),
+    }
+    save_report(summary, "backbone_robustness_summary.json")
+
+    logger.info(
+        "\nBACKBONE ROBUSTNESS SUMMARY -> Ensemble Test R2 = %.4f +/- %.4f (n=%d seeds, range [%.4f, %.4f])",
+        summary["ensemble_test_r2_mean"], summary["ensemble_test_r2_std"], len(seeds),
+        summary["ensemble_test_r2_min"], summary["ensemble_test_r2_max"],
+    )
+    if summary["val_vs_test_r2_spearman_corr"] is not None:
+        logger.info(
+            "Validation-vs-test R2 rank correlation across seeds: rho=%.3f (p=%.3f) -- "
+            "low/negative values indicate the val window does not reliably predict "
+            "test-time performance across seeds.",
+            summary["val_vs_test_r2_spearman_corr"], summary["val_vs_test_r2_spearman_p"],
+        )
+
+    return summary
 
 
 def _run_loso_cv(
@@ -990,6 +1211,68 @@ def _run_loso_cv(
             )
 
     return fold_metrics
+
+
+def run_loso_robustness_check(df: pd.DataFrame, feature_cols: List[str]) -> Dict[str, Any]:
+    """Re-run the full 6-fold LOSO-CV across cfg.LOSO_ROBUSTNESS_SEEDS,
+    reusing _run_loso_cv() unchanged for each seed (via a temporary
+    cfg.RANDOM_SEED override, restored afterward), and report per-state
+    mean +/- std R2 plus the overall LOSO mean R2 per seed.
+
+    Expensive: each seed is a full 6-fold run (~15-25 min). Off by
+    default -- set cfg.ENABLE_LOSO_ROBUSTNESS_CHECK = True to run this
+    from main(), or call it directly from a standalone script for more
+    control over runtime. See ROBUSTNESS_NOTES.md.
+    """
+    logger = logging.getLogger("paper3")
+    seeds = list(dict.fromkeys([cfg.RANDOM_SEED] + list(cfg.LOSO_ROBUSTNESS_SEEDS)))
+    logger.info("\n\n%s", "=" * 70)
+    logger.info("LOSO ROBUSTNESS CHECK: %d seeds %s (each seed = full 6-fold run)", len(seeds), seeds)
+    logger.info("%s", "=" * 70)
+
+    original_seed = cfg.RANDOM_SEED
+    all_rows: List[Dict[str, Any]] = []
+    try:
+        for seed in seeds:
+            logger.info("\n--- LOSO robustness: seed %d ---", seed)
+            cfg.RANDOM_SEED = seed  # train_neural_cqr()'s default `seed` arg reads this
+            fold_metrics = _run_loso_cv(df, feature_cols)
+            for m in fold_metrics:
+                if "error" in m:
+                    continue
+                row = dict(m)
+                row["seed"] = seed
+                all_rows.append(row)
+    finally:
+        cfg.RANDOM_SEED = original_seed  # always restore, even if a seed run raises
+
+    if not all_rows:
+        logger.warning("LOSO robustness check produced no valid folds.")
+        return {}
+
+    rob_df = pd.DataFrame(all_rows)
+    save_report_csv(rob_df, "loso_robustness_by_seed_and_state.csv")
+
+    per_state = rob_df.groupby("state")["r_squared"].agg(["mean", "std", "count"]).reset_index()
+    save_report_csv(per_state, "loso_robustness_by_state_summary.csv")
+
+    per_seed_mean = rob_df.groupby("seed")["r_squared"].mean()
+    summary = {
+        "seeds_tested": seeds,
+        "primary_reported_seed": original_seed,
+        "loso_mean_r2_by_seed": {int(s): round(float(v), 4) for s, v in per_seed_mean.items()},
+        "loso_mean_r2_across_all_seeds": round(float(rob_df["r_squared"].mean()), 4),
+        "loso_mean_r2_std_across_seeds": round(float(per_seed_mean.std()), 4),
+        "worst_state_across_seeds": per_state.loc[per_state["mean"].idxmin(), "state"],
+        "worst_state_mean_r2": round(float(per_state["mean"].min()), 4),
+    }
+    save_report(summary, "loso_robustness_summary.json")
+
+    logger.info(
+        "\nLOSO ROBUSTNESS SUMMARY -> mean R2 across %d seeds = %.4f +/- %.4f",
+        len(seeds), summary["loso_mean_r2_across_all_seeds"], summary["loso_mean_r2_std_across_seeds"],
+    )
+    return summary
 
 
 def _run_ablation(
