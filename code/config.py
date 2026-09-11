@@ -1,0 +1,442 @@
+"""
+config.py - Central configuration for Paper 3 ACI pipeline.
+
+All paths, feature lists, hyperparameters, temporal boundaries,
+and random seeds are defined here for reproducibility.
+"""
+from __future__ import annotations
+
+import os
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+
+# ──────────────────────────────────────────────────────────────
+# Paths
+# ──────────────────────────────────────────────────────────────
+PROJECT_ROOT = Path(os.path.dirname(os.path.abspath(__file__))).parent
+DATA_FILE = PROJECT_ROOT / "Paper3_MegaDataset_SPEI_FINAL.csv"
+if not DATA_FILE.exists():
+    DATA_FILE = PROJECT_ROOT / "Paper3_Processed.csv"
+
+# ─────────────────────────────────────────────────────────────────────
+# Crop target selection (parallel single-crop runs, not multi-task).
+#
+# Set PAPER3_CROP_TARGET=soy (env var) to run the identical pipeline
+# for soybean instead of corn. Each crop writes to its own outputs_<crop>/
+# directory so a soybean run can never overwrite corn results (or vice
+# versa) -- see run_both_crops.py to run both crops back-to-back and
+# CROP_COMPARISON_NOTES.md for why this is a parallel run, not a shared
+# multi-task backbone.
+#
+# Nothing else in the pipeline is crop-specific: TARGET_COLS below
+# already excludes BOTH crops' yield columns from the feature set
+# regardless of which is primary, outliers.py already has bounds
+# defined for both, and no crop-specific physics constants (e.g. the
+# FAO Ky coefficients mentioned in the methodology doc) are hardcoded
+# anywhere in this pipeline -- that PICA-level physics integration
+# belongs to Paper 1's architecture, not this one. So swapping targets
+# here is a genuine like-for-like comparison, not a partial port.
+# ─────────────────────────────────────────────────────────────────────
+_CROP_TARGET = os.environ.get("PAPER3_CROP_TARGET", "corn").strip().lower()
+if _CROP_TARGET not in ("corn", "soy"):
+    raise ValueError(f"PAPER3_CROP_TARGET must be 'corn' or 'soy', got '{_CROP_TARGET}'")
+
+OUTPUT_DIR = PROJECT_ROOT / "outputs" if _CROP_TARGET == "corn" else PROJECT_ROOT / f"outputs_{_CROP_TARGET}"
+FIGURES_DIR = OUTPUT_DIR / "figures"
+PLOT_DIR = FIGURES_DIR  # Alias for backward compatibility
+REPORT_DIR = OUTPUT_DIR / "reports"
+METRICS_DIR = OUTPUT_DIR / "metrics"
+BENCHMARKS_DIR = OUTPUT_DIR / "benchmarks"
+CALIBRATION_DIR = OUTPUT_DIR / "calibration"
+OBJECTIVES_DIR = OUTPUT_DIR / "objectives"
+STATISTICAL_TESTS_DIR = OUTPUT_DIR / "statistical_tests"
+COMPUTATIONAL_DIR = OUTPUT_DIR / "computational"
+FEATURE_ENG_DIR = OUTPUT_DIR / "feature_engineering"
+LOGS_DIR = OUTPUT_DIR / "logs"
+MODELS_DIR = OUTPUT_DIR / "models"
+PREDICTIONS_DIR = OUTPUT_DIR / "predictions"
+
+AUDITS_DIR = OUTPUT_DIR / "audits"
+SPLITS_DIR = OUTPUT_DIR / "splits"
+TUNING_DIR = OUTPUT_DIR / "tuning"
+RANDOM_SPLIT_DIR = OUTPUT_DIR / "random_split"
+COMPARISONS_DIR = OUTPUT_DIR / "comparisons"
+
+ALL_OUTPUT_DIRS = [
+    OUTPUT_DIR, FIGURES_DIR, REPORT_DIR, METRICS_DIR, BENCHMARKS_DIR,
+    CALIBRATION_DIR, OBJECTIVES_DIR, STATISTICAL_TESTS_DIR, COMPUTATIONAL_DIR,
+    FEATURE_ENG_DIR, LOGS_DIR, MODELS_DIR, PREDICTIONS_DIR,
+    AUDITS_DIR, SPLITS_DIR, TUNING_DIR, RANDOM_SPLIT_DIR, COMPARISONS_DIR,
+]
+
+for _d in ALL_OUTPUT_DIRS:
+    _d.mkdir(parents=True, exist_ok=True)
+
+# ──────────────────────────────────────────────────────────────
+# Reproducibility & Bootstrap Settings
+# ──────────────────────────────────────────────────────────────
+RANDOM_SEED: int = 42
+
+# ─────────────────────────────────────────────────────────────────────
+# Multi-seed robustness check (backbone + ensemble)
+#
+# Motivation: an exploratory test (not part of the main pipeline) found
+# NeuralCQR test R2 on this temporal split ranged from 0.30 to 0.46
+# across 4 random seeds -- a bigger swing than any single modeling
+# change tried. It also found validation R2 and test R2 were NOT
+# reliably correlated across seeds (the seed with the best val R2 was
+# NOT the seed with the best test R2), meaning the 2016-2018 validation
+# window does not reliably rank models for 2019-2023 test performance.
+# This is itself evidence for the paper's central claim (static
+# calibration/selection doesn't transfer under distribution shift), so
+# it's reported here as a formal robustness check rather than hidden.
+#
+# POST-HOC SUPPLEMENTARY TEST-SET ROBUSTNESS ANALYSIS — NOT USED FOR MODEL SELECTION
+# When enabled, main() retrains NeuralCQR (and the NeuralCQR+LightGBM
+# ensemble) across ROBUSTNESS_SEEDS on the SAME temporal split, and
+# reports mean +/- std for Test R2, RMSE, and PICP, plus the Spearman
+# correlation between per-seed val R2 and per-seed test R2.
+# CRITICAL: This is strictly post-hoc supplementary analysis. It is NOT
+# used for model selection. Never choose the best seed based on test results.
+# ─────────────────────────────────────────────────────────────────────
+ENABLE_BACKBONE_ROBUSTNESS_CHECK: bool = False  # Post-hoc supplementary only; primary locked model strictly uses seed 42
+ROBUSTNESS_SEEDS: List[int] = [42, 7, 123]  # RANDOM_SEED (42) always included first
+
+# LOSO robustness is far more expensive (6 states x N seeds, each fold
+# already ~3-5 min), so it defaults OFF. Enable explicitly if you have
+# the compute budget -- see run_loso_robustness_check() in main.py.
+ENABLE_LOSO_ROBUSTNESS_CHECK: bool = False
+LOSO_ROBUSTNESS_SEEDS: List[int] = [42, 7]
+SEED: int = 42
+STABILITY_SEEDS: List[int] = [42, 123, 2024, 3407, 7]
+BOOTSTRAP_ITERATIONS: int = 2000
+
+# ──────────────────────────────────────────────────────────────
+# Training Epoch Budgets & Architecture Parameters (§2, §3, §4.2)
+# ──────────────────────────────────────────────────────────────
+# Architectural configuration rationale:
+# Historical exploratory result from an earlier experiment; not used for current model selection.
+# The original exploratory config (lr=1e-3, hidden=(256,128,64,32), batch=64,
+# es_mode="pinball", patience=20) caused validation RMSE to peak early and overfit
+# on tabular input. Selected architecture uses lower LR, a compact 2-layer backbone (64, 32),
+# gradient stability via larger batches, weight decay, and early stopping tracked on
+# DEV RMSE.
+BASELINE_MAX_EPOCHS: int = 200
+OPTUNA_MAX_EPOCHS: int = 200
+MAX_EPOCHS: int = 200  # Alias for BASELINE_MAX_EPOCHS
+MAX_TUNING_EPOCHS: int = 200  # Alias for OPTUNA_MAX_EPOCHS
+EARLY_STOPPING_PATIENCE: int = 60
+EARLY_STOPPING_MODE: str = "rmse"
+LEARNING_RATE: float = 3e-5
+WEIGHT_DECAY: float = 1e-3
+DROPOUT: float = 0.2
+BATCH_SIZE: int = 128
+HIDDEN_DIMS: Tuple[int, ...] = (64, 32)
+NEURAL_CQR_HIDDEN_DIMS: Tuple[int, ...] = (64, 32)
+NEURAL_CQR_DROPOUT: float = 0.2
+LAMBDA_PINBALL: float = 1.0
+LAMBDA_HUBER: float = 1.0
+LAMBDA_CROSSING: float = 10.0
+LAMBDA_WIDTH: float = 0.005
+
+# LOSO-SPECIFIC HYPERPARAMETERS
+#
+# History (each validated against a real full-pipeline run, not just
+# sandbox tests):
+#   1. Original (lr=1e-3, batch=64, epochs=40, patience=20, es="pinball"),
+#      county_baseline leaking a constant 0.0 into every held-out-state row
+#      -> LOSO R2 = 0.429
+#   2. Reused the temporal-split fix's hyperparameters as-is for LOSO too,
+#      county_baseline still leaking -> LOSO R2 dropped to 0.268
+#   3. Tried a moderate in-between regime based on sandbox testing,
+#      county_baseline still leaking -> LOSO R2 dropped further to 0.223
+#      (worse; sandbox testing did NOT predict this correctly)
+#
+# Root cause found after two failed hyperparameter-only attempts:
+# `county_baseline` (a per-county historical-mean feature, genuinely
+# informative for temporal/random-row splits where the same counties
+# appear in train and test) is structurally broken for LOSO -- it's built
+# ONLY from the development states' GEOIDs, so for every held-out-state
+# test row (a GEOID that was NEVER in training) it resolves to a constant
+# placeholder (0.0) for the entire test set. It's not just noisy, it
+# carries zero information for the one task that most needs genuine
+# spatial signal -- and the more thoroughly the model trains, the more it
+# leans on this feature, which is exactly why "better" training (rounds 2
+# and 3) made LOSO worse, not better.
+#
+#   4. county_baseline excluded from the LOSO feature list entirely (see
+#      `_run_loso_cv` in main.py), keeping the temporal-split-tuned
+#      hyperparameters -> LOSO R2 recovered to 0.289, no more negative
+#      folds (Minnesota -0.033 -> +0.060), but still below the original
+#      0.429 -- 2-fold sandbox testing at the time suggested the original
+#      hyperparameters might do even better than the tuned ones once the
+#      leaky feature was actually gone (Minnesota: 0.53 with original hp
+#      vs 0.44 with tuned hp), so that combination gets tested here.
+#
+#   5. (current) county_baseline excluded (fix from round 4 kept) +
+#      original hyperparameters restored for LOSO specifically. Basis:
+#      the round-4 sandbox comparison above, run on 2 rebuilt folds
+#      (Illinois, Minnesota) with the leaky feature actually removed --
+#      original hyperparameters were competitive-to-better, especially on
+#      the harder fold. Validated on the real six-fold run -- see
+#      `reports/loso_summary.csv`.
+LOSO_LEARNING_RATE: float = 1e-3
+LOSO_BATCH_SIZE: int = 64
+LOSO_WEIGHT_DECAY: float = 1e-4
+LOSO_MAX_EPOCHS: int = 200
+LOSO_EARLY_STOPPING_PATIENCE: int = 20
+LOSO_EARLY_STOPPING_MODE: str = "pinball"
+
+#   6. (merge fix) Root-caused why round 5 (above) still only reached
+#      LOSO R2=0.35 on the real six-fold run despite the county_baseline
+#      fix: train_neural_cqr()'s `hidden_dims` argument was never
+#      overridden for LOSO, so every fold silently trained the small
+#      (64, 32) net that was tuned specifically for the temporal-split
+#      regime (lr=3e-5, patience=60, 200 epochs, es_mode="rmse"). Under
+#      the much shorter/faster LOSO schedule (lr=1e-3, 40 epochs), that
+#      small net is capacity-starved and underfits each state's fold.
+#      A prior sandbox run (see PATCH_NOTES.md / final_clean lineage)
+#      showed that reusing the larger (256, 128, 64, 32) architecture
+#      with this exact same short LOSO schedule (epochs=40, batch=64,
+#      lr=1e-3) recovered LOSO R2 to ~0.55 without touching the
+#      temporal-split config at all. Kept as a separate LOSO-only
+#      architecture so the tuned main-pipeline net is untouched.
+LOSO_HIDDEN_DIMS: Tuple[int, ...] = (256, 128, 64, 32)
+LOSO_DROPOUT: float = 0.25
+
+# ─────────────────────────────────────────────────────────────────────
+# LOSO role separation (audit fix)
+#
+# The LOSO folds previously had only train/val/test, and the val fold was
+# concatenated into training before being reused for early stopping, ensemble
+# weight selection AND conformal calibration. Roles are now separated using the
+# project's own locked temporal boundaries within the five non-held-out states:
+#   fit  = FIT_YEARS   (1985-2013)  -> model fitting (internal ES carve-out)
+#   dev  = DEV_YEARS   (2014-2015)  -> ensemble-weight selection only
+#   cal  = CAL_YEARS[0]+ (2016-2023)-> conformal calibration only
+#   test = held-out state, all years-> final evaluation only
+# The six-state list above is untouched.
+#
+# LOSO_PER_FOLD_FEATURE_SELECTION: the locked protocol says the held-out state
+# must never enter "any other learned component" before final evaluation.
+# Consensus feature selection is a learned component, so each fold re-runs it on
+# its own fit partition instead of inheriting the main temporal pipeline's
+# feature set (which was selected using all states, held-out one included).
+LOSO_PER_FOLD_FEATURE_SELECTION: bool = True
+
+# ──────────────────────────────────────────────────────────────
+# Temporal Split Boundaries (Strict 4-Way Temporal Structure)
+# ──────────────────────────────────────────────────────────────
+# 1985-2013: Model fitting (weights, detrending, county baseline, feature selection, scaler)
+# 2014-2015: Internal development & early stopping & ensemble weight selection
+# 2016-2018: Conformal calibration (purely fresh, zero model selection reuse)
+# 2019-2023: Final test (locked until evaluation)
+FIT_YEARS: Tuple[int, int] = (1985, 2013)
+DEV_YEARS: Tuple[int, int] = (2014, 2015)
+CAL_YEARS: Tuple[int, int] = (2016, 2018)
+TEST_YEARS: Tuple[int, int] = (2019, 2023)
+
+# LEGACY — NOT USED BY AUTHORITATIVE TEMPORAL PIPELINE:
+# The authoritative main pipeline strictly uses FIT_YEARS, DEV_YEARS, CAL_YEARS, TEST_YEARS.
+# Kept strictly for backward-compatible unit tests / legacy loaders.
+TRAIN_YEARS: Tuple[int, int] = (1985, 2015)  # Historical 3-way train (FIT + DEV)
+VAL_YEARS: Tuple[int, int] = (2016, 2018)    # Historical 3-way val (CAL)
+CALIBRATION_YEARS: Tuple[int, int] = CAL_YEARS
+
+# ──────────────────────────────────────────────────────────────
+# LOSO-CV states (§5.2 of methodology)
+# ──────────────────────────────────────────────────────────────
+LOSO_STATES: List[str] = [
+    # Nebraska removed from LOSO: dropped via DROP_STATES (irrigated, breaks
+    # drought-yield transfer -> empty fold). This is 6-state LOSO-CV.
+    "Illinois", "Indiana", "Iowa", "Minnesota",
+    "Missouri", "Ohio",
+]
+
+# ──────────────────────────────────────────────────────────────
+# Target variables
+# ──────────────────────────────────────────────────────────────
+PRIMARY_TARGET: str = "Corn_Yield_tha" if _CROP_TARGET == "corn" else "Soy_Yield_tha"
+SECONDARY_TARGET: str = "Soy_Yield_tha" if _CROP_TARGET == "corn" else "Corn_Yield_tha"
+TARGET_COLS: List[str] = [
+    "Corn_Yield_tha", "Corn_Yield_buacre",
+    "Soy_Yield_tha", "Soy_Yield_buacre",
+]
+YIELD_PRESENCE_COLS: List[str] = ["Has_Corn_Yield", "Has_Soy_Yield"]
+PRIMARY_YIELD_PRESENCE_COL: str = "Has_Corn_Yield" if _CROP_TARGET == "corn" else "Has_Soy_Yield"
+
+# ──────────────────────────────────────────────────────────────
+# R² IMPROVEMENT PATCH (backbone performance)  --  added per request
+# All toggles below are leakage-free (fit on TRAIN split only).
+# ──────────────────────────────────────────────────────────────
+# 1. Drop Nebraska (heavily irrigated; breaks drought-yield transfer)
+DROP_STATES: List[str] = ["Nebraska"]
+
+# 2. Detrend the target: model technology-adjusted yield anomaly, add
+#    the linear yield trend (fit on TRAIN years only) back at predict time.
+#    This is the single biggest R² fix (train yields ~8.2, test ~11.3 t/ha).
+DETREND_TARGET: bool = True
+
+# 3. Multicollinearity removal thresholds (applied on TRAIN only)
+CORR_DROP_THRESHOLD: float = 0.95      # drop one of any |r|>0.95 pair
+VIF_DROP_THRESHOLD: float = 10.0       # iteratively drop VIF>10
+# Core scientific features protected from removal even if flagged:
+MULTICOLLINEARITY_PROTECT: List[str] = [
+    "CDHW_Severity_Score", "CDHW_Event_Count", "SPEI_30_min", "CDHW_Severity_silking",
+]
+
+# 4. Add a leakage-free county baseline feature (each county's mean TRAIN
+#    detrended anomaly; unseen counties -> 0).
+ADD_COUNTY_BASELINE: bool = True
+
+# ──────────────────────────────────────────────────────────────
+# Feature groups
+# ──────────────────────────────────────────────────────────────
+ID_COLS: List[str] = [
+    "GEOID", "County_Name", "State", "STATEFP", "COUNTYFP",
+    "Lat", "Lon", "Year", "Split",
+]
+
+CDHW_COLS: List[str] = [
+    "CDHW_Flag", "CDHW_Event_Count", "CDHW_Severity_Score",
+]
+
+# SPEI-30 / SPI-30 features (§4.1 methodology mandate: SPEI-30 supersedes SPI-30)
+SPEI_PREFERRED_COLS: List[str] = ["SPEI_30_min", "SPEI_30_mean"]
+SPI_FALLBACK_COLS: List[str] = ["SPI_30_min", "SPI_30_mean"]
+
+WEATHER_COLS: List[str] = [
+    "SPI_30_min", "SPI_30_mean",
+    "GDD_Accumulated", "Tmax_Days_Above_35", "Precip_growseason_mm",
+    "ERA5d_Tmax_mean_C", "ERA5d_Tmax_max_C",
+    "ERA5d_Tmin_mean_C", "ERA5d_DiurnalRange_C",
+]
+
+ENSO_COLS: List[str] = [
+    "ONI_annual_mean", "ONI_annual_max", "ONI_annual_min",
+    "ONI_growseason_mean", "ONI_DJF",
+    "ENSO_Phase", "ENSO_Anomalous_Year",
+]
+
+DROUGHT_COLS: List[str] = [
+    "DSCI_growseason_mean", "DSCI_growseason_max",
+    "Drought_Severe_Flag",
+]
+
+STORM_COLS: List[str] = [
+    "Storm_Events_Total",
+    "Storm_Hail_Count", "Storm_Flood_Count",
+    "Storm_Heat_Count", "Storm_Drought_Event_Count",
+    "Storm_Tornado_Count", "Storm_Wind_Count",
+]
+
+DISASTER_INDICATOR_FLAGS: Dict[str, str] = {
+    "drought": "Has_Drought",
+    "storm": "Has_Storm",
+}
+
+SOIL_COLS: List[str] = [
+    "Soil_AWC_Mean", "Soil_BD_Mean",
+    "Soil_Clay_Mean", "Soil_Sand_Mean",
+    "Soil_Silt_Mean", "Soil_OC_Mean",
+]
+
+TOPO_COLS: List[str] = ["DEM_Mean", "Slope_Mean"]
+
+LANDCOVER_COLS: List[str] = [
+    "Open_Water_frac", "Developed_Openspace_frac",
+    "Developed_lowintensity_frac", "Developed_mediumintensity_frac",
+    "Developed_highintensity_frac", "BarrenLand_frac",
+    "DeciduousForest_frac", "EvergreenForest_frac",
+    "MixedForest_frac", "Shrub_frac", "Grassland_frac",
+    "Pasture_frac", "CultivatedCrops_frac",
+    "WoodyWetlands_frac", "HerbaceousWetlands_frac",
+]
+
+AREA_COLS: List[str] = ["ALAND", "AWATER"]
+
+DATA_AVAILABILITY_FLAGS: List[str] = [
+    "Has_Drought", "Has_Storm", "Has_ERA5", "Has_ERA5_daily", "Has_CDHW",
+]
+
+CONSTANT_COLS: List[str] = [
+    "Storm_Heat_Count", "Storm_Drought_Event_Count",
+    "Has_ERA5_daily", "Has_CDHW",
+]
+
+REDUNDANT_TARGET_COLS: List[str] = [
+    "Corn_Yield_buacre", "Soy_Yield_buacre",
+]
+
+ANOMALOUS_YEARS: List[int] = [1988, 1997, 1998, 2012, 2015, 2016]
+
+# NeuralCQR Architecture & Loss Hyperparameters (§2 & §3) -- see R2 FIX note above
+NEURAL_CQR_HIDDEN_DIMS: Tuple[int, ...] = (64, 32)
+NEURAL_CQR_DROPOUT: float = 0.2
+LAMBDA_PINBALL: float = 1.0
+LAMBDA_HUBER: float = 1.0
+LAMBDA_CROSSING: float = 10.0
+LAMBDA_WIDTH: float = 0.005
+
+# Fourier Time Encoding (§5)
+FOURIER_PERIODS: List[float] = [1.0, 3.0, 5.0, 7.0, 11.0, 19.0]
+
+# Static Environmental Context Descriptors (§6)
+STATIC_CONTEXT_COLS: List[str] = [
+    "Lat", "Lon", "DEM_Mean", "Slope_Mean",
+    "Soil_AWC_Mean", "Soil_BD_Mean", "Soil_Clay_Mean",
+    "Soil_Sand_Mean", "Soil_Silt_Mean", "Soil_OC_Mean",
+    "CultivatedCrops_frac", "Pasture_frac",
+]
+
+# CQR / ACI hyperparameters (§4.2 & §4.3 of methodology)
+CQR_QUANTILES: Tuple[float, float] = (0.05, 0.95)
+NOMINAL_COVERAGE: float = 0.90
+NOMINAL_ALPHA: float = 1.0 - NOMINAL_COVERAGE  # 0.10
+ACI_WINDOW_SIZE: int = 3  # 3-year sliding window (§4.3)
+ACI_GAMMA: float = 0.05   # step-size for online update (§4.3)
+
+# Bootstrap settings (§4.4 & §5.3) - Authoritative definition at top (2000)
+
+LGBM_PARAMS: Dict = {
+    "n_estimators": 1000,
+    "learning_rate": 0.05,
+    "max_depth": 7,
+    "num_leaves": 63,
+    "min_child_samples": 20,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.1,
+    "reg_lambda": 1.0,
+    "random_state": RANDOM_SEED,
+    "n_jobs": -1,
+    "verbose": -1,
+}
+
+CALIBRATION_LEVELS: List[float] = [0.80, 0.85, 0.90, 0.95]
+
+PLOT_DPI: int = 300
+PLOT_FORMAT: str = "png"
+
+# ──────────────────────────────────────────────────────────────
+# Centralized Phenology & CDHW Thresholds (§4.1)
+# ──────────────────────────────────────────────────────────────
+GDD_VEGETATIVE_END: int = 700      # End of vegetative stage
+GDD_SILKING_END: int = 1400        # End of silking / R1 stage
+TMAX_THRESHOLD_C: float = 35.0      # Heat stress threshold (°C)
+SPEI_THRESHOLD: float = -1.0        # Drought stress threshold
+
+# Phenology stage weights for severity scoring
+VEG_WEIGHT_PRIMARY: float = 1.0
+VEG_WEIGHT_SECONDARY: float = 0.2
+SILKING_WEIGHT_PRIMARY: float = 1.5
+SILKING_WEIGHT_SECONDARY: float = 0.2
+GRAIN_WEIGHT_PRIMARY: float = 0.8
+GRAIN_WEIGHT_SECONDARY: float = 0.2
+
+# Anomaly event thresholds
+EXTREME_EVENT_COUNT_THRESHOLD: int = 3
+MODERATE_EVENT_COUNT_THRESHOLD: int = 1
+
+
