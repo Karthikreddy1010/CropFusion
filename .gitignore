@@ -1,0 +1,88 @@
+# ─────────────────────────────────────────────────────────────
+# CropFusion / Paper 3 — repository hygiene
+# ─────────────────────────────────────────────────────────────
+
+# ---- Secrets. Never commit. ---------------------------------
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+credentials*
+secrets*
+*token*
+*_secret*
+.aws/
+.ssh/
+kaggle.json
+service-account*.json
+
+# ---- Large data ---------------------------------------------
+# Paper3_MegaDataset_SPEI_FINAL.csv is 24.4 MB, above GitHub's
+#
+# 50 MB hard limit is not hit, but the file is regenerable input
+# data and bloats every clone. Distribute it separately (Zenodo,
+# Drive) and document the path in the README.
+Paper3_MegaDataset_SPEI_FINAL.csv
+*.csv.gz
+*.zip
+*.7z
+Final_Data/
+data/raw/
+
+# ---- Generated outputs --------------------------------------
+# outputs/ is ~18 MB per run and fully reproducible from code +
+# data. The REPORTS are the scientific record and ARE tracked --
+# see the negations at the bottom of this file.
+outputs/
+outputs\ */
+outputs_PRE_FINAL_AUDIT_*/
+FINAL_PUBLICATION_RESULTS/
+*.pdf
+
+# ---- Model artefacts / training scratch ---------------------
+catboost_info/
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.h5
+*.onnx
+lightgbm_model*.txt
+
+# ---- Python -------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ipynb_checkpoints/
+.mypy_cache/
+.ruff_cache/
+venv/
+.venv/
+env/
+*.egg-info/
+
+# ---- Editor / OS --------------------------------------------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Backups from the audit --------------------------------
+*.bak
+*.bak[0-9]
+*.orig
+*~
+
+# ─────────────────────────────────────────────────────────────
+# Negations: the scientific record IS tracked.
+# JSON/CSV reports are small, human-readable, and are the
+# evidence behind every claim in the paper. Figures are not --
+# they are regenerable and large.
+# ─────────────────────────────────────────────────────────────
+!outputs/reports/
+!outputs/reports/**/*.json
+!outputs/reports/**/*.csv
+!outputs/reports/**/*.md
