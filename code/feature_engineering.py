@@ -78,7 +78,7 @@ def engineer_features(
         report["year_type_classification"] = yeartype_info
         report["features_added"].append("Year_Type")
 
-    if "ENSO_Phase" in df.columns:
+    if "ENSO_Phase" in df.columns and getattr(cfg, "ENSO_AS_FEATURES", True):
         enso_cols = [c for c in df.columns if c.startswith("ENSO_") and c not in ["ENSO_Phase", "ENSO_Anomalous_Year"]]
         if not enso_cols:
             dummies = pd.get_dummies(df["ENSO_Phase"], prefix="ENSO", drop_first=False)
@@ -442,7 +442,8 @@ def _compute_climate_interaction_features(df: pd.DataFrame) -> Tuple[pd.DataFram
     """Compute non-linear climate interaction features."""
     added = []
     spei_col = "SPEI_30_min" if "SPEI_30_min" in df.columns else ("SPI_30_min" if "SPI_30_min" in df.columns else None)
-    tmax_col = "ERA5d_Tmax_max_C" if "ERA5d_Tmax_max_C" in df.columns else "Tmax_Days_Above_35"
+    tmax_pref = getattr(cfg, "INTERACTION_TMAX_COL", "ERA5d_Tmax_max_C")
+    tmax_col = tmax_pref if tmax_pref in df.columns else "Tmax_Days_Above_35"
 
     if spei_col and tmax_col in df.columns:
         df["Inter_SPEI_Tmax"] = np.round(df[spei_col] * df[tmax_col], 4)

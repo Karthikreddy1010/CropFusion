@@ -32,7 +32,25 @@ def load_dataset(path: Optional[Path] = None) -> pd.DataFrame:
     """
     path = path or cfg.DATA_FILE
     logger.info("Loading dataset from %s", path)
-    df = pd.read_csv(path)
+    source = getattr(cfg, "DATA_SOURCE", "legacy")
+    logger.info("Data source: %s (selected by %s)", source, getattr(cfg, "DATA_SOURCE_SELECTED_BY", "config"))
+    required = [Path(path)] + ([Path(cfg.MASTER_MODEL_READY_FILE)] if source == "master" else [])
+    absent = [str(p) for p in required if not p.exists()]
+    if absent:
+        raise FileNotFoundError(
+            f"DATA_SOURCE='{source}' (selected by {getattr(cfg, 'DATA_SOURCE_SELECTED_BY', 'config')}) but these "
+            f"input files do not exist: {absent}. PROJECT_ROOT is '{cfg.PROJECT_ROOT}' (the parent of code/). "
+            f"Upload {getattr(cfg, 'MASTER_FULL_NAME', 'the FULL parquet')} and "
+            f"{getattr(cfg, 'MASTER_MODEL_READY_NAME', 'the MODEL-READY parquet')} either into "
+            "PROJECT_ROOT/master_dataset/full/ and PROJECT_ROOT/master_dataset/model_ready/, or directly into "
+            "PROJECT_ROOT next to code/ (paths can also be given with PAPER3_MASTER_FULL / PAPER3_MASTER_MODEL_READY). "
+            "For the old ERA5 run, set PAPER3_DATA_SOURCE=legacy and place Paper3_MegaDataset_SPEI_FINAL.csv in PROJECT_ROOT."
+        )
+    if source == "master":
+        from master_data_loader import load_master_dataset
+        df = load_master_dataset(path)
+    else:
+        df = pd.read_csv(path)
     logger.info("Loaded %d rows × %d columns", *df.shape)
 
     # ── Schema validation ────────────────────────────────────

@@ -59,6 +59,7 @@ def run_crop(crop: str) -> bool:
     assert crop in ("corn", "soy")
     env = os.environ.copy()
     env["PAPER3_CROP_TARGET"] = crop
+    env.setdefault("PAPER3_DATA_SOURCE", "legacy")  # corn vs soy is a like-for-like legacy comparison
 
     logger.info("=" * 70)
     logger.info("Starting full pipeline run for crop=%s (%s/)", crop, _output_dir_for_crop(crop).name)

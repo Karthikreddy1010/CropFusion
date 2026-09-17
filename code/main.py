@@ -1568,25 +1568,82 @@ def _run_loso_cv(
                            state, len(X_fit), len(X_dev), len(X_cal), len(X_te))
             continue
 
+        # 3b. TARGET DETRENDING — fitted STRICTLY on this fold's FIT partition
+        #     (1985-2013, five development states), exactly as the temporal
+        #     pipeline does it in main() step 8.
+        #
+        #     Why this exists: without it the LOSO folds modelled the raw
+        #     trending target while the temporal pipeline modelled the
+        #     detrended one. Corn yield rises ~0.11 t/ha/yr here, so a fold
+        #     fitted on 1985-2010 (mean ~8.0 t/ha) was scored on DEV 2014-2015
+        #     (mean ~10.7 t/ha) with no feature able to express the level: there
+        #     is no Year feature, the Fourier encodings are periodic and alias a
+        #     later year onto an earlier one, and Yield_lag1/2 are unavailable
+        #     for dev-2015, cal and the whole held-out state (build_split_aware_lags
+        #     sources them from FIT only), so the train-median fill turns them
+        #     into constants. The result was a systematic -1.35..-1.68 t/ha
+        #     offset that accounted for 50-65% of DEV MSE and drove every fold's
+        #     LightGBM DEV R2 negative, which in turn collapsed the ensemble
+        #     weight to NeuralCQR=1.0 in all six folds.
+        #
+        #     Leakage: the trend is fitted only on the fold's own FIT rows, so
+        #     the held-out state contributes nothing to it, and Year is known at
+        #     prediction time, so adding the trend back is leakage-free. The
+        #     stage is registered in the provenance ledger below.
+        #
+        #     Caveat worth keeping in mind when interpreting the folds: the
+        #     five development states' trend is applied to the held-out state.
+        #     Per-state 1985-2013 trends range from 0.069 (Missouri) to 0.157
+        #     (Minnesota) t/ha/yr against a five-state trend of 0.101-0.116, so
+        #     a residual state-specific trend error of up to ~0.05 t/ha/yr
+        #     remains. This is a modelling assumption, not a correction.
+        _DETREND_LOSO = bool(getattr(cfg, "DETREND_TARGET", False))
+        if _DETREND_LOSO:
+            _cf_fold = np.polyfit(fit_fold["Year"].values, y_fit, 1)
+            _trend = {
+                "fit": np.polyval(_cf_fold, fit_fold["Year"].values),
+                "dev": np.polyval(_cf_fold, dev_fold["Year"].values),
+                "cal": np.polyval(_cf_fold, cal_fold["Year"].values),
+                "test": np.polyval(_cf_fold, test_fold["Year"].values),
+            }
+            logger.info("  %s -> DETREND (fold FIT only): %.4f t/ha/yr; modelling the anomaly.",
+                        state, float(_cf_fold[0]))
+        else:
+            _cf_fold = np.array([0.0, 0.0])
+            _trend = {"fit": np.zeros(len(y_fit)), "dev": np.zeros(len(y_dev)),
+                      "cal": np.zeros(len(y_cal)), "test": np.zeros(len(y_te))}
+        y_fit_model = y_fit - _trend["fit"]
+
+        def _to_raw(triple, part, _t=_trend):
+            """Add the fold's FIT-only trend back so every score below is on the raw yield scale."""
+            return tuple(np.asarray(a, dtype=float) + _t[part] for a in triple)
+
         # 4. Internal early-stopping split carved STRICTLY from the FIT
         #    partition (chronological tail). It never contains dev, cal or
         #    held-out-state observations.
         fit_ids = obs_ids(fit_fold)
         n_es_val = max(1, len(X_fit) // 10)
-        X_tr_fit, y_tr_fit = X_fit[:-n_es_val], y_fit[:-n_es_val]
-        X_es_val, y_es_val = X_fit[-n_es_val:], y_fit[-n_es_val:]
+        X_tr_fit, y_tr_fit = X_fit[:-n_es_val], y_fit_model[:-n_es_val]
+        X_es_val, y_es_val = X_fit[-n_es_val:], y_fit_model[-n_es_val:]
         train_ids, es_ids = fit_ids[:-n_es_val], fit_ids[-n_es_val:]
 
         # 5. Row-identity provenance ledger -- asserted BEFORE any model is fitted.
         ledger = PartitionLedger(experiment=f"LOSO/{state}")
         ledger.register("train", train_ids)
         ledger.register("es_internal", es_ids)
+        # fit_full = train + es_internal, i.e. the whole FIT partition. It is the
+        # set the target trend is fitted on, so it is registered by name rather
+        # than folded into "train"; its disjointness from dev/cal/test follows
+        # from the train/* and es_internal/* pairs already asserted below.
+        ledger.register("fit_full", fit_ids)
         ledger.register("dev", dev_fold)
         ledger.register("cal", cal_fold)
         ledger.register("test", test_fold)
         ledger.bind_stage("feature_selection", "train" if per_fold_selection else "external_fit")
         ledger.bind_stage("scaler_fitting", "train")
         ledger.bind_stage("preprocessor_fitting", "train")
+        if _DETREND_LOSO:
+            ledger.bind_stage("target_detrending", "fit_full")
         ledger.bind_stage("model_fitting", "train")
         ledger.bind_stage("early_stopping", "es_internal")
         ledger.bind_stage("ensemble_weight_selection", "dev")
@@ -1606,17 +1663,22 @@ def _run_loso_cv(
                 patience=cfg.LOSO_EARLY_STOPPING_PATIENCE, joint_training=True, scaler=fold_scaler,
                 hidden_dims=cfg.LOSO_HIDDEN_DIMS, dropout_rate=cfg.LOSO_DROPOUT,
             )
-            preds_dev_n, qlo_dev_n, qhi_dev_n = predict_intervals(models, X_dev)
-            preds_cal_n, qlo_cal_n, qhi_cal_n = predict_intervals(models, X_cal)
-            preds_te_n, qlo_te_n, qhi_te_n = predict_intervals(models, X_te)
+            # Predictions are produced on the modelling scale (the detrended
+            # anomaly) and converted straight back to raw yield, so every
+            # downstream step -- DEV weight search, CAL conformal calibration
+            # and the held-out-state evaluation -- works on raw t/ha exactly as
+            # before this change.
+            preds_dev_n, qlo_dev_n, qhi_dev_n = _to_raw(predict_intervals(models, X_dev), "dev")
+            preds_cal_n, qlo_cal_n, qhi_cal_n = _to_raw(predict_intervals(models, X_cal), "cal")
+            preds_te_n, qlo_te_n, qhi_te_n = _to_raw(predict_intervals(models, X_te), "test")
             orig_neural_preds = preds_te_n.copy()
 
             lgb_ok = False
             try:
                 lgb_models = train_lgbm_quantile(X_tr_fit, y_tr_fit, X_es_val, y_es_val, loso_feature_cols)
-                preds_dev_l, qlo_dev_l, qhi_dev_l = predict_intervals(lgb_models, X_dev)
-                preds_cal_l, qlo_cal_l, qhi_cal_l = predict_intervals(lgb_models, X_cal)
-                preds_te_l, qlo_te_l, qhi_te_l = predict_intervals(lgb_models, X_te)
+                preds_dev_l, qlo_dev_l, qhi_dev_l = _to_raw(predict_intervals(lgb_models, X_dev), "dev")
+                preds_cal_l, qlo_cal_l, qhi_cal_l = _to_raw(predict_intervals(lgb_models, X_cal), "cal")
+                preds_te_l, qlo_te_l, qhi_te_l = _to_raw(predict_intervals(lgb_models, X_te), "test")
                 lgb_ok = True
             except Exception as _e_lgb:
                 logger.warning("  %s -> LightGBM ensemble skipped: %s", state, _e_lgb)
@@ -1725,6 +1787,8 @@ def _run_loso_cv(
             metrics = {
                 "state": state,
                 "n_features": len(loso_feature_cols),
+                "target_detrending": "Linear_FIT_Only" if _DETREND_LOSO else "None",
+                "fold_trend_t_ha_per_year": round(float(_cf_fold[0]), 4),
                 "n_fit_total": len(X_fit),
                 "n_train": len(X_tr_fit),
                 "n_es_val": len(X_es_val),

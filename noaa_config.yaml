@@ -1,0 +1,108 @@
+api:
+  base_url: "https://www.ncei.noaa.gov/cdo-web/api/v2/"
+  direct_access_url: "https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/"
+  dataset_id: "GHCND"
+  dataset_name: "Global Historical Climatology Network Daily (Daily Summaries)"
+  token_env_var: "NOAA_CDO_TOKEN"
+  rate_limit_req_per_sec: 4.0
+  max_retries: 5
+  retry_backoff_factor: 1.5
+  timeout_seconds: 30
+
+period:
+  start_year: 1985
+  end_year: 2023
+  start_date: "1985-01-01"
+  end_date: "2023-12-31"
+
+temporal_splits:
+  fit_years: [1985, 2013]
+  dev_years: [2014, 2015]
+  cal_years: [2016, 2018]
+  test_years: [2019, 2023]
+
+geography:
+  states:
+    Illinois: "17"
+    Indiana: "18"
+    Iowa: "19"
+    Minnesota: "27"
+    Missouri: "29"
+    Ohio: "39"
+  total_counties: 583
+  fips_format: "%05d"
+
+variables:
+  primary:
+    - id: "TMAX"
+      name: "Maximum Temperature"
+      raw_unit: "tenths of degrees C"
+      target_unit: "deg_C"
+      conversion_factor: 0.1
+    - id: "TMIN"
+      name: "Minimum Temperature"
+      raw_unit: "tenths of degrees C"
+      target_unit: "deg_C"
+      conversion_factor: 0.1
+    - id: "PRCP"
+      name: "Precipitation"
+      raw_unit: "tenths of mm"
+      target_unit: "mm"
+      conversion_factor: 0.1
+  secondary:
+    - id: "TAVG"
+      name: "Average Temperature"
+      conversion_factor: 0.1
+    - id: "AWND"
+      name: "Average Wind Speed"
+      conversion_factor: 0.1
+    - id: "EVAP"
+      name: "Evaporation"
+      conversion_factor: 0.1
+    - id: "SNOW"
+      name: "Snowfall"
+      conversion_factor: 1.0
+    - id: "SNWD"
+      name: "Snow Depth"
+      conversion_factor: 1.0
+
+quality_control:
+  temp_min_c: -50.0
+  temp_max_c: 55.0
+  prcp_min_mm: 0.0
+  prcp_max_mm: 400.0
+  max_consecutive_identical_temp_days: 7
+
+station_selection:
+  min_coverage_threshold: 0.80
+  min_start_year: 1985
+  max_end_year: 2023
+  max_search_radius_km: 50.0
+
+spatial_aggregation:
+  method: "inverse_distance_weighting"
+  idw_power: 2.0
+  max_neighbor_stations: 3
+  max_distance_km: 50.0
+  precip_max_distance_km: 35.0
+
+agronomy:
+  crop: "corn"
+  gdd_base_c: 10.0
+  gdd_cap_c: 30.0
+  growing_season_start_doy: 121  # May 1
+  growing_season_end_doy: 273    # September 30
+  phenology_gdd_vegetative_end: 700
+  phenology_gdd_silking_end: 1400
+  heat_thresholds_c: [30.0, 32.0, 35.0]
+
+paths:
+  cache_dir: "outputs/noaa_cache"
+  output_dir: "outputs/noaa_weather"
+  station_inventory: "outputs/noaa_weather/noaa_station_inventory.csv"
+  daily_station_weather: "outputs/noaa_weather/noaa_daily_station_weather.csv"
+  daily_county_weather: "outputs/noaa_weather/noaa_daily_county_weather.csv"
+  annual_county_weather: "outputs/noaa_weather/noaa_county_weather_annual.csv"
+  data_quality_report: "outputs/noaa_weather/noaa_data_quality_report.csv"
+  validation_report: "NOAA_VALIDATION_REPORT.md"
+  readme: "NOAA_WEATHER_README.md"

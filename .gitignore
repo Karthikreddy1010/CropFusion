@@ -12,10 +12,16 @@ credentials*
 secrets*
 *token*
 *_secret*
+.cdsapirc
+*cdsapirc*
 .aws/
 .ssh/
 kaggle.json
 service-account*.json
+
+# ---- Large data ---------------------------------------------
+data/era5_daily/
+
 
 # ---- Large data ---------------------------------------------
 # Paper3_MegaDataset_SPEI_FINAL.csv is 24.4 MB, above GitHub's
@@ -86,3 +92,31 @@ desktop.ini
 !outputs/reports/**/*.json
 !outputs/reports/**/*.csv
 !outputs/reports/**/*.md
+
+# ─────────────────────────────────────────────────────────────
+# Added 2026-09-17 — raw data, working docs, master outputs
+# ─────────────────────────────────────────────────────────────
+
+# ---- Raw / intermediate data (1.5 GB + 2.6 GB on disk) ------
+data/
+master_dataset/
+*.nc
+*.nc4
+*.parquet
+*.grib
+*.grb2
+
+# ---- Local working docs (design specs, scratch notes) -------
+docs/
+
+# ---- Master-pipeline outputs --------------------------------
+# Same policy as outputs/ above: the run REPORTS are the
+# scientific record and stay tracked; everything else (63 MB of
+# processed CSVs, predictions, caches, figures) is regenerable.
+outputs_master/*
+!outputs_master/reports/
+outputs_diagnostics/*
+!outputs_diagnostics/reports/
+
+# ---- Scratch logs -------------------------------------------
+*.log
