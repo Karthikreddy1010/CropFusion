@@ -20,6 +20,55 @@ if not DATA_FILE.exists():
     DATA_FILE = PROJECT_ROOT / "Paper3_Processed.csv"
 
 # ─────────────────────────────────────────────────────────────────────
+# Data source selection.
+#
+# master: the PRISM-NLDAS-NOAA-USDA master dataset (the project's final data),
+#   loaded through master_data_loader.py with the feature groups redefined
+#   role-for-role at the end of this file. Outputs go to outputs_master/.
+# legacy: the original ERA5-era MegaDataset CSV, exactly as before.
+#
+# PAPER3_DATA_SOURCE=master|legacy forces a source. When it is unset (or "auto"),
+# the master dataset is used whenever its files are found, and the legacy CSV
+# only when the master files are absent but the CSV is present.
+#
+# Master files are looked up in master_dataset/full|model_ready/, then directly
+# in PROJECT_ROOT or master_dataset/ (flat Colab uploads), unless given
+# explicitly via PAPER3_MASTER_FULL / PAPER3_MASTER_MODEL_READY.
+# Only the data interface changes: model architecture, losses, thresholds,
+# splits and the LOSO protocol are untouched.
+# ─────────────────────────────────────────────────────────────────────
+MASTER_DATASET_DIR = PROJECT_ROOT / "master_dataset"
+MASTER_FULL_NAME = "Paper3_MasterDataset_PRISM_NLDAS_NOAA_USDA_FULL_1985_2023.parquet"
+MASTER_MODEL_READY_NAME = "Paper3_MasterDataset_PRISM_NLDAS_CDHWH_CORN_MODEL_1985_2023.parquet"
+
+
+def _locate_master_file(name: str, subdir: str, env_var: str) -> Path:
+    if os.environ.get(env_var):
+        return Path(os.environ[env_var])
+    candidates = [MASTER_DATASET_DIR / subdir / name, PROJECT_ROOT / name, MASTER_DATASET_DIR / name]
+    return next((c for c in candidates if c.exists()), candidates[0])
+
+
+MASTER_FULL_FILE = _locate_master_file(MASTER_FULL_NAME, "full", "PAPER3_MASTER_FULL")
+MASTER_MODEL_READY_FILE = _locate_master_file(MASTER_MODEL_READY_NAME, "model_ready", "PAPER3_MASTER_MODEL_READY")
+_master_available = MASTER_FULL_FILE.exists() and MASTER_MODEL_READY_FILE.exists()
+_legacy_available = (PROJECT_ROOT / "Paper3_MegaDataset_SPEI_FINAL.csv").exists()
+
+_requested_source = (os.environ.get("PAPER3_DATA_SOURCE") or "auto").strip().lower()
+if _requested_source not in ("auto", "legacy", "master"):
+    raise ValueError(f"PAPER3_DATA_SOURCE must be 'master', 'legacy' or 'auto', got '{_requested_source}'")
+if _requested_source == "auto":
+    _soy_run = (os.environ.get("PAPER3_CROP_TARGET") or "corn").strip().lower() == "soy"   # master has no soybean target
+    DATA_SOURCE = "legacy" if (_soy_run or (not _master_available and _legacy_available)) else "master"
+    DATA_SOURCE_SELECTED_BY = "auto (master files %s, legacy CSV %s)" % (
+        "found" if _master_available else "not found", "found" if _legacy_available else "not found")
+else:
+    DATA_SOURCE = _requested_source
+    DATA_SOURCE_SELECTED_BY = "PAPER3_DATA_SOURCE"
+if DATA_SOURCE == "master":
+    DATA_FILE = MASTER_FULL_FILE
+
+# ─────────────────────────────────────────────────────────────────────
 # Crop target selection (parallel single-crop runs, not multi-task).
 #
 # Set PAPER3_CROP_TARGET=soy (env var) to run the identical pipeline
@@ -43,6 +92,10 @@ if _CROP_TARGET not in ("corn", "soy"):
     raise ValueError(f"PAPER3_CROP_TARGET must be 'corn' or 'soy', got '{_CROP_TARGET}'")
 
 OUTPUT_DIR = PROJECT_ROOT / "outputs" if _CROP_TARGET == "corn" else PROJECT_ROOT / f"outputs_{_CROP_TARGET}"
+if DATA_SOURCE == "master":
+    if _CROP_TARGET != "corn":
+        raise ValueError("PAPER3_DATA_SOURCE=master supports corn only (the master dataset has no soybean target).")
+    OUTPUT_DIR = PROJECT_ROOT / "outputs_master"
 FIGURES_DIR = OUTPUT_DIR / "figures"
 PLOT_DIR = FIGURES_DIR  # Alias for backward compatibility
 REPORT_DIR = OUTPUT_DIR / "reports"
@@ -440,3 +493,67 @@ EXTREME_EVENT_COUNT_THRESHOLD: int = 3
 MODERATE_EVENT_COUNT_THRESHOLD: int = 1
 
 
+
+# ──────────────────────────────────────────────────────────────
+# Data-interface switches (legacy defaults reproduce the original behaviour)
+# ──────────────────────────────────────────────────────────────
+ENSO_AS_FEATURES: bool = True                    # one-hot ENSO_Phase into features (legacy behaviour)
+INTERACTION_TMAX_COL: str = "ERA5d_Tmax_max_C"   # Tmax column used by Inter_SPEI_Tmax
+MASTER_ROLE_ALIASES: Dict[str, str] = {}         # master column -> methodology role name (master only)
+
+# ──────────────────────────────────────────────────────────────
+# MASTER DATA PROFILE (PAPER3_DATA_SOURCE=master)
+#
+# Feature groups are mapped role-for-role onto the PRISM-NLDAS-NOAA-USDA master
+# dataset. Source-neutral methodology roles keep their historical names through
+# MASTER_ROLE_ALIASES (a load-time rename, never a duplicate column); everything
+# else keeps its master name. No ERA5-named column is created: the one ERA5-named
+# role (Inter_SPEI_Tmax) reads INTERACTION_TMAX_COL instead. ENSO labels are
+# evaluation-only metadata (ID_COLS) because annual ONI includes post-harvest
+# months. See master_dataset/metadata/ for the variable catalog and provenance.
+# ──────────────────────────────────────────────────────────────
+if DATA_SOURCE == "master":
+    MASTER_ROLE_ALIASES = {
+        "cdhw_cumulative_severity_gs": "CDHW_Severity_Score",       # sum |SPEI30| x (Tmax-35), growing season
+        "cdhw_total_days_gs": "CDHW_Event_Count",                   # CDHW day count (old column was a day count too)
+        "cdhw_cumulative_severity_veg": "CDHW_Severity_vegetative",
+        "cdhw_cumulative_severity_silk": "CDHW_Severity_silking",
+        "cdhw_cumulative_severity_grain": "CDHW_Severity_grainfill",
+        "spei30_prism_nldas_min_gs": "SPEI_30_min",
+        "spei30_prism_nldas_mean_gs": "SPEI_30_mean",
+        "prism_gdd_gs": "GDD_Accumulated",                          # season-total GDD (drives Phenological_Window)
+        "prism_tmax_days_gt35_gs": "Tmax_Days_Above_35",
+        "prism_ppt_total_gs": "Precip_growseason_mm",
+    }
+    ENSO_AS_FEATURES = False
+    INTERACTION_TMAX_COL = "prism_tmax_max_gs"
+
+    ID_COLS = ID_COLS + ["ENSO_Phase", "ENSO_Anomalous_Year"]      # evaluation stratification only
+    TARGET_COLS = ["Corn_Yield_tha", "Corn_Yield_buacre"]
+    YIELD_PRESENCE_COLS = ["Has_Corn_Yield"]
+    REDUNDANT_TARGET_COLS = ["Corn_Yield_buacre"]
+
+    # CDHW_COLS and SPEI_PREFERRED_COLS keep their names (role aliases); MULTICOLLINEARITY_PROTECT likewise.
+    SPI_FALLBACK_COLS = ["spi1_prism_min_gs", "spi1_prism_mean_gs"]
+    WEATHER_COLS = [                                                # role-for-role with the legacy list
+        "spi1_prism_min_gs", "spi1_prism_mean_gs",                  # SPI_30_min / SPI_30_mean
+        "GDD_Accumulated", "Tmax_Days_Above_35", "Precip_growseason_mm",
+        "prism_tmax_mean_gs", "prism_tmax_max_gs",                  # ERA5d_Tmax_mean_C / ERA5d_Tmax_max_C
+        "prism_tmin_mean_gs",                                       # ERA5d_Tmin_mean_C (diurnal range = tmax - tmin, not kept)
+    ]
+    ENSO_COLS = []                                                  # not features in the master profile
+    DROUGHT_COLS = []                                               # USDM excluded (2000+ only, impact-informed)
+    STORM_COLS = ["noaa_hail_count_gs", "noaa_thunderstorm_wind_count_gs", "noaa_tornado_count_gs", "noaa_max_hail_size_gs"]
+    DISASTER_INDICATOR_FLAGS = {}
+    SOIL_COLS = ["soil_awc", "soil_bulk_density", "soil_clay", "soil_silt", "soil_organic_carbon"]
+    TOPO_COLS = ["elevation_mean_m", "elevation_std_m", "slope_mean"]
+    LANDCOVER_COLS = ["nlcd_cropland_frac", "nlcd_pasture_hay_frac", "nlcd_forest_frac", "nlcd_grass_shrub_frac",
+                      "nlcd_developed_frac", "nlcd_water_wetland_frac"]
+    AREA_COLS = []
+    DATA_AVAILABILITY_FLAGS = []
+    CONSTANT_COLS = []
+    STATIC_CONTEXT_COLS = [
+        "Lat", "Lon", "elevation_mean_m", "slope_mean",
+        "soil_awc", "soil_bulk_density", "soil_clay", "soil_silt", "soil_organic_carbon",
+        "nlcd_cropland_frac", "nlcd_pasture_hay_frac",
+    ]

@@ -1,0 +1,556 @@
+{
+  "design": {
+    "question": "Does genuine joint end-to-end Neural CQR provide an advantage over the intended post-hoc approach?",
+    "controlled_for": [
+      "identical FIT/DEV/CAL/TEST partitions",
+      "identical feature set and fitted scaler",
+      "identical architecture and capacity",
+      "identical optimizer, lr, weight decay, batch size",
+      "identical epoch budget and early-stopping patience on identical DEV data",
+      "identical random seed",
+      "identical conformal calibration applied to both arms"
+    ],
+    "only_difference": "training paradigm (joint end-to-end vs post-hoc two-stage)",
+    "shared_configuration": {
+      "epochs": 200,
+      "batch_size": 128,
+      "lr": 3e-05,
+      "weight_decay": 0.001,
+      "dropout_rate": 0.2,
+      "hidden_dims": [
+        64,
+        32
+      ],
+      "patience": 60,
+      "seed": 42,
+      "n_features": 94,
+      "n_fit": 15751,
+      "n_dev": 978,
+      "n_cal": 1433,
+      "n_test": 2345
+    }
+  },
+  "arms": {
+    "post_hoc": {
+      "training_paradigm": "post_hoc_two_stage",
+      "paradigm_fingerprint": {
+        "n_optimization_stages": 2,
+        "backbone_receives_quantile_gradient": false,
+        "stage1_loss_terms": [
+          "huber"
+        ],
+        "stage2_loss_terms": [
+          "pinball_05",
+          "pinball_50",
+          "pinball_95",
+          "crossing"
+        ],
+        "frozen_backbone_for_quantiles": true,
+        "stage1_epochs": 148,
+        "stage1_best_epoch": 88,
+        "stage2_epochs": 200,
+        "stage2_best_epoch": 200,
+        "lambda_pinball": 1.0,
+        "lambda_huber": 1.0,
+        "lambda_crossing": 10.0,
+        "lambda_width": 0.0
+      },
+      "epochs_trained": 348,
+      "best_epoch": 88,
+      "point_prediction": {
+        "rmse": 0.9629,
+        "mae": 0.7397,
+        "r_squared": 0.6773
+      },
+      "uncertainty_static_conformal": {
+        "picp": 0.965,
+        "mpiw": 4.7056,
+        "ace": 0.065,
+        "winkler_score": 5.1018
+      },
+      "uncertainty_aci": {
+        "picp": 0.9501,
+        "mpiw": 4.3963,
+        "ace": 0.0501,
+        "winkler_score": 4.9417
+      },
+      "raw_interval_mpiw_before_calibration": 3.2205,
+      "prediction_checksum": 26255.543805
+    },
+    "joint": {
+      "training_paradigm": "joint_end_to_end",
+      "paradigm_fingerprint": {
+        "n_optimization_stages": 1,
+        "backbone_receives_quantile_gradient": true,
+        "stage1_loss_terms": [
+          "huber",
+          "pinball_05",
+          "pinball_50",
+          "pinball_95",
+          "crossing",
+          "width"
+        ],
+        "stage2_loss_terms": null,
+        "frozen_backbone_for_quantiles": false,
+        "lambda_pinball": 1.0,
+        "lambda_huber": 1.0,
+        "lambda_crossing": 10.0,
+        "lambda_width": 0.005
+      },
+      "epochs_trained": 200,
+      "best_epoch": 187,
+      "point_prediction": {
+        "rmse": 0.963,
+        "mae": 0.7445,
+        "r_squared": 0.6773
+      },
+      "uncertainty_static_conformal": {
+        "picp": 0.9539,
+        "mpiw": 3.7938,
+        "ace": 0.0539,
+        "winkler_score": 4.3066
+      },
+      "uncertainty_aci": {
+        "picp": 0.9369,
+        "mpiw": 3.5756,
+        "ace": 0.0369,
+        "winkler_score": 4.2239
+      },
+      "raw_interval_mpiw_before_calibration": 2.0616,
+      "prediction_checksum": 26220.958357
+    }
+  },
+  "distinctness_check": {
+    "identical_point_predictions": false,
+    "max_abs_point_difference": 1.215924,
+    "joint_paradigm": "joint_end_to_end",
+    "post_hoc_paradigm": "post_hoc_two_stage",
+    "joint_stages": 1,
+    "post_hoc_stages": 2,
+    "joint_backbone_sees_quantile_gradient": true,
+    "post_hoc_backbone_sees_quantile_gradient": false,
+    "status": "PASS"
+  },
+  "comparison": {
+    "rmse": {
+      "joint": 0.963,
+      "post_hoc": 0.9629,
+      "absolute_difference_joint_minus_posthoc": 0.0001,
+      "relative_difference_pct": 0.01,
+      "joint_better": false,
+      "lower_is_better": true
+    },
+    "mae": {
+      "joint": 0.7445,
+      "post_hoc": 0.7397,
+      "absolute_difference_joint_minus_posthoc": 0.0048,
+      "relative_difference_pct": 0.65,
+      "joint_better": false,
+      "lower_is_better": true
+    },
+    "r_squared": {
+      "joint": 0.6773,
+      "post_hoc": 0.6773,
+      "absolute_difference_joint_minus_posthoc": 0.0,
+      "relative_difference_pct": 0.0,
+      "joint_better": false,
+      "lower_is_better": false
+    },
+    "picp_static": {
+      "joint": 0.9539,
+      "post_hoc": 0.965,
+      "absolute_difference_joint_minus_posthoc": -0.0111,
+      "relative_difference_pct": -1.15,
+      "joint_better": false,
+      "lower_is_better": false
+    },
+    "mpiw_static": {
+      "joint": 3.7938,
+      "post_hoc": 4.7056,
+      "absolute_difference_joint_minus_posthoc": -0.9118,
+      "relative_difference_pct": -19.38,
+      "joint_better": true,
+      "lower_is_better": true
+    },
+    "ace_static": {
+      "joint": 0.0539,
+      "post_hoc": 0.065,
+      "absolute_difference_joint_minus_posthoc": -0.0111,
+      "relative_difference_pct": -17.08,
+      "joint_better": true,
+      "lower_is_better": true
+    },
+    "winkler_static": {
+      "joint": 4.3066,
+      "post_hoc": 5.1018,
+      "absolute_difference_joint_minus_posthoc": -0.7952,
+      "relative_difference_pct": -15.59,
+      "joint_better": true,
+      "lower_is_better": true
+    },
+    "picp_aci": {
+      "joint": 0.9369,
+      "post_hoc": 0.9501,
+      "absolute_difference_joint_minus_posthoc": -0.0132,
+      "relative_difference_pct": -1.39,
+      "joint_better": false,
+      "lower_is_better": false
+    },
+    "mpiw_aci": {
+      "joint": 3.5756,
+      "post_hoc": 4.3963,
+      "absolute_difference_joint_minus_posthoc": -0.8207,
+      "relative_difference_pct": -18.67,
+      "joint_better": true,
+      "lower_is_better": true
+    },
+    "ace_aci": {
+      "joint": 0.0369,
+      "post_hoc": 0.0501,
+      "absolute_difference_joint_minus_posthoc": -0.0132,
+      "relative_difference_pct": -26.35,
+      "joint_better": true,
+      "lower_is_better": true
+    },
+    "winkler_aci": {
+      "joint": 4.2239,
+      "post_hoc": 4.9417,
+      "absolute_difference_joint_minus_posthoc": -0.7178,
+      "relative_difference_pct": -14.53,
+      "joint_better": true,
+      "lower_is_better": true
+    }
+  },
+  "significance_dependence_aware": {
+    "squared_error": {
+      "year_block_cluster_bootstrap": {
+        "estimate": 0.000118,
+        "n_clusters": 5,
+        "n_observations": 2345,
+        "ci_95": [
+          -0.05389,
+          0.053183
+        ],
+        "bootstrap_se": 0.027397,
+        "p_value": 0.959,
+        "n_boot": 2000,
+        "method": "cluster_bootstrap_percentile",
+        "inference_supported": true,
+        "comparison": "joint - post_hoc",
+        "cluster_unit": "year",
+        "mean_a": 0.927294,
+        "mean_b": 0.927175,
+        "favours": "post_hoc",
+        "significant_at_0.05": false
+      },
+      "year_level_paired_test": {
+        "comparison": "joint - post_hoc",
+        "unit_of_independence": "year",
+        "n_years": 5,
+        "per_year_mean_a": {
+          "2019": 0.65421,
+          "2020": 0.829556,
+          "2021": 1.27186,
+          "2022": 0.923929,
+          "2023": 0.950146
+        },
+        "per_year_mean_b": {
+          "2019": 0.691413,
+          "2020": 0.859368,
+          "2021": 1.355908,
+          "2022": 0.842816,
+          "2023": 0.886541
+        },
+        "mean_difference": -0.001269,
+        "method": "paired comparison on year-level means",
+        "paired_t_statistic": -0.0402,
+        "paired_t_p_value": 0.969886,
+        "wilcoxon_statistic": 7.0,
+        "wilcoxon_p_value": 1.0,
+        "cohens_dz": -0.018,
+        "ci_95_mean_difference": [
+          -0.088966,
+          0.086428
+        ],
+        "inference_supported": true,
+        "significant_at_0.05": false,
+        "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+      }
+    },
+    "absolute_error": {
+      "year_block_cluster_bootstrap": {
+        "estimate": 0.004776,
+        "n_clusters": 5,
+        "n_observations": 2345,
+        "ci_95": [
+          -0.017567,
+          0.024813
+        ],
+        "bootstrap_se": 0.011389,
+        "p_value": 0.66,
+        "n_boot": 2000,
+        "method": "cluster_bootstrap_percentile",
+        "inference_supported": true,
+        "comparison": "joint - post_hoc",
+        "cluster_unit": "year",
+        "mean_a": 0.744523,
+        "mean_b": 0.739747,
+        "favours": "post_hoc",
+        "significant_at_0.05": false
+      },
+      "year_level_paired_test": {
+        "comparison": "joint - post_hoc",
+        "unit_of_independence": "year",
+        "n_years": 5,
+        "per_year_mean_a": {
+          "2019": 0.634609,
+          "2020": 0.686431,
+          "2021": 0.928321,
+          "2022": 0.745449,
+          "2023": 0.72895
+        },
+        "per_year_mean_b": {
+          "2019": 0.639019,
+          "2020": 0.683148,
+          "2021": 0.968569,
+          "2022": 0.708865,
+          "2023": 0.704252
+        },
+        "mean_difference": 0.003982,
+        "method": "paired comparison on year-level means",
+        "paired_t_statistic": 0.3002,
+        "paired_t_p_value": 0.77901,
+        "wilcoxon_statistic": 7.0,
+        "wilcoxon_p_value": 1.0,
+        "cohens_dz": 0.1342,
+        "ci_95_mean_difference": [
+          -0.032848,
+          0.040811
+        ],
+        "inference_supported": true,
+        "significant_at_0.05": false,
+        "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+      }
+    },
+    "static_conformal_winkler": {
+      "year_block_cluster_bootstrap": {
+        "estimate": -0.79516,
+        "n_clusters": 5,
+        "n_observations": 2345,
+        "ci_95": [
+          -0.925282,
+          -0.6586
+        ],
+        "bootstrap_se": 0.067509,
+        "p_value": 0.0005,
+        "n_boot": 2000,
+        "method": "cluster_bootstrap_percentile",
+        "inference_supported": true,
+        "comparison": "joint - post_hoc",
+        "cluster_unit": "year",
+        "mean_a": 4.306592,
+        "mean_b": 5.101752,
+        "favours": "joint",
+        "significant_at_0.05": true
+      },
+      "year_level_paired_test": {
+        "comparison": "joint - post_hoc",
+        "unit_of_independence": "year",
+        "n_years": 5,
+        "per_year_mean_a": {
+          "2019": 4.020105,
+          "2020": 4.254615,
+          "2021": 4.434054,
+          "2022": 4.051922,
+          "2023": 4.767191
+        },
+        "per_year_mean_b": {
+          "2019": 4.949849,
+          "2020": 4.837238,
+          "2021": 5.101564,
+          "2022": 4.949323,
+          "2023": 5.703329
+        },
+        "mean_difference": -0.802683,
+        "method": "paired comparison on year-level means",
+        "paired_t_statistic": -10.8419,
+        "paired_t_p_value": 0.000411,
+        "wilcoxon_statistic": 0.0,
+        "wilcoxon_p_value": 0.0625,
+        "cohens_dz": -4.8486,
+        "ci_95_mean_difference": [
+          -1.008238,
+          -0.597128
+        ],
+        "inference_supported": true,
+        "significant_at_0.05": true,
+        "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+      }
+    },
+    "static_conformal_width": {
+      "year_block_cluster_bootstrap": {
+        "estimate": -0.911852,
+        "n_clusters": 5,
+        "n_observations": 2345,
+        "ci_95": [
+          -1.008953,
+          -0.825603
+        ],
+        "bootstrap_se": 0.047073,
+        "p_value": 0.0005,
+        "n_boot": 2000,
+        "method": "cluster_bootstrap_percentile",
+        "inference_supported": true,
+        "comparison": "joint - post_hoc",
+        "cluster_unit": "year",
+        "mean_a": 3.793771,
+        "mean_b": 4.705623,
+        "favours": "joint",
+        "significant_at_0.05": true
+      },
+      "year_level_paired_test": {
+        "comparison": "joint - post_hoc",
+        "unit_of_independence": "year",
+        "n_years": 5,
+        "per_year_mean_a": {
+          "2019": 3.768775,
+          "2020": 3.604523,
+          "2021": 3.716061,
+          "2022": 3.851204,
+          "2023": 4.048531
+        },
+        "per_year_mean_b": {
+          "2019": 4.79264,
+          "2020": 4.371933,
+          "2021": 4.757574,
+          "2022": 4.70041,
+          "2023": 4.967588
+        },
+        "mean_difference": -0.92021,
+        "method": "paired comparison on year-level means",
+        "paired_t_statistic": -17.7342,
+        "paired_t_p_value": 5.9e-05,
+        "wilcoxon_statistic": 0.0,
+        "wilcoxon_p_value": 0.0625,
+        "cohens_dz": -7.931,
+        "ci_95_mean_difference": [
+          -1.064277,
+          -0.776143
+        ],
+        "inference_supported": true,
+        "significant_at_0.05": true,
+        "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+      }
+    },
+    "aci_winkler": {
+      "year_block_cluster_bootstrap": {
+        "estimate": -0.7178,
+        "n_clusters": 5,
+        "n_observations": 2345,
+        "ci_95": [
+          -0.862223,
+          -0.582722
+        ],
+        "bootstrap_se": 0.073174,
+        "p_value": 0.0005,
+        "n_boot": 2000,
+        "method": "cluster_bootstrap_percentile",
+        "inference_supported": true,
+        "comparison": "joint - post_hoc",
+        "cluster_unit": "year",
+        "mean_a": 4.223921,
+        "mean_b": 4.941721,
+        "favours": "joint",
+        "significant_at_0.05": true
+      },
+      "year_level_paired_test": {
+        "comparison": "joint - post_hoc",
+        "unit_of_independence": "year",
+        "n_years": 5,
+        "per_year_mean_a": {
+          "2019": 4.020105,
+          "2020": 4.16074,
+          "2021": 4.461692,
+          "2022": 3.888442,
+          "2023": 4.602491
+        },
+        "per_year_mean_b": {
+          "2019": 4.949849,
+          "2020": 4.723411,
+          "2021": 4.946923,
+          "2022": 4.713968,
+          "2023": 5.422875
+        },
+        "mean_difference": -0.724711,
+        "method": "paired comparison on year-level means",
+        "paired_t_statistic": -8.5124,
+        "paired_t_p_value": 0.001045,
+        "wilcoxon_statistic": 0.0,
+        "wilcoxon_p_value": 0.0625,
+        "cohens_dz": -3.8069,
+        "ci_95_mean_difference": [
+          -0.961087,
+          -0.488335
+        ],
+        "inference_supported": true,
+        "significant_at_0.05": true,
+        "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+      }
+    },
+    "aci_width": {
+      "year_block_cluster_bootstrap": {
+        "estimate": -0.820766,
+        "n_clusters": 5,
+        "n_observations": 2345,
+        "ci_95": [
+          -0.946123,
+          -0.713005
+        ],
+        "bootstrap_se": 0.059225,
+        "p_value": 0.0005,
+        "n_boot": 2000,
+        "method": "cluster_bootstrap_percentile",
+        "inference_supported": true,
+        "comparison": "joint - post_hoc",
+        "cluster_unit": "year",
+        "mean_a": 3.575551,
+        "mean_b": 4.396317,
+        "favours": "joint",
+        "significant_at_0.05": true
+      },
+      "year_level_paired_test": {
+        "comparison": "joint - post_hoc",
+        "unit_of_independence": "year",
+        "n_years": 5,
+        "per_year_mean_a": {
+          "2019": 3.768775,
+          "2020": 3.445216,
+          "2021": 3.423095,
+          "2022": 3.588133,
+          "2023": 3.689282
+        },
+        "per_year_mean_b": {
+          "2019": 4.79264,
+          "2020": 4.188495,
+          "2021": 4.396529,
+          "2022": 4.276888,
+          "2023": 4.410629
+        },
+        "mean_difference": -0.830136,
+        "method": "paired comparison on year-level means",
+        "paired_t_statistic": -11.8935,
+        "paired_t_p_value": 0.000286,
+        "wilcoxon_statistic": 0.0,
+        "wilcoxon_p_value": 0.0625,
+        "cohens_dz": -5.319,
+        "ci_95_mean_difference": [
+          -1.023924,
+          -0.636348
+        ],
+        "inference_supported": true,
+        "significant_at_0.05": true,
+        "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+      }
+    }
+  }
+}

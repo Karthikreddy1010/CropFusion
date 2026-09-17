@@ -1,0 +1,12 @@
+{
+  "temporal_diagnostics": {
+    "yearly_residual_lag1_acf": -0.1575,
+    "durbin_watson_statistic": 1.7606,
+    "exchangeable_temporally": true
+  },
+  "spatial_diagnostics": {
+    "morans_i_residuals": 0.0685,
+    "sample_size": 500,
+    "spatial_dependence_low": true
+  }
+}

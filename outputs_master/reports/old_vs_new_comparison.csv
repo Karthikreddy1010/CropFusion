@@ -1,0 +1,4 @@
+Model_Pipeline,Old_Metric_R2,Old_RMSE,Old_MAE,New_Metric_R2,New_RMSE,New_MAE,Methodology_Status
+NeuralCQR Alone,0.5024,1.1958,0.9424,0.684,0.9529,0.7328,"Clean 4-way split, zero leakage"
+LightGBM Alone,0.4885,1.2124,0.9685,0.7313,0.8788,0.6732,"Clean 4-way split, zero leakage"
+Ensemble (NeuralCQR + LightGBM),0.537,1.1534,0.9157,0.7031,0.9237,0.7091,"Strict DEV weight optimization, raw quantile calibration"

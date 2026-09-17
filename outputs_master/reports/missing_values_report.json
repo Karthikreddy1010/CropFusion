@@ -1,0 +1,202 @@
+{
+  "before": {
+    "Corn_Yield_tha": {
+      "missing_count": 2230,
+      "missing_pct": 9.81
+    },
+    "Corn_Yield_buacre": {
+      "missing_count": 2230,
+      "missing_pct": 9.81
+    },
+    "spi6_prism_mean_gs": {
+      "missing_count": 583,
+      "missing_pct": 2.56
+    },
+    "spi6_prism_min_gs": {
+      "missing_count": 583,
+      "missing_pct": 2.56
+    },
+    "spi12_prism_mean_gs": {
+      "missing_count": 583,
+      "missing_pct": 2.56
+    },
+    "spi12_prism_min_gs": {
+      "missing_count": 583,
+      "missing_pct": 2.56
+    },
+    "prism_tmax_mean_grain": {
+      "missing_count": 1440,
+      "missing_pct": 6.33
+    },
+    "nldas_vpd_mean_grain": {
+      "missing_count": 1440,
+      "missing_pct": 6.33
+    },
+    "spi1_prism_min_grain": {
+      "missing_count": 1440,
+      "missing_pct": 6.33
+    },
+    "spei30_prism_nldas_mean_grain": {
+      "missing_count": 1440,
+      "missing_pct": 6.33
+    },
+    "spei30_prism_nldas_min_grain": {
+      "missing_count": 1440,
+      "missing_pct": 6.33
+    },
+    "noaa_max_hail_size_gs": {
+      "missing_count": 1,
+      "missing_pct": 0.0
+    },
+    "soil_awc": {
+      "missing_count": 195,
+      "missing_pct": 0.86
+    },
+    "soil_bulk_density": {
+      "missing_count": 195,
+      "missing_pct": 0.86
+    },
+    "soil_clay": {
+      "missing_count": 195,
+      "missing_pct": 0.86
+    },
+    "soil_silt": {
+      "missing_count": 195,
+      "missing_pct": 0.86
+    },
+    "soil_organic_carbon": {
+      "missing_count": 195,
+      "missing_pct": 0.86
+    }
+  },
+  "after": {
+    "Corn_Yield_tha": {
+      "missing_count": 2230,
+      "missing_pct": 9.81
+    },
+    "Corn_Yield_buacre": {
+      "missing_count": 2230,
+      "missing_pct": 9.81
+    },
+    "spi6_prism_mean_gs": {
+      "missing_count": 583,
+      "missing_pct": 2.56
+    },
+    "spi6_prism_min_gs": {
+      "missing_count": 583,
+      "missing_pct": 2.56
+    },
+    "spi12_prism_mean_gs": {
+      "missing_count": 583,
+      "missing_pct": 2.56
+    },
+    "spi12_prism_min_gs": {
+      "missing_count": 583,
+      "missing_pct": 2.56
+    },
+    "prism_tmax_mean_grain": {
+      "missing_count": 1440,
+      "missing_pct": 6.33
+    },
+    "nldas_vpd_mean_grain": {
+      "missing_count": 1440,
+      "missing_pct": 6.33
+    },
+    "spi1_prism_min_grain": {
+      "missing_count": 1440,
+      "missing_pct": 6.33
+    },
+    "spei30_prism_nldas_mean_grain": {
+      "missing_count": 1440,
+      "missing_pct": 6.33
+    },
+    "spei30_prism_nldas_min_grain": {
+      "missing_count": 1440,
+      "missing_pct": 6.33
+    },
+    "soil_awc": {
+      "missing_count": 195,
+      "missing_pct": 0.86
+    },
+    "soil_bulk_density": {
+      "missing_count": 195,
+      "missing_pct": 0.86
+    },
+    "soil_clay": {
+      "missing_count": 195,
+      "missing_pct": 0.86
+    },
+    "soil_silt": {
+      "missing_count": 195,
+      "missing_pct": 0.86
+    },
+    "soil_organic_carbon": {
+      "missing_count": 195,
+      "missing_pct": 0.86
+    }
+  },
+  "decisions": [
+    {
+      "column": "noaa_hail_count_gs",
+      "strategy": "zero_fill_with_indicator",
+      "indicator_flag": "Has_Storm",
+      "before_missing": 0,
+      "after_missing": 0,
+      "reason": "Structural pre-2000 data gap; scientifically essential"
+    },
+    {
+      "column": "noaa_thunderstorm_wind_count_gs",
+      "strategy": "zero_fill_with_indicator",
+      "indicator_flag": "Has_Storm",
+      "before_missing": 0,
+      "after_missing": 0,
+      "reason": "Structural pre-2000 data gap; scientifically essential"
+    },
+    {
+      "column": "noaa_tornado_count_gs",
+      "strategy": "zero_fill_with_indicator",
+      "indicator_flag": "Has_Storm",
+      "before_missing": 0,
+      "after_missing": 0,
+      "reason": "Structural pre-2000 data gap; scientifically essential"
+    },
+    {
+      "column": "noaa_max_hail_size_gs",
+      "strategy": "zero_fill_with_indicator",
+      "indicator_flag": "Has_Storm",
+      "before_missing": 1,
+      "after_missing": 0,
+      "reason": "Structural pre-2000 data gap; scientifically essential"
+    },
+    {
+      "column": "Corn_Yield_tha",
+      "strategy": "no_imputation",
+      "missing_count": 2230,
+      "reason": "Target variable \u2014 never imputed"
+    },
+    {
+      "column": "Corn_Yield_buacre",
+      "strategy": "no_imputation",
+      "missing_count": 2230,
+      "reason": "Target variable \u2014 never imputed"
+    }
+  ],
+  "remaining_missing_summary": {
+    "Corn_Yield_tha": 2230,
+    "Corn_Yield_buacre": 2230,
+    "spi6_prism_mean_gs": 583,
+    "spi6_prism_min_gs": 583,
+    "spi12_prism_mean_gs": 583,
+    "spi12_prism_min_gs": 583,
+    "prism_tmax_mean_grain": 1440,
+    "nldas_vpd_mean_grain": 1440,
+    "spi1_prism_min_grain": 1440,
+    "spei30_prism_nldas_mean_grain": 1440,
+    "spei30_prism_nldas_min_grain": 1440,
+    "soil_awc": 195,
+    "soil_bulk_density": 195,
+    "soil_clay": 195,
+    "soil_silt": 195,
+    "soil_organic_carbon": 195
+  }
+}

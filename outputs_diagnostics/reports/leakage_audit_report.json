@@ -1,0 +1,37 @@
+{
+  "temporal_boundaries": {
+    "fit": [
+      1985,
+      2013
+    ],
+    "dev": [
+      2014,
+      2015
+    ],
+    "cal": [
+      2016,
+      2018
+    ],
+    "test": [
+      2019,
+      2023
+    ],
+    "compliant": true
+  },
+  "sample_counts": {
+    "fit": 15751,
+    "dev": 978,
+    "cal": 1433,
+    "test": 2345
+  },
+  "leakage_checks": {
+    "target_in_features": false,
+    "duplicate_county_year_pairs": 0,
+    "fit_dev_overlap": 0,
+    "fit_test_overlap": 0,
+    "cal_overlap": 0,
+    "scaler_fitted_only_on_fit": true,
+    "feature_selection_fitted_only_on_fit": true
+  },
+  "audit_passed": true
+}

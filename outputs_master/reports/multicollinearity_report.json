@@ -1,0 +1,1014 @@
+{
+  "pearson": {
+    "shape": [
+      105,
+      105
+    ],
+    "high_correlation_pairs": [
+      {
+        "feature_1": "CDHW_Severity_vegetative",
+        "feature_2": "CDHW_Veg_Severity",
+        "correlation": 1.0
+      },
+      {
+        "feature_1": "CDHW_Severity_silking",
+        "feature_2": "CDHW_Silking_Severity",
+        "correlation": 1.0
+      },
+      {
+        "feature_1": "CDHW_Severity_grainfill",
+        "feature_2": "CDHW_GrainFill_Severity",
+        "correlation": 1.0
+      },
+      {
+        "feature_1": "CDHW_Severity_silking",
+        "feature_2": "Inter_CDHW_GDD",
+        "correlation": 0.9974
+      },
+      {
+        "feature_1": "CDHW_Silking_Severity",
+        "feature_2": "Inter_CDHW_GDD",
+        "correlation": 0.9974
+      },
+      {
+        "feature_1": "SPEI_30_min",
+        "feature_2": "Inter_SPEI_Tmax",
+        "correlation": 0.9822
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "GDD_Accumulated",
+        "correlation": 0.9737
+      },
+      {
+        "feature_1": "nldas_et0_total_gs",
+        "feature_2": "nldas_vpd_mean_gs",
+        "correlation": 0.9673
+      },
+      {
+        "feature_1": "prism_tmin_mean_gs",
+        "feature_2": "GDD_Accumulated",
+        "correlation": 0.9627
+      },
+      {
+        "feature_1": "SPEI_30_mean",
+        "feature_2": "spei90_prism_nldas_mean_gs",
+        "correlation": 0.9534
+      },
+      {
+        "feature_1": "Tmax_Days_Above_35",
+        "feature_2": "Inter_Heat_Precip",
+        "correlation": 0.9487
+      },
+      {
+        "feature_1": "cdhw_max_severity_gs",
+        "feature_2": "CDHW_Severity_Score",
+        "correlation": 0.9469
+      },
+      {
+        "feature_1": "CDHW_Severity_Score",
+        "feature_2": "CDHW_Severity_silking",
+        "correlation": 0.9458
+      },
+      {
+        "feature_1": "CDHW_Severity_Score",
+        "feature_2": "CDHW_Silking_Severity",
+        "correlation": 0.9458
+      },
+      {
+        "feature_1": "spi1_prism_mean_gs",
+        "feature_2": "spi3_prism_mean_gs",
+        "correlation": 0.9457
+      },
+      {
+        "feature_1": "GDD_Accumulated",
+        "feature_2": "nldas_et0_total_grain",
+        "correlation": 0.9455
+      },
+      {
+        "feature_1": "GDD_Accumulated",
+        "feature_2": "prism_tmax_mean_grain",
+        "correlation": 0.9438
+      },
+      {
+        "feature_1": "spi3_prism_mean_gs",
+        "feature_2": "spi6_prism_mean_gs",
+        "correlation": 0.9436
+      },
+      {
+        "feature_1": "GDD_Accumulated",
+        "feature_2": "pheno_veg_days",
+        "correlation": -0.9426
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "nldas_et0_total_grain",
+        "correlation": 0.9425
+      },
+      {
+        "feature_1": "CDHW_Severity_Score",
+        "feature_2": "Inter_CDHW_GDD",
+        "correlation": 0.9421
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "prism_tmax_mean_grain",
+        "correlation": 0.9373
+      },
+      {
+        "feature_1": "Tmax_Days_Above_35",
+        "feature_2": "prism_heat_exceedance_total_gs",
+        "correlation": 0.9372
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "pheno_veg_days",
+        "correlation": -0.9368
+      },
+      {
+        "feature_1": "nldas_vpd_mean_gs",
+        "feature_2": "nldas_vpd_mean_silk",
+        "correlation": 0.9346
+      },
+      {
+        "feature_1": "CDHW_Event_Count",
+        "feature_2": "CDHW_Severity_Score",
+        "correlation": 0.9329
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "prism_tmax_mean_veg",
+        "correlation": 0.9318
+      },
+      {
+        "feature_1": "CDHW_Event_Count",
+        "feature_2": "cdhw_total_days_silk",
+        "correlation": 0.9289
+      },
+      {
+        "feature_1": "spi12_prism_mean_gs",
+        "feature_2": "spi12_prism_min_gs",
+        "correlation": 0.9268
+      },
+      {
+        "feature_1": "spi3_prism_mean_gs",
+        "feature_2": "spei90_prism_nldas_mean_gs",
+        "correlation": 0.9229
+      },
+      {
+        "feature_1": "cdhw_count_veg",
+        "feature_2": "cdhw_total_days_veg",
+        "correlation": 0.9207
+      },
+      {
+        "feature_1": "cdhw_count_gs",
+        "feature_2": "CDHW_Event_Count",
+        "correlation": 0.9196
+      },
+      {
+        "feature_1": "pheno_veg_days",
+        "feature_2": "prism_tmax_mean_veg",
+        "correlation": -0.9193
+      },
+      {
+        "feature_1": "Tmax_Days_Above_35",
+        "feature_2": "prism_tmax_days_gt35_silk",
+        "correlation": 0.9175
+      },
+      {
+        "feature_1": "cdhw_total_days_silk",
+        "feature_2": "CDHW_Severity_silking",
+        "correlation": 0.917
+      },
+      {
+        "feature_1": "cdhw_total_days_silk",
+        "feature_2": "CDHW_Silking_Severity",
+        "correlation": 0.917
+      },
+      {
+        "feature_1": "cdhw_count_gs",
+        "feature_2": "cdhw_count_silk",
+        "correlation": 0.9153
+      },
+      {
+        "feature_1": "spi1_prism_mean_gs",
+        "feature_2": "SPEI_30_mean",
+        "correlation": 0.9134
+      },
+      {
+        "feature_1": "pheno_silk_days",
+        "feature_2": "prism_tmax_mean_silk",
+        "correlation": -0.9117
+      },
+      {
+        "feature_1": "prism_heat_exceedance_total_gs",
+        "feature_2": "CDHW_Event_Count",
+        "correlation": 0.9116
+      },
+      {
+        "feature_1": "prism_heat_exceedance_total_gs",
+        "feature_2": "CDHW_Severity_Score",
+        "correlation": 0.9095
+      },
+      {
+        "feature_1": "CDHW_Event_Count",
+        "feature_2": "cdhw_max_duration_gs",
+        "correlation": 0.9078
+      },
+      {
+        "feature_1": "cdhw_total_days_grain",
+        "feature_2": "CDHW_Severity_grainfill",
+        "correlation": 0.9052
+      },
+      {
+        "feature_1": "cdhw_total_days_grain",
+        "feature_2": "CDHW_GrainFill_Severity",
+        "correlation": 0.9052
+      },
+      {
+        "feature_1": "cdhw_total_days_silk",
+        "feature_2": "Inter_CDHW_GDD",
+        "correlation": 0.9044
+      },
+      {
+        "feature_1": "pheno_veg_days",
+        "feature_2": "nldas_et0_total_grain",
+        "correlation": -0.9023
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "prism_tmin_mean_gs",
+        "correlation": 0.9008
+      }
+    ]
+  },
+  "spearman": {
+    "shape": [
+      105,
+      105
+    ],
+    "high_correlation_pairs": [
+      {
+        "feature_1": "CDHW_Severity_vegetative",
+        "feature_2": "CDHW_Veg_Severity",
+        "correlation": 1.0
+      },
+      {
+        "feature_1": "CDHW_Severity_silking",
+        "feature_2": "CDHW_Silking_Severity",
+        "correlation": 1.0
+      },
+      {
+        "feature_1": "CDHW_Severity_silking",
+        "feature_2": "Inter_CDHW_GDD",
+        "correlation": 1.0
+      },
+      {
+        "feature_1": "CDHW_Severity_grainfill",
+        "feature_2": "CDHW_GrainFill_Severity",
+        "correlation": 1.0
+      },
+      {
+        "feature_1": "CDHW_Silking_Severity",
+        "feature_2": "Inter_CDHW_GDD",
+        "correlation": 1.0
+      },
+      {
+        "feature_1": "cdhw_total_days_veg",
+        "feature_2": "CDHW_Severity_vegetative",
+        "correlation": 0.9996
+      },
+      {
+        "feature_1": "cdhw_total_days_veg",
+        "feature_2": "CDHW_Veg_Severity",
+        "correlation": 0.9996
+      },
+      {
+        "feature_1": "cdhw_max_severity_gs",
+        "feature_2": "CDHW_Severity_Score",
+        "correlation": 0.9995
+      },
+      {
+        "feature_1": "cdhw_count_veg",
+        "feature_2": "cdhw_total_days_veg",
+        "correlation": 0.9995
+      },
+      {
+        "feature_1": "cdhw_total_days_grain",
+        "feature_2": "CDHW_Severity_grainfill",
+        "correlation": 0.9995
+      },
+      {
+        "feature_1": "cdhw_total_days_grain",
+        "feature_2": "CDHW_GrainFill_Severity",
+        "correlation": 0.9995
+      },
+      {
+        "feature_1": "cdhw_count_veg",
+        "feature_2": "CDHW_Severity_vegetative",
+        "correlation": 0.9993
+      },
+      {
+        "feature_1": "cdhw_count_veg",
+        "feature_2": "CDHW_Veg_Severity",
+        "correlation": 0.9993
+      },
+      {
+        "feature_1": "cdhw_total_days_silk",
+        "feature_2": "CDHW_Severity_silking",
+        "correlation": 0.9988
+      },
+      {
+        "feature_1": "cdhw_total_days_silk",
+        "feature_2": "CDHW_Silking_Severity",
+        "correlation": 0.9988
+      },
+      {
+        "feature_1": "cdhw_total_days_silk",
+        "feature_2": "Inter_CDHW_GDD",
+        "correlation": 0.9988
+      },
+      {
+        "feature_1": "cdhw_count_grain",
+        "feature_2": "cdhw_total_days_grain",
+        "correlation": 0.9988
+      },
+      {
+        "feature_1": "cdhw_count_grain",
+        "feature_2": "CDHW_Severity_grainfill",
+        "correlation": 0.9984
+      },
+      {
+        "feature_1": "cdhw_count_grain",
+        "feature_2": "CDHW_GrainFill_Severity",
+        "correlation": 0.9984
+      },
+      {
+        "feature_1": "cdhw_count_silk",
+        "feature_2": "cdhw_total_days_silk",
+        "correlation": 0.9981
+      },
+      {
+        "feature_1": "CDHW_Event_Count",
+        "feature_2": "CDHW_Severity_Score",
+        "correlation": 0.9977
+      },
+      {
+        "feature_1": "CDHW_Event_Count",
+        "feature_2": "cdhw_max_duration_gs",
+        "correlation": 0.9975
+      },
+      {
+        "feature_1": "cdhw_count_silk",
+        "feature_2": "CDHW_Severity_silking",
+        "correlation": 0.997
+      },
+      {
+        "feature_1": "cdhw_count_silk",
+        "feature_2": "CDHW_Silking_Severity",
+        "correlation": 0.997
+      },
+      {
+        "feature_1": "cdhw_count_silk",
+        "feature_2": "Inter_CDHW_GDD",
+        "correlation": 0.997
+      },
+      {
+        "feature_1": "CDHW_Event_Count",
+        "feature_2": "cdhw_max_severity_gs",
+        "correlation": 0.9965
+      },
+      {
+        "feature_1": "cdhw_count_gs",
+        "feature_2": "CDHW_Event_Count",
+        "correlation": 0.9964
+      },
+      {
+        "feature_1": "cdhw_max_duration_gs",
+        "feature_2": "cdhw_max_severity_gs",
+        "correlation": 0.9961
+      },
+      {
+        "feature_1": "cdhw_max_duration_gs",
+        "feature_2": "CDHW_Severity_Score",
+        "correlation": 0.9958
+      },
+      {
+        "feature_1": "Tmax_Days_Above_35",
+        "feature_2": "Inter_Heat_Precip",
+        "correlation": 0.9947
+      },
+      {
+        "feature_1": "cdhw_count_gs",
+        "feature_2": "CDHW_Severity_Score",
+        "correlation": 0.9943
+      },
+      {
+        "feature_1": "cdhw_count_gs",
+        "feature_2": "cdhw_max_severity_gs",
+        "correlation": 0.9918
+      },
+      {
+        "feature_1": "cdhw_count_gs",
+        "feature_2": "cdhw_max_duration_gs",
+        "correlation": 0.9899
+      },
+      {
+        "feature_1": "Tmax_Days_Above_35",
+        "feature_2": "prism_heat_exceedance_total_gs",
+        "correlation": 0.9867
+      },
+      {
+        "feature_1": "cdhw_count_gs",
+        "feature_2": "CDHW_Flag",
+        "correlation": 0.985
+      },
+      {
+        "feature_1": "SPEI_30_min",
+        "feature_2": "Inter_SPEI_Tmax",
+        "correlation": 0.9846
+      },
+      {
+        "feature_1": "cdhw_max_duration_gs",
+        "feature_2": "CDHW_Flag",
+        "correlation": 0.9844
+      },
+      {
+        "feature_1": "CDHW_Event_Count",
+        "feature_2": "CDHW_Flag",
+        "correlation": 0.9839
+      },
+      {
+        "feature_1": "cdhw_max_severity_gs",
+        "feature_2": "CDHW_Flag",
+        "correlation": 0.9835
+      },
+      {
+        "feature_1": "CDHW_Severity_Score",
+        "feature_2": "CDHW_Flag",
+        "correlation": 0.9835
+      },
+      {
+        "feature_1": "prism_heat_exceedance_total_gs",
+        "feature_2": "Inter_Heat_Precip",
+        "correlation": 0.9779
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "GDD_Accumulated",
+        "correlation": 0.9739
+      },
+      {
+        "feature_1": "GDD_Accumulated",
+        "feature_2": "prism_tmax_mean_grain",
+        "correlation": 0.9717
+      },
+      {
+        "feature_1": "nldas_et0_total_gs",
+        "feature_2": "nldas_vpd_mean_gs",
+        "correlation": 0.9619
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "prism_tmax_mean_grain",
+        "correlation": 0.9577
+      },
+      {
+        "feature_1": "prism_tmin_mean_gs",
+        "feature_2": "GDD_Accumulated",
+        "correlation": 0.9567
+      },
+      {
+        "feature_1": "pheno_silk_days",
+        "feature_2": "prism_tmax_mean_silk",
+        "correlation": -0.9517
+      },
+      {
+        "feature_1": "GDD_Accumulated",
+        "feature_2": "nldas_et0_total_grain",
+        "correlation": 0.9477
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "nldas_et0_total_grain",
+        "correlation": 0.9462
+      },
+      {
+        "feature_1": "SPEI_30_mean",
+        "feature_2": "spei90_prism_nldas_mean_gs",
+        "correlation": 0.9429
+      },
+      {
+        "feature_1": "spi3_prism_mean_gs",
+        "feature_2": "spi6_prism_mean_gs",
+        "correlation": 0.9427
+      },
+      {
+        "feature_1": "GDD_Accumulated",
+        "feature_2": "pheno_veg_days",
+        "correlation": -0.9395
+      },
+      {
+        "feature_1": "spi1_prism_mean_gs",
+        "feature_2": "spi3_prism_mean_gs",
+        "correlation": 0.9394
+      },
+      {
+        "feature_1": "prism_tmax_max_gs",
+        "feature_2": "prism_heat_exceedance_total_gs",
+        "correlation": 0.938
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "pheno_veg_days",
+        "correlation": -0.9334
+      },
+      {
+        "feature_1": "pheno_veg_days",
+        "feature_2": "prism_tmax_mean_veg",
+        "correlation": -0.9332
+      },
+      {
+        "feature_1": "nldas_vpd_mean_gs",
+        "feature_2": "nldas_vpd_mean_silk",
+        "correlation": 0.9301
+      },
+      {
+        "feature_1": "prism_tmax_mean_gs",
+        "feature_2": "prism_tmax_mean_veg",
+        "correlation": 0.9238
+      },
+      {
+        "feature_1": "prism_kdd30_gs",
+        "feature_2": "prism_tmax_mean_silk",
+        "correlation": 0.9211
+      },
+      {
+        "feature_1": "spi3_prism_mean_gs",
+        "feature_2": "spei90_prism_nldas_mean_gs",
+        "correlation": 0.9207
+      },
+      {
+        "feature_1": "pheno_veg_days",
+        "feature_2": "nldas_et0_total_grain",
+        "correlation": -0.9179
+      },
+      {
+        "feature_1": "spi12_prism_mean_gs",
+        "feature_2": "spi12_prism_min_gs",
+        "correlation": 0.9164
+      },
+      {
+        "feature_1": "prism_tmax_max_gs",
+        "feature_2": "Tmax_Days_Above_35",
+        "correlation": 0.9121
+      },
+      {
+        "feature_1": "prism_tmin_mean_gs",
+        "feature_2": "prism_tmax_mean_grain",
+        "correlation": 0.9092
+      },
+      {
+        "feature_1": "spi1_prism_mean_gs",
+        "feature_2": "SPEI_30_mean",
+        "correlation": 0.9081
+      },
+      {
+        "feature_1": "prism_tmax_mean_grain",
+        "feature_2": "nldas_et0_total_grain",
+        "correlation": 0.9036
+      },
+      {
+        "feature_1": "prism_tmax_max_gs",
+        "feature_2": "Inter_Heat_Precip",
+        "correlation": 0.9015
+      }
+    ]
+  },
+  "vif": [
+    {
+      "feature": "Tmax_Days_Above_35",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "CDHW_Event_Count",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "CDHW_Severity_Score",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "prism_tmax_days_gt35_veg",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "cdhw_total_days_veg",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "CDHW_Severity_vegetative",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "prism_tmax_days_gt35_silk",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "cdhw_total_days_silk",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "CDHW_Severity_silking",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "prism_tmax_days_gt35_grain",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "cdhw_total_days_grain",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "CDHW_Severity_grainfill",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "CDHW_Veg_Severity",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "CDHW_Silking_Severity",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "CDHW_GrainFill_Severity",
+      "vif": 1000799917193443.5
+    },
+    {
+      "feature": "Precip_growseason_mm",
+      "vif": 62549994824590.22
+    },
+    {
+      "feature": "prism_ppt_total_veg",
+      "vif": 29055481466906.43
+    },
+    {
+      "feature": "prism_ppt_total_grain",
+      "vif": 20849998274863.41
+    },
+    {
+      "feature": "nldas_et0_total_gs",
+      "vif": 18382039295389.78
+    },
+    {
+      "feature": "nldas_et0_total_grain",
+      "vif": 13751449243879.38
+    },
+    {
+      "feature": "prism_ppt_total_silk",
+      "vif": 13647271598092.41
+    },
+    {
+      "feature": "nldas_et0_total_silk",
+      "vif": 3410526033601.28
+    },
+    {
+      "feature": "nldas_et0_total_veg",
+      "vif": 3397660978778.19
+    },
+    {
+      "feature": "nlcd_cropland_frac",
+      "vif": 23121.49
+    },
+    {
+      "feature": "nlcd_forest_frac",
+      "vif": 11642.94
+    },
+    {
+      "feature": "nlcd_pasture_hay_frac",
+      "vif": 4962.02
+    },
+    {
+      "feature": "nlcd_developed_frac",
+      "vif": 2814.59
+    },
+    {
+      "feature": "nlcd_water_wetland_frac",
+      "vif": 1375.91
+    },
+    {
+      "feature": "Fourier_sin_P1_0",
+      "vif": 999.0
+    },
+    {
+      "feature": "nldas_vpd_mean_gs",
+      "vif": 681.28
+    },
+    {
+      "feature": "Inter_SPEI_Tmax",
+      "vif": 675.01
+    },
+    {
+      "feature": "SPEI_30_min",
+      "vif": 585.92
+    },
+    {
+      "feature": "prism_tmax_mean_gs",
+      "vif": 548.56
+    },
+    {
+      "feature": "Inter_CDHW_GDD",
+      "vif": 511.83
+    },
+    {
+      "feature": "GDD_Accumulated",
+      "vif": 356.39
+    },
+    {
+      "feature": "SPEI_30_mean",
+      "vif": 260.62
+    },
+    {
+      "feature": "cdhw_count_gs",
+      "vif": 166.1
+    },
+    {
+      "feature": "spi3_prism_mean_gs",
+      "vif": 131.1
+    },
+    {
+      "feature": "spi1_prism_mean_gs",
+      "vif": 128.29
+    },
+    {
+      "feature": "nldas_vpd_mean_silk",
+      "vif": 127.78
+    },
+    {
+      "feature": "spei90_prism_nldas_mean_gs",
+      "vif": 124.27
+    },
+    {
+      "feature": "prism_tmax_mean_silk",
+      "vif": 114.95
+    },
+    {
+      "feature": "nldas_vpd_mean_grain",
+      "vif": 102.41
+    },
+    {
+      "feature": "prism_tmax_mean_grain",
+      "vif": 93.5
+    },
+    {
+      "feature": "pheno_veg_days",
+      "vif": 92.92
+    },
+    {
+      "feature": "cdhw_count_silk",
+      "vif": 91.18
+    },
+    {
+      "feature": "nldas_vpd_mean_veg",
+      "vif": 88.06
+    },
+    {
+      "feature": "prism_tmax_mean_veg",
+      "vif": 86.42
+    },
+    {
+      "feature": "pheno_silk_days",
+      "vif": 70.39
+    },
+    {
+      "feature": "prism_tmin_mean_gs",
+      "vif": 64.25
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_veg",
+      "vif": 50.29
+    },
+    {
+      "feature": "nldas_humidity_mean_gs",
+      "vif": 42.57
+    },
+    {
+      "feature": "prism_heat_exceedance_total_gs",
+      "vif": 41.52
+    },
+    {
+      "feature": "spi6_prism_mean_gs",
+      "vif": 40.96
+    },
+    {
+      "feature": "prism_kdd30_gs",
+      "vif": 37.21
+    },
+    {
+      "feature": "cdhw_max_severity_gs",
+      "vif": 34.74
+    },
+    {
+      "feature": "cdhw_max_duration_gs",
+      "vif": 33.24
+    },
+    {
+      "feature": "cdhw_count_grain",
+      "vif": 29.59
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_silk",
+      "vif": 29.08
+    },
+    {
+      "feature": "Inter_Heat_Precip",
+      "vif": 28.31
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_grain",
+      "vif": 25.26
+    },
+    {
+      "feature": "prism_tmax_max_gs",
+      "vif": 23.69
+    },
+    {
+      "feature": "cdhw_count_veg",
+      "vif": 16.31
+    },
+    {
+      "feature": "nldas_rs_mean_gs",
+      "vif": 15.33
+    },
+    {
+      "feature": "spei30_prism_nldas_min_silk",
+      "vif": 14.22
+    },
+    {
+      "feature": "spei30_prism_nldas_min_grain",
+      "vif": 14.06
+    },
+    {
+      "feature": "nldas_wind_mean_gs",
+      "vif": 13.72
+    },
+    {
+      "feature": "nlcd_grass_shrub_frac",
+      "vif": 11.7
+    },
+    {
+      "feature": "spei90_prism_nldas_min_gs",
+      "vif": 11.62
+    },
+    {
+      "feature": "spei30_prism_nldas_min_veg",
+      "vif": 11.1
+    },
+    {
+      "feature": "spi12_prism_mean_gs",
+      "vif": 11.05
+    },
+    {
+      "feature": "spi3_prism_min_gs",
+      "vif": 10.58
+    },
+    {
+      "feature": "spi1_prism_min_silk",
+      "vif": 10.16
+    },
+    {
+      "feature": "spi1_prism_min_veg",
+      "vif": 10.09
+    },
+    {
+      "feature": "spi1_prism_min_grain",
+      "vif": 10.0
+    },
+    {
+      "feature": "spi12_prism_min_gs",
+      "vif": 9.39
+    },
+    {
+      "feature": "spei30_prism_nldas_drought_days_gs",
+      "vif": 8.4
+    },
+    {
+      "feature": "slope_mean",
+      "vif": 7.33
+    },
+    {
+      "feature": "spi6_prism_min_gs",
+      "vif": 7.07
+    },
+    {
+      "feature": "spi1_prism_min_gs",
+      "vif": 6.8
+    },
+    {
+      "feature": "CDHW_Flag",
+      "vif": 5.99
+    },
+    {
+      "feature": "prism_tmin_min_gs",
+      "vif": 4.46
+    },
+    {
+      "feature": "soil_organic_carbon",
+      "vif": 4.08
+    },
+    {
+      "feature": "elevation_mean_m",
+      "vif": 3.83
+    },
+    {
+      "feature": "soil_bulk_density",
+      "vif": 3.42
+    },
+    {
+      "feature": "soil_awc",
+      "vif": 3.41
+    },
+    {
+      "feature": "spei30_prism_nldas_max_gs",
+      "vif": 3.34
+    },
+    {
+      "feature": "soil_silt",
+      "vif": 2.99
+    },
+    {
+      "feature": "soil_clay",
+      "vif": 2.9
+    },
+    {
+      "feature": "elevation_std_m",
+      "vif": 2.67
+    },
+    {
+      "feature": "noaa_hail_count_gs",
+      "vif": 1.96
+    },
+    {
+      "feature": "Fourier_cos_P19_0",
+      "vif": 1.72
+    },
+    {
+      "feature": "noaa_max_hail_size_gs",
+      "vif": 1.65
+    },
+    {
+      "feature": "Fourier_sin_P19_0",
+      "vif": 1.63
+    },
+    {
+      "feature": "Fourier_cos_P11_0",
+      "vif": 1.6
+    },
+    {
+      "feature": "Fourier_sin_P11_0",
+      "vif": 1.57
+    },
+    {
+      "feature": "Fourier_cos_P3_0",
+      "vif": 1.53
+    },
+    {
+      "feature": "Fourier_sin_P5_0",
+      "vif": 1.53
+    },
+    {
+      "feature": "Fourier_cos_P5_0",
+      "vif": 1.53
+    },
+    {
+      "feature": "Fourier_sin_P3_0",
+      "vif": 1.5
+    },
+    {
+      "feature": "noaa_thunderstorm_wind_count_gs",
+      "vif": 1.47
+    },
+    {
+      "feature": "Fourier_sin_P7_0",
+      "vif": 1.4
+    },
+    {
+      "feature": "Fourier_cos_P7_0",
+      "vif": 1.34
+    },
+    {
+      "feature": "noaa_tornado_count_gs",
+      "vif": 1.1
+    },
+    {
+      "feature": "Fourier_cos_P1_0",
+      "vif": 1.0
+    }
+  ],
+  "dropped_columns": [
+    "Corn_Yield_buacre"
+  ],
+  "decision": "Dropped 1 redundant columns. High-VIF climate/disaster features retained because they carry distinct physical information required by Paper 3 methodology."
+}

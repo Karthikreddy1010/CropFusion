@@ -1,0 +1,1515 @@
+{
+  "dimensions": {
+    "rows": 22737,
+    "columns": 101,
+    "numerical_columns": 97,
+    "categorical_columns": 4,
+    "numerical_list": [
+      "GEOID",
+      "STATEFP",
+      "COUNTYFP",
+      "Lat",
+      "Lon",
+      "Year",
+      "Corn_Yield_tha",
+      "Corn_Yield_buacre",
+      "Has_Corn_Yield",
+      "ENSO_Anomalous_Year",
+      "prism_tmax_mean_gs",
+      "prism_tmax_max_gs",
+      "prism_tmin_mean_gs",
+      "prism_tmin_min_gs",
+      "Precip_growseason_mm",
+      "GDD_Accumulated",
+      "prism_kdd30_gs",
+      "Tmax_Days_Above_35",
+      "prism_heat_exceedance_total_gs",
+      "nldas_et0_total_gs",
+      "nldas_rs_mean_gs",
+      "nldas_humidity_mean_gs",
+      "nldas_vpd_mean_gs",
+      "nldas_wind_mean_gs",
+      "spi1_prism_mean_gs",
+      "spi1_prism_min_gs",
+      "spi3_prism_mean_gs",
+      "spi3_prism_min_gs",
+      "spi6_prism_mean_gs",
+      "spi6_prism_min_gs",
+      "spi12_prism_mean_gs",
+      "spi12_prism_min_gs",
+      "SPEI_30_mean",
+      "SPEI_30_min",
+      "spei30_prism_nldas_max_gs",
+      "spei30_prism_nldas_drought_days_gs",
+      "spei90_prism_nldas_mean_gs",
+      "spei90_prism_nldas_min_gs",
+      "cdhw_count_gs",
+      "CDHW_Event_Count",
+      "cdhw_max_duration_gs",
+      "cdhw_max_severity_gs",
+      "CDHW_Severity_Score",
+      "pheno_veg_days",
+      "pheno_silk_days",
+      "prism_tmax_mean_veg",
+      "prism_tmax_days_gt35_veg",
+      "prism_ppt_total_veg",
+      "nldas_et0_total_veg",
+      "nldas_vpd_mean_veg",
+      "spi1_prism_min_veg",
+      "spei30_prism_nldas_mean_veg",
+      "spei30_prism_nldas_min_veg",
+      "cdhw_count_veg",
+      "cdhw_total_days_veg",
+      "CDHW_Severity_vegetative",
+      "prism_tmax_mean_silk",
+      "prism_tmax_days_gt35_silk",
+      "prism_ppt_total_silk",
+      "nldas_et0_total_silk",
+      "nldas_vpd_mean_silk",
+      "spi1_prism_min_silk",
+      "spei30_prism_nldas_mean_silk",
+      "spei30_prism_nldas_min_silk",
+      "cdhw_count_silk",
+      "cdhw_total_days_silk",
+      "CDHW_Severity_silking",
+      "prism_tmax_mean_grain",
+      "prism_tmax_days_gt35_grain",
+      "prism_ppt_total_grain",
+      "nldas_et0_total_grain",
+      "nldas_vpd_mean_grain",
+      "spi1_prism_min_grain",
+      "spei30_prism_nldas_mean_grain",
+      "spei30_prism_nldas_min_grain",
+      "cdhw_count_grain",
+      "cdhw_total_days_grain",
+      "CDHW_Severity_grainfill",
+      "noaa_hail_count_gs",
+      "noaa_thunderstorm_wind_count_gs",
+      "noaa_tornado_count_gs",
+      "noaa_max_hail_size_gs",
+      "soil_awc",
+      "soil_bulk_density",
+      "soil_clay",
+      "soil_silt",
+      "soil_organic_carbon",
+      "elevation_mean_m",
+      "elevation_std_m",
+      "slope_mean",
+      "nlcd_cropland_frac",
+      "nlcd_pasture_hay_frac",
+      "nlcd_forest_frac",
+      "nlcd_grass_shrub_frac",
+      "nlcd_developed_frac",
+      "nlcd_water_wetland_frac",
+      "CDHW_Flag"
+    ],
+    "categorical_list": [
+      "County_Name",
+      "State",
+      "Split",
+      "ENSO_Phase"
+    ]
+  },
+  "temporal": {
+    "year_min": 1985,
+    "year_max": 2023,
+    "years_covered": 39
+  },
+  "geographic": {
+    "states": {
+      "Missouri": 4485,
+      "Illinois": 3978,
+      "Iowa": 3861,
+      "Indiana": 3588,
+      "Ohio": 3432,
+      "Minnesota": 3393
+    },
+    "n_states": 6,
+    "n_counties": 583,
+    "county_per_state": {
+      "Illinois": 102,
+      "Indiana": 92,
+      "Iowa": 99,
+      "Minnesota": 87,
+      "Missouri": 115,
+      "Ohio": 88
+    }
+  },
+  "splits": {
+    "train": 18073,
+    "test": 2915,
+    "val": 1749
+  },
+  "missing_values": {
+    "Corn_Yield_tha": {
+      "count": 2230,
+      "percent": 9.81
+    },
+    "Corn_Yield_buacre": {
+      "count": 2230,
+      "percent": 9.81
+    },
+    "spi6_prism_mean_gs": {
+      "count": 583,
+      "percent": 2.56
+    },
+    "spi6_prism_min_gs": {
+      "count": 583,
+      "percent": 2.56
+    },
+    "spi12_prism_mean_gs": {
+      "count": 583,
+      "percent": 2.56
+    },
+    "spi12_prism_min_gs": {
+      "count": 583,
+      "percent": 2.56
+    },
+    "prism_tmax_mean_grain": {
+      "count": 1440,
+      "percent": 6.33
+    },
+    "nldas_vpd_mean_grain": {
+      "count": 1440,
+      "percent": 6.33
+    },
+    "spi1_prism_min_grain": {
+      "count": 1440,
+      "percent": 6.33
+    },
+    "spei30_prism_nldas_mean_grain": {
+      "count": 1440,
+      "percent": 6.33
+    },
+    "spei30_prism_nldas_min_grain": {
+      "count": 1440,
+      "percent": 6.33
+    },
+    "noaa_max_hail_size_gs": {
+      "count": 1,
+      "percent": 0.0
+    },
+    "soil_awc": {
+      "count": 195,
+      "percent": 0.86
+    },
+    "soil_bulk_density": {
+      "count": 195,
+      "percent": 0.86
+    },
+    "soil_clay": {
+      "count": 195,
+      "percent": 0.86
+    },
+    "soil_silt": {
+      "count": 195,
+      "percent": 0.86
+    },
+    "soil_organic_carbon": {
+      "count": 195,
+      "percent": 0.86
+    }
+  },
+  "duplicates": {
+    "duplicate_rows": 0,
+    "duplicate_columns": 0
+  },
+  "constant_features": {
+    "zero_variance": [],
+    "near_zero_variance": []
+  },
+  "distributions": [
+    {
+      "feature": "GEOID",
+      "count": 22737,
+      "mean": 24776.190395,
+      "std": 7633.197475,
+      "min": 17001.0,
+      "max": 39175.0,
+      "skewness": 0.6818,
+      "kurtosis": -0.7886,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "STATEFP",
+      "count": 22737,
+      "mean": 24.67753,
+      "std": 7.634092,
+      "min": 17.0,
+      "max": 39.0,
+      "skewness": 0.6835,
+      "kurtosis": -0.7848,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "COUNTYFP",
+      "count": 22737,
+      "mean": 98.660377,
+      "std": 60.122965,
+      "min": 1.0,
+      "max": 510.0,
+      "skewness": 0.6115,
+      "kurtosis": 2.4208,
+      "outlier_iqr_pct": 0.17
+    },
+    {
+      "feature": "Lat",
+      "count": 22737,
+      "mean": 40.861532,
+      "std": 2.53557,
+      "min": 36.153025,
+      "max": 48.77604,
+      "skewness": 0.8394,
+      "kurtosis": 0.5155,
+      "outlier_iqr_pct": 4.12
+    },
+    {
+      "feature": "Lon",
+      "count": 22737,
+      "mean": -89.916121,
+      "std": 4.234748,
+      "min": -96.780349,
+      "max": -80.745592,
+      "skewness": 0.4117,
+      "kurtosis": -0.9247,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "Year",
+      "count": 22737,
+      "mean": 2004.0,
+      "std": 11.254876,
+      "min": 1985.0,
+      "max": 2023.0,
+      "skewness": 0.0,
+      "kurtosis": -1.2016,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "Corn_Yield_tha",
+      "count": 20507,
+      "mean": 8.791472,
+      "std": 2.336659,
+      "min": 0.4389,
+      "max": 15.46809,
+      "skewness": -0.1497,
+      "kurtosis": -0.292,
+      "outlier_iqr_pct": 0.29
+    },
+    {
+      "feature": "Corn_Yield_buacre",
+      "count": 20507,
+      "mean": 140.214868,
+      "std": 37.267281,
+      "min": 7.0,
+      "max": 246.7,
+      "skewness": -0.1497,
+      "kurtosis": -0.292,
+      "outlier_iqr_pct": 0.29
+    },
+    {
+      "feature": "Has_Corn_Yield",
+      "count": 22737,
+      "mean": 0.901922,
+      "std": 0.297427,
+      "min": 0.0,
+      "max": 1.0,
+      "skewness": -2.7029,
+      "kurtosis": 5.3061,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "ENSO_Anomalous_Year",
+      "count": 22737,
+      "mean": 0.74359,
+      "std": 0.436661,
+      "min": 0.0,
+      "max": 1.0,
+      "skewness": -1.1158,
+      "kurtosis": -0.7551,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "prism_tmax_mean_gs",
+      "count": 22737,
+      "mean": 23.850023,
+      "std": 2.044772,
+      "min": 15.338662,
+      "max": 29.60873,
+      "skewness": -0.4554,
+      "kurtosis": 0.2187,
+      "outlier_iqr_pct": 1.37
+    },
+    {
+      "feature": "prism_tmax_max_gs",
+      "count": 22737,
+      "mean": 35.324538,
+      "std": 2.05114,
+      "min": 27.512747,
+      "max": 43.188057,
+      "skewness": 0.3538,
+      "kurtosis": -0.0247,
+      "outlier_iqr_pct": 0.89
+    },
+    {
+      "feature": "prism_tmin_mean_gs",
+      "count": 22737,
+      "mean": 11.668741,
+      "std": 1.936829,
+      "min": 3.933777,
+      "max": 17.848717,
+      "skewness": -0.4995,
+      "kurtosis": 0.5177,
+      "outlier_iqr_pct": 1.97
+    },
+    {
+      "feature": "prism_tmin_min_gs",
+      "count": 22737,
+      "mean": -4.925191,
+      "std": 3.135664,
+      "min": -22.335117,
+      "max": 4.160843,
+      "skewness": -1.0641,
+      "kurtosis": 1.9596,
+      "outlier_iqr_pct": 2.98
+    },
+    {
+      "feature": "Precip_growseason_mm",
+      "count": 22737,
+      "mean": 690.119083,
+      "std": 164.674593,
+      "min": 204.863876,
+      "max": 1492.509644,
+      "skewness": 0.4077,
+      "kurtosis": 0.2183,
+      "outlier_iqr_pct": 0.94
+    },
+    {
+      "feature": "GDD_Accumulated",
+      "count": 22737,
+      "mean": 1862.783503,
+      "std": 287.140833,
+      "min": 734.693359,
+      "max": 2732.401855,
+      "skewness": -0.3678,
+      "kurtosis": 0.1207,
+      "outlier_iqr_pct": 1.09
+    },
+    {
+      "feature": "prism_kdd30_gs",
+      "count": 22737,
+      "mean": 91.726482,
+      "std": 74.416278,
+      "min": 0.0,
+      "max": 479.412262,
+      "skewness": 1.3154,
+      "kurtosis": 1.7823,
+      "outlier_iqr_pct": 3.57
+    },
+    {
+      "feature": "Tmax_Days_Above_35",
+      "count": 22737,
+      "mean": 3.305185,
+      "std": 5.778249,
+      "min": 0.0,
+      "max": 46.0,
+      "skewness": 2.6048,
+      "kurtosis": 7.7782,
+      "outlier_iqr_pct": 10.27
+    },
+    {
+      "feature": "prism_heat_exceedance_total_gs",
+      "count": 22737,
+      "mean": 4.600157,
+      "std": 11.202832,
+      "min": 0.0,
+      "max": 124.701508,
+      "skewness": 4.2009,
+      "kurtosis": 22.151,
+      "outlier_iqr_pct": 14.19
+    },
+    {
+      "feature": "nldas_et0_total_gs",
+      "count": 22737,
+      "mean": 902.411353,
+      "std": 107.152656,
+      "min": 584.811157,
+      "max": 1398.54126,
+      "skewness": 0.711,
+      "kurtosis": 0.748,
+      "outlier_iqr_pct": 1.91
+    },
+    {
+      "feature": "nldas_rs_mean_gs",
+      "count": 22737,
+      "mean": 19.325033,
+      "std": 0.927459,
+      "min": 16.252476,
+      "max": 22.575487,
+      "skewness": 0.0968,
+      "kurtosis": -0.3888,
+      "outlier_iqr_pct": 0.13
+    },
+    {
+      "feature": "nldas_humidity_mean_gs",
+      "count": 22737,
+      "mean": 1.60807,
+      "std": 0.208077,
+      "min": 0.92437,
+      "max": 2.211437,
+      "skewness": -0.3018,
+      "kurtosis": -0.2308,
+      "outlier_iqr_pct": 0.41
+    },
+    {
+      "feature": "nldas_vpd_mean_gs",
+      "count": 22737,
+      "mean": 0.903242,
+      "std": 0.230793,
+      "min": 0.403303,
+      "max": 1.995958,
+      "skewness": 1.1168,
+      "kurtosis": 1.4465,
+      "outlier_iqr_pct": 2.67
+    },
+    {
+      "feature": "nldas_wind_mean_gs",
+      "count": 22737,
+      "mean": 2.964868,
+      "std": 0.306469,
+      "min": 1.951875,
+      "max": 3.982197,
+      "skewness": 0.0235,
+      "kurtosis": -0.3121,
+      "outlier_iqr_pct": 0.22
+    },
+    {
+      "feature": "spi1_prism_mean_gs",
+      "count": 22737,
+      "mean": 0.056056,
+      "std": 0.409098,
+      "min": -1.364101,
+      "max": 1.351278,
+      "skewness": -0.0817,
+      "kurtosis": -0.1793,
+      "outlier_iqr_pct": 0.38
+    },
+    {
+      "feature": "spi1_prism_min_gs",
+      "count": 22737,
+      "mean": -2.031902,
+      "std": 0.644412,
+      "min": -3.090232,
+      "max": -0.104212,
+      "skewness": 0.0571,
+      "kurtosis": -0.7324,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "spi3_prism_mean_gs",
+      "count": 22737,
+      "mean": 0.092047,
+      "std": 0.641276,
+      "min": -2.240291,
+      "max": 2.193023,
+      "skewness": -0.1767,
+      "kurtosis": -0.1221,
+      "outlier_iqr_pct": 0.5
+    },
+    {
+      "feature": "spi3_prism_min_gs",
+      "count": 22737,
+      "mean": -1.360869,
+      "std": 0.766189,
+      "min": -3.090232,
+      "max": 1.321122,
+      "skewness": -0.0416,
+      "kurtosis": -0.4016,
+      "outlier_iqr_pct": 0.08
+    },
+    {
+      "feature": "spi6_prism_mean_gs",
+      "count": 22154,
+      "mean": 0.111136,
+      "std": 0.790071,
+      "min": -2.47712,
+      "max": 2.668044,
+      "skewness": -0.152,
+      "kurtosis": -0.1821,
+      "outlier_iqr_pct": 0.47
+    },
+    {
+      "feature": "spi6_prism_min_gs",
+      "count": 22154,
+      "mean": -1.003163,
+      "std": 0.862229,
+      "min": -3.090232,
+      "max": 1.77773,
+      "skewness": -0.0651,
+      "kurtosis": -0.4233,
+      "outlier_iqr_pct": 0.05
+    },
+    {
+      "feature": "spi12_prism_mean_gs",
+      "count": 22154,
+      "mean": 0.14931,
+      "std": 0.887413,
+      "min": -2.764304,
+      "max": 3.022964,
+      "skewness": -0.0429,
+      "kurtosis": -0.1418,
+      "outlier_iqr_pct": 0.66
+    },
+    {
+      "feature": "spi12_prism_min_gs",
+      "count": 22154,
+      "mean": -0.738158,
+      "std": 0.920308,
+      "min": -3.090232,
+      "max": 2.594099,
+      "skewness": -0.0307,
+      "kurtosis": -0.1137,
+      "outlier_iqr_pct": 0.3
+    },
+    {
+      "feature": "SPEI_30_mean",
+      "count": 22737,
+      "mean": 0.009898,
+      "std": 0.478045,
+      "min": -1.488414,
+      "max": 1.458057,
+      "skewness": -0.2333,
+      "kurtosis": 0.0443,
+      "outlier_iqr_pct": 1.22
+    },
+    {
+      "feature": "SPEI_30_min",
+      "count": 22737,
+      "mean": -1.694537,
+      "std": 0.529724,
+      "min": -3.090232,
+      "max": 0.22321,
+      "skewness": -0.0824,
+      "kurtosis": 0.0908,
+      "outlier_iqr_pct": 1.61
+    },
+    {
+      "feature": "spei30_prism_nldas_max_gs",
+      "count": 22737,
+      "mean": 1.804424,
+      "std": 0.568942,
+      "min": -0.383756,
+      "max": 3.090232,
+      "skewness": -0.3336,
+      "kurtosis": 0.2075,
+      "outlier_iqr_pct": 0.99
+    },
+    {
+      "feature": "spei30_prism_nldas_drought_days_gs",
+      "count": 22737,
+      "mean": 36.509126,
+      "std": 33.069359,
+      "min": 0.0,
+      "max": 172.0,
+      "skewness": 1.1784,
+      "kurtosis": 1.089,
+      "outlier_iqr_pct": 3.28
+    },
+    {
+      "feature": "spei90_prism_nldas_mean_gs",
+      "count": 22737,
+      "mean": 0.026268,
+      "std": 0.688737,
+      "min": -2.015918,
+      "max": 2.000198,
+      "skewness": -0.1799,
+      "kurtosis": -0.1744,
+      "outlier_iqr_pct": 0.18
+    },
+    {
+      "feature": "spei90_prism_nldas_min_gs",
+      "count": 22737,
+      "mean": -1.217813,
+      "std": 0.675966,
+      "min": -3.090232,
+      "max": 1.231108,
+      "skewness": 0.2853,
+      "kurtosis": 0.0953,
+      "outlier_iqr_pct": 1.28
+    },
+    {
+      "feature": "cdhw_count_gs",
+      "count": 22737,
+      "mean": 0.724898,
+      "std": 1.644493,
+      "min": 0.0,
+      "max": 13.0,
+      "skewness": 3.0855,
+      "kurtosis": 10.5658,
+      "outlier_iqr_pct": 10.12
+    },
+    {
+      "feature": "CDHW_Event_Count",
+      "count": 22737,
+      "mean": 1.679729,
+      "std": 4.588991,
+      "min": 0.0,
+      "max": 42.0,
+      "skewness": 4.0659,
+      "kurtosis": 19.3747,
+      "outlier_iqr_pct": 15.56
+    },
+    {
+      "feature": "cdhw_max_duration_gs",
+      "count": 22737,
+      "mean": 0.835818,
+      "std": 1.954916,
+      "min": 0.0,
+      "max": 24.0,
+      "skewness": 3.5945,
+      "kurtosis": 17.1591,
+      "outlier_iqr_pct": 11.76
+    },
+    {
+      "feature": "cdhw_max_severity_gs",
+      "count": 22737,
+      "mean": 2.888947,
+      "std": 10.312588,
+      "min": 0.0,
+      "max": 150.946823,
+      "skewness": 6.2861,
+      "kurtosis": 49.4058,
+      "outlier_iqr_pct": 22.29
+    },
+    {
+      "feature": "CDHW_Severity_Score",
+      "count": 22737,
+      "mean": 5.331462,
+      "std": 20.342395,
+      "min": 0.0,
+      "max": 260.465302,
+      "skewness": 6.196,
+      "kurtosis": 46.4288,
+      "outlier_iqr_pct": 22.4
+    },
+    {
+      "feature": "pheno_veg_days",
+      "count": 22737,
+      "mean": 92.914193,
+      "std": 11.144727,
+      "min": 65.0,
+      "max": 180.0,
+      "skewness": 1.031,
+      "kurtosis": 2.5534,
+      "outlier_iqr_pct": 2.11
+    },
+    {
+      "feature": "pheno_silk_days",
+      "count": 22737,
+      "mean": 58.828297,
+      "std": 12.886453,
+      "min": 34.0,
+      "max": 113.0,
+      "skewness": 1.8915,
+      "kurtosis": 3.4296,
+      "outlier_iqr_pct": 8.49
+    },
+    {
+      "feature": "prism_tmax_mean_veg",
+      "count": 22737,
+      "mean": 22.259597,
+      "std": 1.484699,
+      "min": 16.536192,
+      "max": 27.036968,
+      "skewness": -0.2506,
+      "kurtosis": 0.0496,
+      "outlier_iqr_pct": 0.86
+    },
+    {
+      "feature": "prism_tmax_days_gt35_veg",
+      "count": 22737,
+      "mean": 0.343801,
+      "std": 0.883212,
+      "min": 0.0,
+      "max": 8.0,
+      "skewness": 3.327,
+      "kurtosis": 13.1548,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "prism_ppt_total_veg",
+      "count": 22737,
+      "mean": 329.856502,
+      "std": 112.155721,
+      "min": 58.838207,
+      "max": 807.190857,
+      "skewness": 0.2907,
+      "kurtosis": 0.036,
+      "outlier_iqr_pct": 0.93
+    },
+    {
+      "feature": "nldas_et0_total_veg",
+      "count": 22737,
+      "mean": 392.670496,
+      "std": 52.582111,
+      "min": 258.406647,
+      "max": 630.610168,
+      "skewness": 0.8558,
+      "kurtosis": 0.6974,
+      "outlier_iqr_pct": 2.15
+    },
+    {
+      "feature": "nldas_vpd_mean_veg",
+      "count": 22737,
+      "mean": 0.777715,
+      "std": 0.152752,
+      "min": 0.422513,
+      "max": 1.634706,
+      "skewness": 1.3116,
+      "kurtosis": 2.5504,
+      "outlier_iqr_pct": 3.72
+    },
+    {
+      "feature": "spi1_prism_min_veg",
+      "count": 22737,
+      "mean": -1.479149,
+      "std": 0.767686,
+      "min": -3.090232,
+      "max": 0.84547,
+      "skewness": -0.221,
+      "kurtosis": -0.5338,
+      "outlier_iqr_pct": 0.01
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_veg",
+      "count": 22737,
+      "mean": 0.01865,
+      "std": 0.614062,
+      "min": -1.861168,
+      "max": 1.68415,
+      "skewness": -0.2205,
+      "kurtosis": -0.3005,
+      "outlier_iqr_pct": 0.29
+    },
+    {
+      "feature": "spei30_prism_nldas_min_veg",
+      "count": 22737,
+      "mean": -1.322933,
+      "std": 0.580462,
+      "min": -3.090232,
+      "max": 0.819523,
+      "skewness": 0.0754,
+      "kurtosis": 0.0359,
+      "outlier_iqr_pct": 0.94
+    },
+    {
+      "feature": "cdhw_count_veg",
+      "count": 22737,
+      "mean": 0.100365,
+      "std": 0.396311,
+      "min": 0.0,
+      "max": 4.0,
+      "skewness": 4.7077,
+      "kurtosis": 25.3052,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "cdhw_total_days_veg",
+      "count": 22737,
+      "mean": 0.164094,
+      "std": 0.701886,
+      "min": 0.0,
+      "max": 8.0,
+      "skewness": 5.3925,
+      "kurtosis": 33.515,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "CDHW_Severity_vegetative",
+      "count": 22737,
+      "mean": 0.451379,
+      "std": 2.656828,
+      "min": 0.0,
+      "max": 48.746037,
+      "skewness": 8.2721,
+      "kurtosis": 83.0262,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "prism_tmax_mean_silk",
+      "count": 22737,
+      "mean": 28.362124,
+      "std": 3.228015,
+      "min": 9.347063,
+      "max": 36.176533,
+      "skewness": -1.3755,
+      "kurtosis": 2.8069,
+      "outlier_iqr_pct": 7.33
+    },
+    {
+      "feature": "prism_tmax_days_gt35_silk",
+      "count": 22737,
+      "mean": 2.029379,
+      "std": 4.059519,
+      "min": 0.0,
+      "max": 31.0,
+      "skewness": 2.9846,
+      "kurtosis": 10.2482,
+      "outlier_iqr_pct": 12.23
+    },
+    {
+      "feature": "prism_ppt_total_silk",
+      "count": 22737,
+      "mean": 189.42151,
+      "std": 78.482438,
+      "min": 4.891768,
+      "max": 580.358215,
+      "skewness": 0.7382,
+      "kurtosis": 0.6474,
+      "outlier_iqr_pct": 1.81
+    },
+    {
+      "feature": "nldas_et0_total_silk",
+      "count": 22737,
+      "mean": 290.645295,
+      "std": 48.958856,
+      "min": 50.80275,
+      "max": 535.73822,
+      "skewness": 1.0678,
+      "kurtosis": 1.0223,
+      "outlier_iqr_pct": 4.15
+    },
+    {
+      "feature": "nldas_vpd_mean_silk",
+      "count": 22737,
+      "mean": 1.138299,
+      "std": 0.46587,
+      "min": 0.307557,
+      "max": 3.723589,
+      "skewness": 1.7898,
+      "kurtosis": 4.1552,
+      "outlier_iqr_pct": 5.88
+    },
+    {
+      "feature": "spi1_prism_min_silk",
+      "count": 22737,
+      "mean": -1.252465,
+      "std": 0.833378,
+      "min": -3.090232,
+      "max": 2.108726,
+      "skewness": -0.0457,
+      "kurtosis": -0.0967,
+      "outlier_iqr_pct": 0.44
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_silk",
+      "count": 22737,
+      "mean": 0.016315,
+      "std": 0.7646,
+      "min": -2.633639,
+      "max": 2.714232,
+      "skewness": -0.2007,
+      "kurtosis": 0.2306,
+      "outlier_iqr_pct": 1.58
+    },
+    {
+      "feature": "spei30_prism_nldas_min_silk",
+      "count": 22737,
+      "mean": -1.067809,
+      "std": 0.703221,
+      "min": -3.090232,
+      "max": 1.784619,
+      "skewness": 0.1229,
+      "kurtosis": 0.3703,
+      "outlier_iqr_pct": 1.63
+    },
+    {
+      "feature": "cdhw_count_silk",
+      "count": 22737,
+      "mean": 0.457096,
+      "std": 1.206079,
+      "min": 0.0,
+      "max": 11.0,
+      "skewness": 3.4556,
+      "kurtosis": 13.2053,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "cdhw_total_days_silk",
+      "count": 22737,
+      "mean": 1.076527,
+      "std": 3.41173,
+      "min": 0.0,
+      "max": 31.0,
+      "skewness": 4.504,
+      "kurtosis": 22.8647,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "CDHW_Severity_silking",
+      "count": 22737,
+      "mean": 3.640478,
+      "std": 16.422536,
+      "min": 0.0,
+      "max": 233.009583,
+      "skewness": 7.2722,
+      "kurtosis": 62.6337,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "prism_tmax_mean_grain",
+      "count": 21297,
+      "mean": 22.05864,
+      "std": 3.446458,
+      "min": 3.334331,
+      "max": 30.305048,
+      "skewness": -0.7225,
+      "kurtosis": 0.6465,
+      "outlier_iqr_pct": 1.38
+    },
+    {
+      "feature": "prism_tmax_days_gt35_grain",
+      "count": 22737,
+      "mean": 0.932005,
+      "std": 2.446048,
+      "min": 0.0,
+      "max": 23.0,
+      "skewness": 3.7523,
+      "kurtosis": 17.3673,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "prism_ppt_total_grain",
+      "count": 22737,
+      "mean": 170.841071,
+      "std": 102.500495,
+      "min": 0.0,
+      "max": 772.377502,
+      "skewness": 0.5196,
+      "kurtosis": 0.4322,
+      "outlier_iqr_pct": 1.24
+    },
+    {
+      "feature": "nldas_et0_total_grain",
+      "count": 22737,
+      "mean": 219.095561,
+      "std": 105.876101,
+      "min": 0.0,
+      "max": 580.418335,
+      "skewness": -0.1949,
+      "kurtosis": -0.2673,
+      "outlier_iqr_pct": 0.13
+    },
+    {
+      "feature": "nldas_vpd_mean_grain",
+      "count": 21297,
+      "mean": 0.85958,
+      "std": 0.264342,
+      "min": 0.180966,
+      "max": 1.949498,
+      "skewness": 0.6998,
+      "kurtosis": 0.4469,
+      "outlier_iqr_pct": 2.18
+    },
+    {
+      "feature": "spi1_prism_min_grain",
+      "count": 21297,
+      "mean": -1.425752,
+      "std": 0.87412,
+      "min": -3.090232,
+      "max": 2.234885,
+      "skewness": 0.1843,
+      "kurtosis": -0.1581,
+      "outlier_iqr_pct": 0.55
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_grain",
+      "count": 21297,
+      "mean": -0.031421,
+      "std": 0.722282,
+      "min": -2.168169,
+      "max": 2.741845,
+      "skewness": 0.1076,
+      "kurtosis": -0.3644,
+      "outlier_iqr_pct": 0.2
+    },
+    {
+      "feature": "spei30_prism_nldas_min_grain",
+      "count": 21297,
+      "mean": -1.263721,
+      "std": 0.747107,
+      "min": -3.090232,
+      "max": 2.109645,
+      "skewness": 0.4092,
+      "kurtosis": 0.4503,
+      "outlier_iqr_pct": 1.31
+    },
+    {
+      "feature": "cdhw_count_grain",
+      "count": 22737,
+      "mean": 0.194969,
+      "std": 0.673748,
+      "min": 0.0,
+      "max": 8.0,
+      "skewness": 4.7114,
+      "kurtosis": 26.9791,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "cdhw_total_days_grain",
+      "count": 22737,
+      "mean": 0.439108,
+      "std": 1.743112,
+      "min": 0.0,
+      "max": 23.0,
+      "skewness": 5.9707,
+      "kurtosis": 45.0507,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "CDHW_Severity_grainfill",
+      "count": 22737,
+      "mean": 1.239605,
+      "std": 6.457689,
+      "min": 0.0,
+      "max": 118.103355,
+      "skewness": 8.2847,
+      "kurtosis": 84.8306,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "noaa_hail_count_gs",
+      "count": 22737,
+      "mean": 2.747108,
+      "std": 4.136152,
+      "min": 0.0,
+      "max": 59.0,
+      "skewness": 3.509,
+      "kurtosis": 20.0442,
+      "outlier_iqr_pct": 4.86
+    },
+    {
+      "feature": "noaa_thunderstorm_wind_count_gs",
+      "count": 22737,
+      "mean": 3.627391,
+      "std": 4.349976,
+      "min": 0.0,
+      "max": 131.0,
+      "skewness": 4.4272,
+      "kurtosis": 58.1544,
+      "outlier_iqr_pct": 4.79
+    },
+    {
+      "feature": "noaa_tornado_count_gs",
+      "count": 22737,
+      "mean": 0.359766,
+      "std": 0.857274,
+      "min": 0.0,
+      "max": 13.0,
+      "skewness": 4.0639,
+      "kurtosis": 26.408,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "noaa_max_hail_size_gs",
+      "count": 22736,
+      "mean": 0.950137,
+      "std": 0.846477,
+      "min": 0.0,
+      "max": 6.0,
+      "skewness": 0.7213,
+      "kurtosis": 0.7645,
+      "outlier_iqr_pct": 0.29
+    },
+    {
+      "feature": "soil_awc",
+      "count": 22542,
+      "mean": 346.50826,
+      "std": 20.329906,
+      "min": 259.923525,
+      "max": 392.769706,
+      "skewness": -1.066,
+      "kurtosis": 1.4217,
+      "outlier_iqr_pct": 6.06
+    },
+    {
+      "feature": "soil_bulk_density",
+      "count": 22542,
+      "mean": 135.957492,
+      "std": 6.726615,
+      "min": 100.441317,
+      "max": 149.887816,
+      "skewness": -1.4007,
+      "kurtosis": 3.5112,
+      "outlier_iqr_pct": 3.11
+    },
+    {
+      "feature": "soil_clay",
+      "count": 22542,
+      "mean": 272.242215,
+      "std": 58.563595,
+      "min": 97.483861,
+      "max": 434.682115,
+      "skewness": -0.3627,
+      "kurtosis": -0.0411,
+      "outlier_iqr_pct": 1.73
+    },
+    {
+      "feature": "soil_silt",
+      "count": 22542,
+      "mean": 519.774667,
+      "std": 107.630293,
+      "min": 164.516969,
+      "max": 723.37963,
+      "skewness": -0.7949,
+      "kurtosis": 0.1735,
+      "outlier_iqr_pct": 2.25
+    },
+    {
+      "feature": "soil_organic_carbon",
+      "count": 22542,
+      "mean": 413.418988,
+      "std": 124.274392,
+      "min": 238.600448,
+      "max": 1005.550557,
+      "skewness": 1.9178,
+      "kurtosis": 4.7655,
+      "outlier_iqr_pct": 5.71
+    },
+    {
+      "feature": "elevation_mean_m",
+      "count": 22737,
+      "mean": 268.249239,
+      "std": 78.994649,
+      "min": 79.845739,
+      "max": 523.617306,
+      "skewness": 0.2338,
+      "kurtosis": -0.2348,
+      "outlier_iqr_pct": 0.34
+    },
+    {
+      "feature": "elevation_std_m",
+      "count": 22737,
+      "mean": 23.8456,
+      "std": 11.32841,
+      "min": 2.879941,
+      "max": 110.057279,
+      "skewness": 1.7837,
+      "kurtosis": 7.255,
+      "outlier_iqr_pct": 3.77
+    },
+    {
+      "feature": "slope_mean",
+      "count": 22737,
+      "mean": 2.388498,
+      "std": 1.959921,
+      "min": 0.178251,
+      "max": 11.410054,
+      "skewness": 1.6277,
+      "kurtosis": 2.5879,
+      "outlier_iqr_pct": 6.69
+    },
+    {
+      "feature": "nlcd_cropland_frac",
+      "count": 22737,
+      "mean": 0.475115,
+      "std": 0.290353,
+      "min": 0.0,
+      "max": 0.910079,
+      "skewness": -0.3024,
+      "kurtosis": -1.2943,
+      "outlier_iqr_pct": 0.0
+    },
+    {
+      "feature": "nlcd_pasture_hay_frac",
+      "count": 22737,
+      "mean": 0.143424,
+      "std": 0.129586,
+      "min": 0.00014,
+      "max": 0.682558,
+      "skewness": 1.4411,
+      "kurtosis": 1.5602,
+      "outlier_iqr_pct": 6.0
+    },
+    {
+      "feature": "nlcd_forest_frac",
+      "count": 22737,
+      "mean": 0.198799,
+      "std": 0.198303,
+      "min": 0.000286,
+      "max": 0.862752,
+      "skewness": 1.3408,
+      "kurtosis": 0.9976,
+      "outlier_iqr_pct": 6.17
+    },
+    {
+      "feature": "nlcd_grass_shrub_frac",
+      "count": 22737,
+      "mean": 0.003926,
+      "std": 0.00668,
+      "min": 7e-06,
+      "max": 0.055176,
+      "skewness": 4.3687,
+      "kurtosis": 24.8661,
+      "outlier_iqr_pct": 8.4
+    },
+    {
+      "feature": "nlcd_developed_frac",
+      "count": 22737,
+      "mean": 0.108209,
+      "std": 0.104516,
+      "min": 0.00583,
+      "max": 0.932411,
+      "skewness": 4.2459,
+      "kurtosis": 22.5862,
+      "outlier_iqr_pct": 10.46
+    },
+    {
+      "feature": "nlcd_water_wetland_frac",
+      "count": 22737,
+      "mean": 0.068548,
+      "std": 0.120046,
+      "min": 0.000734,
+      "max": 0.924724,
+      "skewness": 3.8414,
+      "kurtosis": 16.5421,
+      "outlier_iqr_pct": 10.29
+    },
+    {
+      "feature": "CDHW_Flag",
+      "count": 22737,
+      "mean": 0.271628,
+      "std": 0.444809,
+      "min": 0.0,
+      "max": 1.0,
+      "skewness": 1.0269,
+      "kurtosis": -0.9455,
+      "outlier_iqr_pct": 0.0
+    }
+  ],
+  "targets": {
+    "Corn_Yield_tha": {
+      "valid_count": 20507,
+      "missing_count": 2230,
+      "missing_pct": 9.81,
+      "mean": 8.7915,
+      "std": 2.3367,
+      "skewness": -0.1497,
+      "kurtosis": -0.292
+    },
+    "Corn_Yield_buacre": {
+      "valid_count": 20507,
+      "missing_count": 2230,
+      "missing_pct": 9.81,
+      "mean": 140.2149,
+      "std": 37.2673,
+      "skewness": -0.1497,
+      "kurtosis": -0.292
+    }
+  },
+  "disaster_columns": {
+    "CDHW_Flag": {
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "dtype": "int64",
+      "nunique": 2,
+      "retained": true,
+      "retention_reason": "Complete or near-complete data"
+    },
+    "CDHW_Event_Count": {
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "dtype": "float64",
+      "nunique": 43,
+      "retained": true,
+      "retention_reason": "Complete or near-complete data"
+    },
+    "CDHW_Severity_Score": {
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "dtype": "float64",
+      "nunique": 6177,
+      "retained": true,
+      "retention_reason": "Complete or near-complete data"
+    },
+    "noaa_hail_count_gs": {
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "dtype": "float64",
+      "nunique": 49,
+      "retained": true,
+      "retention_reason": "Complete or near-complete data"
+    },
+    "noaa_thunderstorm_wind_count_gs": {
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "dtype": "float64",
+      "nunique": 53,
+      "retained": true,
+      "retention_reason": "Complete or near-complete data"
+    },
+    "noaa_tornado_count_gs": {
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "dtype": "float64",
+      "nunique": 14,
+      "retained": true,
+      "retention_reason": "Complete or near-complete data"
+    },
+    "noaa_max_hail_size_gs": {
+      "missing_count": 1,
+      "missing_pct": 0.0,
+      "dtype": "float64",
+      "nunique": 44,
+      "retained": true,
+      "retention_reason": "Complete or near-complete data"
+    }
+  },
+  "cardinality": {
+    "GEOID": 583,
+    "County_Name": 379,
+    "State": 6,
+    "STATEFP": 6,
+    "COUNTYFP": 117,
+    "Lat": 583,
+    "Lon": 583,
+    "Year": 39,
+    "Split": 3,
+    "Corn_Yield_tha": 1853,
+    "Corn_Yield_buacre": 1853,
+    "Has_Corn_Yield": 2,
+    "ENSO_Phase": 3,
+    "ENSO_Anomalous_Year": 2,
+    "prism_tmax_mean_gs": 22676,
+    "prism_tmax_max_gs": 22586,
+    "prism_tmin_mean_gs": 22702,
+    "prism_tmin_min_gs": 22727,
+    "Precip_growseason_mm": 22708,
+    "GDD_Accumulated": 22703,
+    "prism_kdd30_gs": 22694,
+    "Tmax_Days_Above_35": 46,
+    "prism_heat_exceedance_total_gs": 12026,
+    "nldas_et0_total_gs": 22689,
+    "nldas_rs_mean_gs": 22584,
+    "nldas_humidity_mean_gs": 22686,
+    "nldas_vpd_mean_gs": 22712,
+    "nldas_wind_mean_gs": 22685,
+    "spi1_prism_mean_gs": 22733,
+    "spi1_prism_min_gs": 20714,
+    "spi3_prism_mean_gs": 22735,
+    "spi3_prism_min_gs": 22368,
+    "spi6_prism_mean_gs": 22149,
+    "spi6_prism_min_gs": 21989,
+    "spi12_prism_mean_gs": 22152,
+    "spi12_prism_min_gs": 22022,
+    "SPEI_30_mean": 22734,
+    "SPEI_30_min": 22453,
+    "spei30_prism_nldas_max_gs": 22336,
+    "spei30_prism_nldas_drought_days_gs": 173,
+    "spei90_prism_nldas_mean_gs": 22734,
+    "spei90_prism_nldas_min_gs": 22668,
+    "cdhw_count_gs": 14,
+    "CDHW_Event_Count": 43,
+    "cdhw_max_duration_gs": 21,
+    "cdhw_max_severity_gs": 6177,
+    "CDHW_Severity_Score": 6177,
+    "pheno_veg_days": 100,
+    "pheno_silk_days": 73,
+    "prism_tmax_mean_veg": 22663,
+    "prism_tmax_days_gt35_veg": 9,
+    "prism_ppt_total_veg": 22720,
+    "nldas_et0_total_veg": 22696,
+    "nldas_vpd_mean_veg": 22700,
+    "spi1_prism_min_veg": 21977,
+    "spei30_prism_nldas_mean_veg": 22734,
+    "spei30_prism_nldas_min_veg": 22674,
+    "cdhw_count_veg": 5,
+    "cdhw_total_days_veg": 9,
+    "CDHW_Severity_vegetative": 1665,
+    "prism_tmax_mean_silk": 22685,
+    "prism_tmax_days_gt35_silk": 31,
+    "prism_ppt_total_silk": 22720,
+    "nldas_et0_total_silk": 22664,
+    "nldas_vpd_mean_silk": 22713,
+    "spi1_prism_min_silk": 22119,
+    "spei30_prism_nldas_mean_silk": 22734,
+    "spei30_prism_nldas_min_silk": 22669,
+    "cdhw_count_silk": 12,
+    "cdhw_total_days_silk": 31,
+    "CDHW_Severity_silking": 4433,
+    "prism_tmax_mean_grain": 21260,
+    "prism_tmax_days_gt35_grain": 24,
+    "prism_ppt_total_grain": 21263,
+    "nldas_et0_total_grain": 21286,
+    "nldas_vpd_mean_grain": 21284,
+    "spi1_prism_min_grain": 20452,
+    "spei30_prism_nldas_mean_grain": 21288,
+    "spei30_prism_nldas_min_grain": 21134,
+    "cdhw_count_grain": 9,
+    "cdhw_total_days_grain": 24,
+    "CDHW_Severity_grainfill": 2531,
+    "noaa_hail_count_gs": 49,
+    "noaa_thunderstorm_wind_count_gs": 53,
+    "noaa_tornado_count_gs": 14,
+    "noaa_max_hail_size_gs": 44,
+    "soil_awc": 578,
+    "soil_bulk_density": 578,
+    "soil_clay": 578,
+    "soil_silt": 578,
+    "soil_organic_carbon": 578,
+    "elevation_mean_m": 583,
+    "elevation_std_m": 583,
+    "slope_mean": 583,
+    "nlcd_cropland_frac": 583,
+    "nlcd_pasture_hay_frac": 583,
+    "nlcd_forest_frac": 583,
+    "nlcd_grass_shrub_frac": 583,
+    "nlcd_developed_frac": 583,
+    "nlcd_water_wetland_frac": 583,
+    "CDHW_Flag": 2
+  },
+  "state_target_stats": {
+    "Illinois": {
+      "Corn_Yield_tha": {
+        "count": 3821,
+        "mean": 9.3312,
+        "std": 2.427
+      }
+    },
+    "Indiana": {
+      "Corn_Yield_tha": {
+        "count": 3377,
+        "mean": 9.046,
+        "std": 2.0151
+      }
+    },
+    "Iowa": {
+      "Corn_Yield_tha": {
+        "count": 3803,
+        "mean": 9.6373,
+        "std": 2.2231
+      }
+    },
+    "Minnesota": {
+      "Corn_Yield_tha": {
+        "count": 2947,
+        "mean": 8.5901,
+        "std": 2.4983
+      }
+    },
+    "Missouri": {
+      "Corn_Yield_tha": {
+        "count": 3353,
+        "mean": 7.353,
+        "std": 2.0916
+      }
+    },
+    "Ohio": {
+      "Corn_Yield_tha": {
+        "count": 3206,
+        "mean": 8.5663,
+        "std": 1.9857
+      }
+    }
+  }
+}

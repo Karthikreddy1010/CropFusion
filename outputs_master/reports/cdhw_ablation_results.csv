@@ -1,0 +1,3 @@
+Model,RMSE,MAE,R2,Delta_RMSE,Delta_MAE,Delta_R2
+Base_without_CDHW,0.9701,0.7555,0.6724,0.0,0.0,0.0
+Base_with_CDHW,0.9529,0.7328,0.684,0.0172,0.0227,0.0116

@@ -1,0 +1,10 @@
+{
+  "model_name": "NeuralCQR",
+  "is_neural": true,
+  "feature_count": 94,
+  "hyperparams": {
+    "type": "NeuralCQR",
+    "epochs_trained": 187,
+    "fit_period": "1985-2015"
+  }
+}

@@ -1,0 +1,1144 @@
+{
+  "iqr_analysis": {
+    "Corn_Yield_tha": {
+      "q25": 7.2544,
+      "q75": 10.4772,
+      "iqr": 3.2228,
+      "outlier_count": 60,
+      "outlier_pct": 0.29
+    },
+    "Corn_Yield_buacre": {
+      "q25": 115.7,
+      "q75": 167.1,
+      "iqr": 51.4,
+      "outlier_count": 60,
+      "outlier_pct": 0.29
+    },
+    "prism_tmax_mean_gs": {
+      "q25": 22.5975,
+      "q75": 25.3063,
+      "iqr": 2.7088,
+      "outlier_count": 311,
+      "outlier_pct": 1.37
+    },
+    "prism_tmax_max_gs": {
+      "q25": 33.8988,
+      "q75": 36.6249,
+      "iqr": 2.7261,
+      "outlier_count": 202,
+      "outlier_pct": 0.89
+    },
+    "prism_tmin_mean_gs": {
+      "q25": 10.5179,
+      "q75": 12.995,
+      "iqr": 2.4771,
+      "outlier_count": 449,
+      "outlier_pct": 1.97
+    },
+    "prism_tmin_min_gs": {
+      "q25": -6.5224,
+      "q75": -2.7409,
+      "iqr": 3.7816,
+      "outlier_count": 678,
+      "outlier_pct": 2.98
+    },
+    "Precip_growseason_mm": {
+      "q25": 571.8088,
+      "q75": 796.7581,
+      "iqr": 224.9492,
+      "outlier_count": 214,
+      "outlier_pct": 0.94
+    },
+    "GDD_Accumulated": {
+      "q25": 1682.1465,
+      "q75": 2066.4053,
+      "iqr": 384.2588,
+      "outlier_count": 247,
+      "outlier_pct": 1.09
+    },
+    "prism_kdd30_gs": {
+      "q25": 35.9456,
+      "q75": 126.9466,
+      "iqr": 91.001,
+      "outlier_count": 811,
+      "outlier_pct": 3.57
+    },
+    "Tmax_Days_Above_35": {
+      "q25": 0.0,
+      "q75": 4.0,
+      "iqr": 4.0,
+      "outlier_count": 2334,
+      "outlier_pct": 10.27
+    },
+    "prism_heat_exceedance_total_gs": {
+      "q25": 0.0,
+      "q75": 3.3559,
+      "iqr": 3.3559,
+      "outlier_count": 3226,
+      "outlier_pct": 14.19
+    },
+    "nldas_et0_total_gs": {
+      "q25": 825.7996,
+      "q75": 962.3848,
+      "iqr": 136.5852,
+      "outlier_count": 435,
+      "outlier_pct": 1.91
+    },
+    "nldas_rs_mean_gs": {
+      "q25": 18.6661,
+      "q75": 19.9877,
+      "iqr": 1.3215,
+      "outlier_count": 30,
+      "outlier_pct": 0.13
+    },
+    "nldas_humidity_mean_gs": {
+      "q25": 1.48,
+      "q75": 1.7575,
+      "iqr": 0.2775,
+      "outlier_count": 93,
+      "outlier_pct": 0.41
+    },
+    "nldas_vpd_mean_gs": {
+      "q25": 0.7359,
+      "q75": 1.0294,
+      "iqr": 0.2935,
+      "outlier_count": 608,
+      "outlier_pct": 2.67
+    },
+    "nldas_wind_mean_gs": {
+      "q25": 2.7543,
+      "q75": 3.1751,
+      "iqr": 0.4207,
+      "outlier_count": 50,
+      "outlier_pct": 0.22
+    },
+    "spi1_prism_mean_gs": {
+      "q25": -0.2279,
+      "q75": 0.3453,
+      "iqr": 0.5732,
+      "outlier_count": 86,
+      "outlier_pct": 0.38
+    },
+    "spi1_prism_min_gs": {
+      "q25": -2.5193,
+      "q75": -1.5613,
+      "iqr": 0.958,
+      "outlier_count": 1,
+      "outlier_pct": 0.0
+    },
+    "spi3_prism_mean_gs": {
+      "q25": -0.3478,
+      "q75": 0.5491,
+      "iqr": 0.8968,
+      "outlier_count": 113,
+      "outlier_pct": 0.5
+    },
+    "spi3_prism_min_gs": {
+      "q25": -1.8886,
+      "q75": -0.8073,
+      "iqr": 1.0813,
+      "outlier_count": 18,
+      "outlier_pct": 0.08
+    },
+    "spi6_prism_mean_gs": {
+      "q25": -0.4181,
+      "q75": 0.6625,
+      "iqr": 1.0806,
+      "outlier_count": 105,
+      "outlier_pct": 0.47
+    },
+    "spi6_prism_min_gs": {
+      "q25": -1.6136,
+      "q75": -0.3865,
+      "iqr": 1.2271,
+      "outlier_count": 12,
+      "outlier_pct": 0.05
+    },
+    "spi12_prism_mean_gs": {
+      "q25": -0.4312,
+      "q75": 0.7352,
+      "iqr": 1.1664,
+      "outlier_count": 146,
+      "outlier_pct": 0.66
+    },
+    "spi12_prism_min_gs": {
+      "q25": -1.3518,
+      "q75": -0.1166,
+      "iqr": 1.2352,
+      "outlier_count": 67,
+      "outlier_pct": 0.3
+    },
+    "SPEI_30_mean": {
+      "q25": -0.2859,
+      "q75": 0.3304,
+      "iqr": 0.6163,
+      "outlier_count": 277,
+      "outlier_pct": 1.22
+    },
+    "SPEI_30_min": {
+      "q25": -2.0398,
+      "q75": -1.3419,
+      "iqr": 0.6979,
+      "outlier_count": 367,
+      "outlier_pct": 1.61
+    },
+    "spei30_prism_nldas_max_gs": {
+      "q25": 1.4407,
+      "q75": 2.199,
+      "iqr": 0.7583,
+      "outlier_count": 226,
+      "outlier_pct": 0.99
+    },
+    "spei30_prism_nldas_drought_days_gs": {
+      "q25": 11.0,
+      "q75": 53.0,
+      "iqr": 42.0,
+      "outlier_count": 745,
+      "outlier_pct": 3.28
+    },
+    "spei90_prism_nldas_mean_gs": {
+      "q25": -0.434,
+      "q75": 0.5059,
+      "iqr": 0.9399,
+      "outlier_count": 40,
+      "outlier_pct": 0.18
+    },
+    "spei90_prism_nldas_min_gs": {
+      "q25": -1.6798,
+      "q75": -0.793,
+      "iqr": 0.8868,
+      "outlier_count": 290,
+      "outlier_pct": 1.28
+    },
+    "cdhw_count_gs": {
+      "q25": 0.0,
+      "q75": 1.0,
+      "iqr": 1.0,
+      "outlier_count": 2301,
+      "outlier_pct": 10.12
+    },
+    "CDHW_Event_Count": {
+      "q25": 0.0,
+      "q75": 1.0,
+      "iqr": 1.0,
+      "outlier_count": 3537,
+      "outlier_pct": 15.56
+    },
+    "cdhw_max_duration_gs": {
+      "q25": 0.0,
+      "q75": 1.0,
+      "iqr": 1.0,
+      "outlier_count": 2674,
+      "outlier_pct": 11.76
+    },
+    "cdhw_max_severity_gs": {
+      "q25": 0.0,
+      "q75": 0.3486,
+      "iqr": 0.3486,
+      "outlier_count": 5067,
+      "outlier_pct": 22.29
+    },
+    "CDHW_Severity_Score": {
+      "q25": 0.0,
+      "q75": 0.3593,
+      "iqr": 0.3593,
+      "outlier_count": 5093,
+      "outlier_pct": 22.4
+    },
+    "pheno_veg_days": {
+      "q25": 85.0,
+      "q75": 99.0,
+      "iqr": 14.0,
+      "outlier_count": 479,
+      "outlier_pct": 2.11
+    },
+    "pheno_silk_days": {
+      "q25": 51.0,
+      "q75": 62.0,
+      "iqr": 11.0,
+      "outlier_count": 1930,
+      "outlier_pct": 8.49
+    },
+    "prism_tmax_mean_veg": {
+      "q25": 21.3077,
+      "q75": 23.305,
+      "iqr": 1.9973,
+      "outlier_count": 195,
+      "outlier_pct": 0.86
+    },
+    "prism_tmax_days_gt35_veg": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "prism_ppt_total_veg": {
+      "q25": 252.0009,
+      "q75": 402.0481,
+      "iqr": 150.0472,
+      "outlier_count": 212,
+      "outlier_pct": 0.93
+    },
+    "nldas_et0_total_veg": {
+      "q25": 354.193,
+      "q75": 421.635,
+      "iqr": 67.442,
+      "outlier_count": 489,
+      "outlier_pct": 2.15
+    },
+    "nldas_vpd_mean_veg": {
+      "q25": 0.6728,
+      "q75": 0.8482,
+      "iqr": 0.1754,
+      "outlier_count": 846,
+      "outlier_pct": 3.72
+    },
+    "spi1_prism_min_veg": {
+      "q25": -2.0014,
+      "q75": -0.9142,
+      "iqr": 1.0872,
+      "outlier_count": 3,
+      "outlier_pct": 0.01
+    },
+    "spei30_prism_nldas_mean_veg": {
+      "q25": -0.38,
+      "q75": 0.4641,
+      "iqr": 0.8441,
+      "outlier_count": 65,
+      "outlier_pct": 0.29
+    },
+    "spei30_prism_nldas_min_veg": {
+      "q25": -1.7084,
+      "q75": -0.9394,
+      "iqr": 0.769,
+      "outlier_count": 214,
+      "outlier_pct": 0.94
+    },
+    "cdhw_count_veg": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "cdhw_total_days_veg": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "CDHW_Severity_vegetative": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "prism_tmax_mean_silk": {
+      "q25": 27.1647,
+      "q75": 30.3433,
+      "iqr": 3.1786,
+      "outlier_count": 1667,
+      "outlier_pct": 7.33
+    },
+    "prism_tmax_days_gt35_silk": {
+      "q25": 0.0,
+      "q75": 2.0,
+      "iqr": 2.0,
+      "outlier_count": 2780,
+      "outlier_pct": 12.23
+    },
+    "prism_ppt_total_silk": {
+      "q25": 133.2155,
+      "q75": 234.6127,
+      "iqr": 101.3972,
+      "outlier_count": 411,
+      "outlier_pct": 1.81
+    },
+    "nldas_et0_total_silk": {
+      "q25": 257.5441,
+      "q75": 313.7399,
+      "iqr": 56.1958,
+      "outlier_count": 943,
+      "outlier_pct": 4.15
+    },
+    "nldas_vpd_mean_silk": {
+      "q25": 0.8286,
+      "q75": 1.3057,
+      "iqr": 0.4771,
+      "outlier_count": 1338,
+      "outlier_pct": 5.88
+    },
+    "spi1_prism_min_silk": {
+      "q25": -1.7943,
+      "q75": -0.688,
+      "iqr": 1.1063,
+      "outlier_count": 99,
+      "outlier_pct": 0.44
+    },
+    "spei30_prism_nldas_mean_silk": {
+      "q25": -0.4714,
+      "q75": 0.5354,
+      "iqr": 1.0068,
+      "outlier_count": 360,
+      "outlier_pct": 1.58
+    },
+    "spei30_prism_nldas_min_silk": {
+      "q25": -1.5111,
+      "q75": -0.6206,
+      "iqr": 0.8905,
+      "outlier_count": 371,
+      "outlier_pct": 1.63
+    },
+    "cdhw_count_silk": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "cdhw_total_days_silk": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "CDHW_Severity_silking": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "prism_tmax_mean_grain": {
+      "q25": 19.9565,
+      "q75": 24.62,
+      "iqr": 4.6635,
+      "outlier_count": 293,
+      "outlier_pct": 1.38
+    },
+    "prism_tmax_days_gt35_grain": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "prism_ppt_total_grain": {
+      "q25": 100.984,
+      "q75": 234.9891,
+      "iqr": 134.0051,
+      "outlier_count": 282,
+      "outlier_pct": 1.24
+    },
+    "nldas_et0_total_grain": {
+      "q25": 151.8054,
+      "q75": 293.1063,
+      "iqr": 141.3009,
+      "outlier_count": 30,
+      "outlier_pct": 0.13
+    },
+    "nldas_vpd_mean_grain": {
+      "q25": 0.6723,
+      "q75": 1.007,
+      "iqr": 0.3346,
+      "outlier_count": 465,
+      "outlier_pct": 2.18
+    },
+    "spi1_prism_min_grain": {
+      "q25": -2.0153,
+      "q75": -0.8401,
+      "iqr": 1.1753,
+      "outlier_count": 118,
+      "outlier_pct": 0.55
+    },
+    "spei30_prism_nldas_mean_grain": {
+      "q25": -0.555,
+      "q75": 0.4798,
+      "iqr": 1.0348,
+      "outlier_count": 42,
+      "outlier_pct": 0.2
+    },
+    "spei30_prism_nldas_min_grain": {
+      "q25": -1.7724,
+      "q75": -0.8058,
+      "iqr": 0.9666,
+      "outlier_count": 279,
+      "outlier_pct": 1.31
+    },
+    "cdhw_count_grain": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "cdhw_total_days_grain": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "CDHW_Severity_grainfill": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "noaa_hail_count_gs": {
+      "q25": 0.0,
+      "q75": 4.0,
+      "iqr": 4.0,
+      "outlier_count": 1104,
+      "outlier_pct": 4.86
+    },
+    "noaa_thunderstorm_wind_count_gs": {
+      "q25": 1.0,
+      "q75": 5.0,
+      "iqr": 4.0,
+      "outlier_count": 1089,
+      "outlier_pct": 4.79
+    },
+    "noaa_tornado_count_gs": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "noaa_max_hail_size_gs": {
+      "q25": 0.0,
+      "q75": 1.75,
+      "iqr": 1.75,
+      "outlier_count": 65,
+      "outlier_pct": 0.29
+    },
+    "soil_awc": {
+      "q25": 338.3617,
+      "q75": 359.1536,
+      "iqr": 20.7919,
+      "outlier_count": 1365,
+      "outlier_pct": 6.06
+    },
+    "soil_bulk_density": {
+      "q25": 132.5648,
+      "q75": 140.7545,
+      "iqr": 8.1897,
+      "outlier_count": 702,
+      "outlier_pct": 3.11
+    },
+    "soil_clay": {
+      "q25": 241.8172,
+      "q75": 312.97,
+      "iqr": 71.1527,
+      "outlier_count": 390,
+      "outlier_pct": 1.73
+    },
+    "soil_silt": {
+      "q25": 461.4064,
+      "q75": 595.9571,
+      "iqr": 134.5507,
+      "outlier_count": 507,
+      "outlier_pct": 2.25
+    },
+    "soil_organic_carbon": {
+      "q25": 331.0968,
+      "q75": 458.6139,
+      "iqr": 127.5172,
+      "outlier_count": 1287,
+      "outlier_pct": 5.71
+    },
+    "elevation_mean_m": {
+      "q25": 208.7779,
+      "q75": 323.177,
+      "iqr": 114.399,
+      "outlier_count": 78,
+      "outlier_pct": 0.34
+    },
+    "elevation_std_m": {
+      "q25": 16.6175,
+      "q75": 28.5073,
+      "iqr": 11.8898,
+      "outlier_count": 858,
+      "outlier_pct": 3.77
+    },
+    "slope_mean": {
+      "q25": 1.0188,
+      "q75": 3.0667,
+      "iqr": 2.0479,
+      "outlier_count": 1521,
+      "outlier_pct": 6.69
+    },
+    "nlcd_cropland_frac": {
+      "q25": 0.2026,
+      "q75": 0.7409,
+      "iqr": 0.5383,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "nlcd_pasture_hay_frac": {
+      "q25": 0.0502,
+      "q75": 0.2003,
+      "iqr": 0.1501,
+      "outlier_count": 1365,
+      "outlier_pct": 6.0
+    },
+    "nlcd_forest_frac": {
+      "q25": 0.0526,
+      "q75": 0.2746,
+      "iqr": 0.2221,
+      "outlier_count": 1404,
+      "outlier_pct": 6.17
+    },
+    "nlcd_grass_shrub_frac": {
+      "q25": 0.0005,
+      "q75": 0.0045,
+      "iqr": 0.004,
+      "outlier_count": 1911,
+      "outlier_pct": 8.4
+    },
+    "nlcd_developed_frac": {
+      "q25": 0.0594,
+      "q75": 0.1093,
+      "iqr": 0.0499,
+      "outlier_count": 2379,
+      "outlier_pct": 10.46
+    },
+    "nlcd_water_wetland_frac": {
+      "q25": 0.015,
+      "q75": 0.066,
+      "iqr": 0.051,
+      "outlier_count": 2340,
+      "outlier_pct": 10.29
+    },
+    "CDHW_Flag": {
+      "q25": 0.0,
+      "q75": 1.0,
+      "iqr": 1.0,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "CDHW_Veg_Severity": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "CDHW_Silking_Severity": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "CDHW_GrainFill_Severity": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_sin_P1_0": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_cos_P1_0": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_sin_P3_0": {
+      "q25": -0.866,
+      "q75": 0.866,
+      "iqr": 1.7321,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_cos_P3_0": {
+      "q25": -0.5,
+      "q75": 1.0,
+      "iqr": 1.5,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_sin_P5_0": {
+      "q25": -0.5878,
+      "q75": 0.5878,
+      "iqr": 1.1756,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_cos_P5_0": {
+      "q25": -0.809,
+      "q75": 0.309,
+      "iqr": 1.118,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_sin_P7_0": {
+      "q25": -0.7818,
+      "q75": 0.7818,
+      "iqr": 1.5637,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_cos_P7_0": {
+      "q25": -0.901,
+      "q75": 0.6235,
+      "iqr": 1.5245,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_sin_P11_0": {
+      "q25": -0.5406,
+      "q75": 0.7558,
+      "iqr": 1.2964,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_cos_P11_0": {
+      "q25": -0.6549,
+      "q75": 0.8413,
+      "iqr": 1.4961,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_sin_P19_0": {
+      "q25": -0.7357,
+      "q75": 0.7357,
+      "iqr": 1.4714,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Fourier_cos_P19_0": {
+      "q25": -0.6773,
+      "q75": 0.7891,
+      "iqr": 1.4664,
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    },
+    "Inter_SPEI_Tmax": {
+      "q25": -72.6135,
+      "q75": -46.5516,
+      "iqr": 26.0619,
+      "outlier_count": 365,
+      "outlier_pct": 1.61
+    },
+    "Inter_Heat_Precip": {
+      "q25": 0.0,
+      "q75": 2537.9475,
+      "iqr": 2537.9475,
+      "outlier_count": 2482,
+      "outlier_pct": 10.92
+    },
+    "Inter_CDHW_GDD": {
+      "outlier_count": 0,
+      "outlier_pct": 0.0
+    }
+  },
+  "zscore_analysis": {
+    "Corn_Yield_tha": {
+      "zscore_gt3_count": 14,
+      "zscore_gt3_pct": 0.07
+    },
+    "Corn_Yield_buacre": {
+      "zscore_gt3_count": 14,
+      "zscore_gt3_pct": 0.07
+    },
+    "prism_tmax_mean_gs": {
+      "zscore_gt3_count": 100,
+      "zscore_gt3_pct": 0.44
+    },
+    "prism_tmax_max_gs": {
+      "zscore_gt3_count": 65,
+      "zscore_gt3_pct": 0.29
+    },
+    "prism_tmin_mean_gs": {
+      "zscore_gt3_count": 152,
+      "zscore_gt3_pct": 0.67
+    },
+    "prism_tmin_min_gs": {
+      "zscore_gt3_count": 337,
+      "zscore_gt3_pct": 1.48
+    },
+    "Precip_growseason_mm": {
+      "zscore_gt3_count": 105,
+      "zscore_gt3_pct": 0.46
+    },
+    "GDD_Accumulated": {
+      "zscore_gt3_count": 97,
+      "zscore_gt3_pct": 0.43
+    },
+    "prism_kdd30_gs": {
+      "zscore_gt3_count": 283,
+      "zscore_gt3_pct": 1.24
+    },
+    "Tmax_Days_Above_35": {
+      "zscore_gt3_count": 672,
+      "zscore_gt3_pct": 2.96
+    },
+    "prism_heat_exceedance_total_gs": {
+      "zscore_gt3_count": 592,
+      "zscore_gt3_pct": 2.6
+    },
+    "nldas_et0_total_gs": {
+      "zscore_gt3_count": 189,
+      "zscore_gt3_pct": 0.83
+    },
+    "nldas_rs_mean_gs": {
+      "zscore_gt3_count": 14,
+      "zscore_gt3_pct": 0.06
+    },
+    "nldas_humidity_mean_gs": {
+      "zscore_gt3_count": 4,
+      "zscore_gt3_pct": 0.02
+    },
+    "nldas_vpd_mean_gs": {
+      "zscore_gt3_count": 275,
+      "zscore_gt3_pct": 1.21
+    },
+    "nldas_wind_mean_gs": {
+      "zscore_gt3_count": 14,
+      "zscore_gt3_pct": 0.06
+    },
+    "spi1_prism_mean_gs": {
+      "zscore_gt3_count": 36,
+      "zscore_gt3_pct": 0.16
+    },
+    "spi1_prism_min_gs": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "spi3_prism_mean_gs": {
+      "zscore_gt3_count": 57,
+      "zscore_gt3_pct": 0.25
+    },
+    "spi3_prism_min_gs": {
+      "zscore_gt3_count": 11,
+      "zscore_gt3_pct": 0.05
+    },
+    "spi6_prism_mean_gs": {
+      "zscore_gt3_count": 37,
+      "zscore_gt3_pct": 0.17
+    },
+    "spi6_prism_min_gs": {
+      "zscore_gt3_count": 6,
+      "zscore_gt3_pct": 0.03
+    },
+    "spi12_prism_mean_gs": {
+      "zscore_gt3_count": 23,
+      "zscore_gt3_pct": 0.1
+    },
+    "spi12_prism_min_gs": {
+      "zscore_gt3_count": 22,
+      "zscore_gt3_pct": 0.1
+    },
+    "SPEI_30_mean": {
+      "zscore_gt3_count": 7,
+      "zscore_gt3_pct": 0.03
+    },
+    "SPEI_30_min": {
+      "zscore_gt3_count": 38,
+      "zscore_gt3_pct": 0.17
+    },
+    "spei30_prism_nldas_max_gs": {
+      "zscore_gt3_count": 94,
+      "zscore_gt3_pct": 0.41
+    },
+    "spei30_prism_nldas_drought_days_gs": {
+      "zscore_gt3_count": 266,
+      "zscore_gt3_pct": 1.17
+    },
+    "spei90_prism_nldas_mean_gs": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "spei90_prism_nldas_min_gs": {
+      "zscore_gt3_count": 66,
+      "zscore_gt3_pct": 0.29
+    },
+    "cdhw_count_gs": {
+      "zscore_gt3_count": 755,
+      "zscore_gt3_pct": 3.32
+    },
+    "CDHW_Event_Count": {
+      "zscore_gt3_count": 653,
+      "zscore_gt3_pct": 2.87
+    },
+    "cdhw_max_duration_gs": {
+      "zscore_gt3_count": 556,
+      "zscore_gt3_pct": 2.45
+    },
+    "cdhw_max_severity_gs": {
+      "zscore_gt3_count": 457,
+      "zscore_gt3_pct": 2.01
+    },
+    "CDHW_Severity_Score": {
+      "zscore_gt3_count": 485,
+      "zscore_gt3_pct": 2.13
+    },
+    "pheno_veg_days": {
+      "zscore_gt3_count": 264,
+      "zscore_gt3_pct": 1.16
+    },
+    "pheno_silk_days": {
+      "zscore_gt3_count": 768,
+      "zscore_gt3_pct": 3.38
+    },
+    "prism_tmax_mean_veg": {
+      "zscore_gt3_count": 70,
+      "zscore_gt3_pct": 0.31
+    },
+    "prism_tmax_days_gt35_veg": {
+      "zscore_gt3_count": 950,
+      "zscore_gt3_pct": 4.18
+    },
+    "prism_ppt_total_veg": {
+      "zscore_gt3_count": 91,
+      "zscore_gt3_pct": 0.4
+    },
+    "nldas_et0_total_veg": {
+      "zscore_gt3_count": 192,
+      "zscore_gt3_pct": 0.84
+    },
+    "nldas_vpd_mean_veg": {
+      "zscore_gt3_count": 385,
+      "zscore_gt3_pct": 1.69
+    },
+    "spi1_prism_min_veg": {
+      "zscore_gt3_count": 1,
+      "zscore_gt3_pct": 0.0
+    },
+    "spei30_prism_nldas_mean_veg": {
+      "zscore_gt3_count": 2,
+      "zscore_gt3_pct": 0.01
+    },
+    "spei30_prism_nldas_min_veg": {
+      "zscore_gt3_count": 88,
+      "zscore_gt3_pct": 0.39
+    },
+    "cdhw_count_veg": {
+      "zscore_gt3_count": 490,
+      "zscore_gt3_pct": 2.16
+    },
+    "cdhw_total_days_veg": {
+      "zscore_gt3_count": 593,
+      "zscore_gt3_pct": 2.61
+    },
+    "CDHW_Severity_vegetative": {
+      "zscore_gt3_count": 440,
+      "zscore_gt3_pct": 1.94
+    },
+    "prism_tmax_mean_silk": {
+      "zscore_gt3_count": 406,
+      "zscore_gt3_pct": 1.79
+    },
+    "prism_tmax_days_gt35_silk": {
+      "zscore_gt3_count": 598,
+      "zscore_gt3_pct": 2.63
+    },
+    "prism_ppt_total_silk": {
+      "zscore_gt3_count": 166,
+      "zscore_gt3_pct": 0.73
+    },
+    "nldas_et0_total_silk": {
+      "zscore_gt3_count": 197,
+      "zscore_gt3_pct": 0.87
+    },
+    "nldas_vpd_mean_silk": {
+      "zscore_gt3_count": 347,
+      "zscore_gt3_pct": 1.53
+    },
+    "spi1_prism_min_silk": {
+      "zscore_gt3_count": 31,
+      "zscore_gt3_pct": 0.14
+    },
+    "spei30_prism_nldas_mean_silk": {
+      "zscore_gt3_count": 62,
+      "zscore_gt3_pct": 0.27
+    },
+    "spei30_prism_nldas_min_silk": {
+      "zscore_gt3_count": 95,
+      "zscore_gt3_pct": 0.42
+    },
+    "cdhw_count_silk": {
+      "zscore_gt3_count": 572,
+      "zscore_gt3_pct": 2.52
+    },
+    "cdhw_total_days_silk": {
+      "zscore_gt3_count": 645,
+      "zscore_gt3_pct": 2.84
+    },
+    "CDHW_Severity_silking": {
+      "zscore_gt3_count": 397,
+      "zscore_gt3_pct": 1.75
+    },
+    "prism_tmax_mean_grain": {
+      "zscore_gt3_count": 148,
+      "zscore_gt3_pct": 0.69
+    },
+    "prism_tmax_days_gt35_grain": {
+      "zscore_gt3_count": 603,
+      "zscore_gt3_pct": 2.65
+    },
+    "prism_ppt_total_grain": {
+      "zscore_gt3_count": 121,
+      "zscore_gt3_pct": 0.53
+    },
+    "nldas_et0_total_grain": {
+      "zscore_gt3_count": 9,
+      "zscore_gt3_pct": 0.04
+    },
+    "nldas_vpd_mean_grain": {
+      "zscore_gt3_count": 127,
+      "zscore_gt3_pct": 0.6
+    },
+    "spi1_prism_min_grain": {
+      "zscore_gt3_count": 64,
+      "zscore_gt3_pct": 0.3
+    },
+    "spei30_prism_nldas_mean_grain": {
+      "zscore_gt3_count": 26,
+      "zscore_gt3_pct": 0.12
+    },
+    "spei30_prism_nldas_min_grain": {
+      "zscore_gt3_count": 113,
+      "zscore_gt3_pct": 0.53
+    },
+    "cdhw_count_grain": {
+      "zscore_gt3_count": 477,
+      "zscore_gt3_pct": 2.1
+    },
+    "cdhw_total_days_grain": {
+      "zscore_gt3_count": 549,
+      "zscore_gt3_pct": 2.41
+    },
+    "CDHW_Severity_grainfill": {
+      "zscore_gt3_count": 414,
+      "zscore_gt3_pct": 1.82
+    },
+    "noaa_hail_count_gs": {
+      "zscore_gt3_count": 432,
+      "zscore_gt3_pct": 1.9
+    },
+    "noaa_thunderstorm_wind_count_gs": {
+      "zscore_gt3_count": 400,
+      "zscore_gt3_pct": 1.76
+    },
+    "noaa_tornado_count_gs": {
+      "zscore_gt3_count": 678,
+      "zscore_gt3_pct": 2.98
+    },
+    "noaa_max_hail_size_gs": {
+      "zscore_gt3_count": 193,
+      "zscore_gt3_pct": 0.85
+    },
+    "soil_awc": {
+      "zscore_gt3_count": 234,
+      "zscore_gt3_pct": 1.04
+    },
+    "soil_bulk_density": {
+      "zscore_gt3_count": 312,
+      "zscore_gt3_pct": 1.38
+    },
+    "soil_clay": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "soil_silt": {
+      "zscore_gt3_count": 78,
+      "zscore_gt3_pct": 0.35
+    },
+    "soil_organic_carbon": {
+      "zscore_gt3_count": 624,
+      "zscore_gt3_pct": 2.77
+    },
+    "elevation_mean_m": {
+      "zscore_gt3_count": 78,
+      "zscore_gt3_pct": 0.34
+    },
+    "elevation_std_m": {
+      "zscore_gt3_count": 312,
+      "zscore_gt3_pct": 1.37
+    },
+    "slope_mean": {
+      "zscore_gt3_count": 429,
+      "zscore_gt3_pct": 1.89
+    },
+    "nlcd_cropland_frac": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "nlcd_pasture_hay_frac": {
+      "zscore_gt3_count": 273,
+      "zscore_gt3_pct": 1.2
+    },
+    "nlcd_forest_frac": {
+      "zscore_gt3_count": 234,
+      "zscore_gt3_pct": 1.03
+    },
+    "nlcd_grass_shrub_frac": {
+      "zscore_gt3_count": 390,
+      "zscore_gt3_pct": 1.72
+    },
+    "nlcd_developed_frac": {
+      "zscore_gt3_count": 468,
+      "zscore_gt3_pct": 2.06
+    },
+    "nlcd_water_wetland_frac": {
+      "zscore_gt3_count": 780,
+      "zscore_gt3_pct": 3.43
+    },
+    "CDHW_Flag": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "CDHW_Veg_Severity": {
+      "zscore_gt3_count": 440,
+      "zscore_gt3_pct": 1.94
+    },
+    "CDHW_Silking_Severity": {
+      "zscore_gt3_count": 397,
+      "zscore_gt3_pct": 1.75
+    },
+    "CDHW_GrainFill_Severity": {
+      "zscore_gt3_count": 414,
+      "zscore_gt3_pct": 1.82
+    },
+    "Fourier_sin_P3_0": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "Fourier_cos_P3_0": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "Fourier_sin_P5_0": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "Fourier_cos_P5_0": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "Fourier_sin_P7_0": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "Fourier_cos_P7_0": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "Fourier_sin_P11_0": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "Fourier_cos_P11_0": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "Fourier_sin_P19_0": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "Fourier_cos_P19_0": {
+      "zscore_gt3_count": 0,
+      "zscore_gt3_pct": 0.0
+    },
+    "Inter_SPEI_Tmax": {
+      "zscore_gt3_count": 80,
+      "zscore_gt3_pct": 0.35
+    },
+    "Inter_Heat_Precip": {
+      "zscore_gt3_count": 521,
+      "zscore_gt3_pct": 2.29
+    },
+    "Inter_CDHW_GDD": {
+      "zscore_gt3_count": 358,
+      "zscore_gt3_pct": 1.57
+    }
+  },
+  "isolation_forest": {
+    "status": "completed",
+    "columns_used": [
+      "spi1_prism_min_gs",
+      "spi1_prism_mean_gs",
+      "GDD_Accumulated",
+      "Tmax_Days_Above_35",
+      "Precip_growseason_mm",
+      "prism_tmax_mean_gs",
+      "prism_tmax_max_gs",
+      "prism_tmin_mean_gs",
+      "CDHW_Flag",
+      "CDHW_Event_Count",
+      "CDHW_Severity_Score"
+    ],
+    "n_samples": 22737,
+    "n_anomalies": 1137,
+    "anomaly_pct": 5.0,
+    "note": "Diagnostic only \u2014 no rows removed. Climate extremes preserved."
+  },
+  "plausibility_flags": {},
+  "decision": "Outlier removal SKIPPED for climate features. Extreme values in CDHW_Severity_Score, Tmax_Days_Above_35, DSCI_growseason_mean, and Storm_Events_Total represent genuine compound climate events (1988 drought, 2012 drought, 2023 heat dome) and are scientifically essential for Paper 3 ACI evaluation. Only 0 rows with physically impossible values removed.",
+  "rows_removed": 0
+}

@@ -1,0 +1,7 @@
+held_out_state,NeuralCQR_weight,LightGBM_weight,val_r2_neural_alone,val_r2_lgb_alone,val_r2_best_blend,validation_RMSE,validation_MAE,selected_objective
+Illinois,0.6,0.4,,,,,,Maximize R2 on dev val_fold
+Indiana,0.4,0.6,,,,,,Maximize R2 on dev val_fold
+Iowa,0.9,0.1,,,,,,Maximize R2 on dev val_fold
+Minnesota,0.8,0.2,,,,,,Maximize R2 on dev val_fold
+Missouri,0.8,0.2,,,,,,Maximize R2 on dev val_fold
+Ohio,0.7,0.3,,,,,,Maximize R2 on dev val_fold

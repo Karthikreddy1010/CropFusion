@@ -1,0 +1,12 @@
+state,weight_neuralcqr,weight_lightgbm,dev_r2,dev_rmse,dev_mae,selection_partition,is_selected
+Minnesota,0.0,1.0,0.3949,1.2396,0.987,LOSO_DEV_2014_2015,False
+Minnesota,0.1,0.9,0.4066,1.2275,0.9782,LOSO_DEV_2014_2015,False
+Minnesota,0.2,0.8,0.4168,1.2169,0.971,LOSO_DEV_2014_2015,False
+Minnesota,0.3,0.7,0.4254,1.2079,0.9644,LOSO_DEV_2014_2015,False
+Minnesota,0.4,0.6,0.4324,1.2005,0.9587,LOSO_DEV_2014_2015,False
+Minnesota,0.5,0.5,0.4378,1.1947,0.954,LOSO_DEV_2014_2015,False
+Minnesota,0.6,0.4,0.4417,1.1906,0.9503,LOSO_DEV_2014_2015,False
+Minnesota,0.7,0.3,0.444,1.1881,0.9483,LOSO_DEV_2014_2015,False
+Minnesota,0.8,0.2,0.4448,1.1874,0.9476,LOSO_DEV_2014_2015,True
+Minnesota,0.9,0.1,0.4439,1.1883,0.9484,LOSO_DEV_2014_2015,False
+Minnesota,1.0,0.0,0.4415,1.1908,0.9502,LOSO_DEV_2014_2015,False

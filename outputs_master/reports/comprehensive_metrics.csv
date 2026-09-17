@@ -1,0 +1,12 @@
+Model_or_Method,Type,RMSE,MAE,R2,Coverage_PICP,MPIW_Width,Winkler_Score
+NeuralCQR,Backbone_or_Ensemble,0.9529,0.7328,0.684,0.7552,2.0973,4.7188
+LightGBM,Backbone_or_Ensemble,0.8788,0.6732,0.7313,0.661,1.77,5.2387
+CatBoost,Backbone_or_Ensemble,0.8908,0.6918,0.7238,0.6725,1.9123,5.1755
+XGBoost,Backbone_or_Ensemble,0.9029,0.6924,0.7163,0.7505,2.5516,4.9962
+NeuralCQR_LightGBM_Ensemble,Backbone_or_Ensemble,0.9237,0.7091,0.7031,0.9194,3.3177,4.0751
+Static Conformal,Conformal_Calibration,0.9237,,0.7031,0.9488,3.6493,4.1473
+Standard ACI,Conformal_Calibration,0.9237,,0.7031,0.9296,3.4151,4.0788
+SA-ACI,Conformal_Calibration,0.9237,,0.7031,0.9194,3.3177,4.0751
+Phenology-Stratified CQR,Conformal_Calibration,0.9237,,0.7031,0.9493,3.6506,4.1475
+Weighted Conformal,Conformal_Calibration,0.9237,,0.7031,0.9471,3.6367,4.1413
+Locally Adaptive,Conformal_Calibration,0.9237,,0.7031,0.9488,3.6987,4.167

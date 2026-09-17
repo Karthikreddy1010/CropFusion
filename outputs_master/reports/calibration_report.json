@@ -1,0 +1,79 @@
+{
+  "protocol": "Single-level nominal 90% conformal coverage evaluation (\u00a75.6)",
+  "nominal_coverage": 0.9,
+  "nominal_alpha": 0.1,
+  "methods": {
+    "static_conformal": {
+      "nominal_coverage": 0.9,
+      "empirical_coverage": 0.9488,
+      "absolute_calibration_error": 0.0488,
+      "mean_prediction_interval_width": 3.6493,
+      "coverage_standard_error": 0.0046,
+      "coverage_ci_95": [
+        0.9399,
+        0.9577
+      ],
+      "n_test_samples": 2345
+    },
+    "standard_aci": {
+      "nominal_coverage": 0.9,
+      "empirical_coverage": 0.9296,
+      "absolute_calibration_error": 0.0296,
+      "mean_prediction_interval_width": 3.4151,
+      "coverage_standard_error": 0.0053,
+      "coverage_ci_95": [
+        0.9193,
+        0.94
+      ],
+      "n_test_samples": 2345
+    },
+    "sa_aci": {
+      "nominal_coverage": 0.9,
+      "empirical_coverage": 0.9194,
+      "absolute_calibration_error": 0.0194,
+      "mean_prediction_interval_width": 3.3177,
+      "coverage_standard_error": 0.0056,
+      "coverage_ci_95": [
+        0.9084,
+        0.9304
+      ],
+      "n_test_samples": 2345
+    },
+    "phenology_stratified_cqr": {
+      "nominal_coverage": 0.9,
+      "empirical_coverage": 0.9493,
+      "absolute_calibration_error": 0.0493,
+      "mean_prediction_interval_width": 3.6506,
+      "coverage_standard_error": 0.0045,
+      "coverage_ci_95": [
+        0.9404,
+        0.9581
+      ],
+      "n_test_samples": 2345
+    },
+    "weighted_conformal": {
+      "nominal_coverage": 0.9,
+      "empirical_coverage": 0.9471,
+      "absolute_calibration_error": 0.0471,
+      "mean_prediction_interval_width": 3.6367,
+      "coverage_standard_error": 0.0046,
+      "coverage_ci_95": [
+        0.9381,
+        0.9562
+      ],
+      "n_test_samples": 2345
+    },
+    "locally_adaptive": {
+      "nominal_coverage": 0.9,
+      "empirical_coverage": 0.9488,
+      "absolute_calibration_error": 0.0488,
+      "mean_prediction_interval_width": 3.6987,
+      "coverage_standard_error": 0.0046,
+      "coverage_ci_95": [
+        0.9399,
+        0.9577
+      ],
+      "n_test_samples": 2345
+    }
+  }
+}

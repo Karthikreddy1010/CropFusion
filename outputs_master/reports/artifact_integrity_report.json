@@ -1,0 +1,382 @@
+{
+  "overall_completion_percentage": 100.0,
+  "compliance_status": "FULL_METHODOLOGY_COMPLIANCE_100%",
+  "total_required": 33,
+  "total_missing": 0,
+  "artifacts_audit": [
+    {
+      "Artifact": "dataset_schema_report.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 4151,
+      "SHA256_Full_File": "f75a7ee7caa973d4e1e3cb118dacb02260c36d267b98ec0b61082a1358449101",
+      "Creation_Timestamp": "2026-09-16T13:42:02.633115",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "feature_validation_report.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 122,
+      "SHA256_Full_File": "9f033d6cf3cb1044d927b99f9fc2c22ddca7ef918432818314a4d25ea6703e88",
+      "Creation_Timestamp": "2026-09-16T13:42:03.249164",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "feature_lineage_report.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 18566,
+      "SHA256_Full_File": "2e61c2b0e25d829e37b8297240739e0173d0cb256ab74d7353d1a3ccc536cf56",
+      "Creation_Timestamp": "2026-09-16T13:42:03.250164",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "missing_data_audit.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 2086,
+      "SHA256_Full_File": "2591c04f9d74818855abb071741114037ae448dc23a919437193b8f882a16192",
+      "Creation_Timestamp": "2026-09-16T13:42:03.344172",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "outlier_audit.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 3229,
+      "SHA256_Full_File": "becd502f33f962357b6e0f8864c1c038dbcf61b071a9ab3380fe1c1c3eb9483a",
+      "Creation_Timestamp": "2026-09-16T13:42:04.138234",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "scaling_report.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 3092,
+      "SHA256_Full_File": "f9b26eede41892737f52ef6c11df176b82908035b8e8e5b519e7b3f789473351",
+      "Creation_Timestamp": "2026-09-16T14:39:04.433578",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "leakage_audit_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 806,
+      "SHA256_Full_File": "f1dcb84c66e30285550b78909659d11cfacf4669bcc4a2a36db91b151bdcf191",
+      "Creation_Timestamp": "2026-09-16T13:43:24.240570",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "feature_selection_report.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 45810,
+      "SHA256_Full_File": "2cb90efc98a9498f6b321821516ffab72954a80056ebe3809969f57f34f982c1",
+      "Creation_Timestamp": "2026-09-16T13:45:23.094966",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "feature_selection_ranks.csv",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 6087,
+      "SHA256_Full_File": "2fe6c1acce1ca8e3c4307b938dc4f52038021a5b9ca47849a93caf4d575e7aae",
+      "Creation_Timestamp": "2026-09-16T13:45:23.052963",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "feature_selection_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 3260,
+      "SHA256_Full_File": "ccedc7ba9e672922f39df20a96c7e4cbe7845b977f3c50266971ef5b74aa8ad6",
+      "Creation_Timestamp": "2026-09-16T13:45:23.089966",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "model_decisions_lock.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 4980,
+      "SHA256_Full_File": "e39cc7d30c35c00e3d7f1963e7f0d6c2781857388cba10f82177773b204aa855",
+      "Creation_Timestamp": "2026-09-16T13:49:20.222716",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "model_decisions_lock.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 2168,
+      "SHA256_Full_File": "a4903b55580a3e85019b4a76ab39bfbe02e0517ba2f62e8c690c8f29c47e7153",
+      "Creation_Timestamp": "2026-09-16T13:49:20.222716",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "conformal_validation_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 1066,
+      "SHA256_Full_File": "98db949be7b6380e283368f5da04c33a52a88acd2185b3efb83ae59527a97bd6",
+      "Creation_Timestamp": "2026-09-16T13:53:54.704428",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "evaluation_report.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 459823,
+      "SHA256_Full_File": "946a3014e5a80b759e6129f52bfb1b92ff3673714c60d7fbf47f2051967f09aa",
+      "Creation_Timestamp": "2026-09-16T13:54:57.815417",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "evaluation_summary.csv",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 438,
+      "SHA256_Full_File": "05ed1054cac05dddf70a3d84ac17689f7d941cecd7a8b052dc89bcbc9c98afd9",
+      "Creation_Timestamp": "2026-09-16T13:54:57.816417",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "evaluation_summary.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 2169,
+      "SHA256_Full_File": "67de4f5c5fa8ef8eb44faf5d90549991848702e82a1d51302d4b4733d759a415",
+      "Creation_Timestamp": "2026-09-16T13:54:57.819417",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "statistical_tests_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 3324,
+      "SHA256_Full_File": "c5326168d9a2709dc8670bf2098970783bec36ef0a201b0332bd1944f5643b5e",
+      "Creation_Timestamp": "2026-09-16T13:54:58.135442",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "objective_O1_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 409,
+      "SHA256_Full_File": "9d8d05cc7f518b98496f65e42b17323c0a8bea924754259aea61c8a17db4522c",
+      "Creation_Timestamp": "2026-09-16T13:58:02.400007",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "objective_O4_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 4023,
+      "SHA256_Full_File": "af9ce20abe1604e67807c4f495593224d2b14dd1d4def6ab86686b7c3c202e57",
+      "Creation_Timestamp": "2026-09-16T14:04:38.172293",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "objective_o5_report.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 5930,
+      "SHA256_Full_File": "dc8e9d816fe229406100759e5eb7a509e0f4af68cc841d33f4ed7bc0cb7ca1a6",
+      "Creation_Timestamp": "2026-09-16T14:04:39.043362",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "objective_o5_report.csv",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 742,
+      "SHA256_Full_File": "2e8f929f7c94b2a018faeb9b8d38cb203a668d49d05467cda68886899acf472e",
+      "Creation_Timestamp": "2026-09-16T14:04:39.042362",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "objective_o5_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 2411,
+      "SHA256_Full_File": "b6aef2b825439448e94085ec9822e4a77a6cb9aec29ac18e2f38fc6b46ec2b1a",
+      "Creation_Timestamp": "2026-09-16T14:04:39.042362",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "objective_O6_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 2398,
+      "SHA256_Full_File": "45669f4eb41076c3f2b1355c8bad2e16b8a937e2f4dd026825c673ed7681f5c5",
+      "Creation_Timestamp": "2026-09-16T14:04:39.054363",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "shap_consistency_report.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 3590,
+      "SHA256_Full_File": "b2920528ac3711537dcef5a71e8d110bb9e1c697d18865b8393e023d7f127b16",
+      "Creation_Timestamp": "2026-09-16T13:54:55.389225",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "shap_consistency_report.csv",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 1467,
+      "SHA256_Full_File": "a5610932f1af628cc01058eaff2f7888b0791131eeff416c6bad1e3e33018409",
+      "Creation_Timestamp": "2026-09-16T13:54:55.385224",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "shap_consistency_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 4731,
+      "SHA256_Full_File": "2b23b6a12faa53b4612ab359b751971a3cbcf4352b96ee95b93a2596017ff058",
+      "Creation_Timestamp": "2026-09-16T13:54:55.389225",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "loso_cv_report.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 7023,
+      "SHA256_Full_File": "d4d2ee9c2796ca8222b75e75a346e6b535b60828303fd2693578b423c34d8079",
+      "Creation_Timestamp": "2026-09-16T14:26:42.259921",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "loso_summary.csv",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 664,
+      "SHA256_Full_File": "a69cec468b6b0e23c087fa46a54accde5ace615d9010481b9d8326015491a3ca",
+      "Creation_Timestamp": "2026-09-16T14:26:44.334085",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "loso_summary_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 5515,
+      "SHA256_Full_File": "aa7cc7ef2c63d8755fcbb73977897c825a6628717246c5f33543454544250869",
+      "Creation_Timestamp": "2026-09-16T14:26:44.341085",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "ablation_report.json",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 4587,
+      "SHA256_Full_File": "f350adaf44408b2454207d6aebce66f9adfadc617c42360b4b9f56c41769a662",
+      "Creation_Timestamp": "2026-09-16T14:42:14.827622",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "reproducibility_report.md",
+      "Category": "reports",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 912,
+      "SHA256_Full_File": "8adbfb3b4319d7c61fbee857f40808c88546cd07d4dc2c1afe872ac56518c8d7",
+      "Creation_Timestamp": "2026-09-16T14:42:14.864625",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "predictions.csv",
+      "Category": "predictions",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 1287600,
+      "SHA256_Full_File": "334e7976bfe854d7b97c7664f367ec4ec3d46a63a27c2d72bbf22660dc163fc2",
+      "Creation_Timestamp": "2026-09-16T13:54:58.131441",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "calibration_curves.png",
+      "Category": "figures",
+      "Requirement": "Required",
+      "Exists": true,
+      "Size_Bytes": 283012,
+      "SHA256_Full_File": "190eb0d8a1505d6e47d7b8194cb94a429cf72b47306634ea6cfb9ea5a3bd06b6",
+      "Creation_Timestamp": "2026-09-16T13:54:56.921346",
+      "Status": "PASSED"
+    },
+    {
+      "Artifact": "feature_selection_stability.json",
+      "Category": "reports",
+      "Requirement": "Optional/Exploratory",
+      "Exists": false,
+      "Size_Bytes": 0,
+      "SHA256_Full_File": "N/A",
+      "Creation_Timestamp": "N/A",
+      "Status": "OPTIONAL_NOT_APPLICABLE",
+      "Notes": "Optional exploratory stability sub-study; consensus feature selection reported in feature_selection_report.json"
+    },
+    {
+      "Artifact": "feature_selection_stability.csv",
+      "Category": "reports",
+      "Requirement": "Optional/Exploratory",
+      "Exists": false,
+      "Size_Bytes": 0,
+      "SHA256_Full_File": "N/A",
+      "Creation_Timestamp": "N/A",
+      "Status": "OPTIONAL_NOT_APPLICABLE",
+      "Notes": "Optional exploratory stability sub-study; consensus ranks reported in feature_selection_ranks.csv"
+    },
+    {
+      "Artifact": "feature_selection_stability.md",
+      "Category": "reports",
+      "Requirement": "Optional/Exploratory",
+      "Exists": false,
+      "Size_Bytes": 0,
+      "SHA256_Full_File": "N/A",
+      "Creation_Timestamp": "N/A",
+      "Status": "OPTIONAL_NOT_APPLICABLE",
+      "Notes": "Optional exploratory stability sub-study; consensus analysis reported in feature_selection_report.md"
+    },
+    {
+      "Artifact": "xgboost_quantile_report.json",
+      "Category": "reports",
+      "Requirement": "Optional/Exploratory",
+      "Exists": false,
+      "Size_Bytes": 0,
+      "SHA256_Full_File": "N/A",
+      "Creation_Timestamp": "N/A",
+      "Status": "OPTIONAL_NOT_APPLICABLE",
+      "Notes": "Optional standalone XGBoost quantile report; multi-backbone benchmark evaluated in evaluation_report.json"
+    }
+  ]
+}

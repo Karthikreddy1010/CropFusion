@@ -186,6 +186,9 @@ def plot_target_distribution(df: pd.DataFrame) -> Path:
     titles = ["Corn Yield (t/ha)", "Soybean Yield (t/ha)"]
 
     for ax, target, title in zip(axes, targets, titles):
+        if target not in df.columns:
+            ax.set_axis_off()
+            continue
         data = df[target].dropna()
         ax.hist(data, bins=50, color="#2ecc71", alpha=0.7, edgecolor="white")
         ax.axvline(data.mean(), color="red", linestyle="--",

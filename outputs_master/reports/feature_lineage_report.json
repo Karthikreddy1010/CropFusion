@@ -1,0 +1,610 @@
+{
+  "features": {
+    "GEOID": {
+      "feature": "GEOID",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "County_Name": {
+      "feature": "County_Name",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "State": {
+      "feature": "State",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "STATEFP": {
+      "feature": "STATEFP",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "COUNTYFP": {
+      "feature": "COUNTYFP",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "Lat": {
+      "feature": "Lat",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "Lon": {
+      "feature": "Lon",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "Year": {
+      "feature": "Year",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "Split": {
+      "feature": "Split",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "Corn_Yield_tha": {
+      "feature": "Corn_Yield_tha",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Corn_Yield_buacre": {
+      "feature": "Corn_Yield_buacre",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Has_Corn_Yield": {
+      "feature": "Has_Corn_Yield",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "ENSO_Phase": {
+      "feature": "ENSO_Phase",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "ENSO_Anomalous_Year": {
+      "feature": "ENSO_Anomalous_Year",
+      "source": "Original Metadata",
+      "scaling": "None"
+    },
+    "prism_tmax_mean_gs": {
+      "feature": "prism_tmax_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_tmax_max_gs": {
+      "feature": "prism_tmax_max_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_tmin_mean_gs": {
+      "feature": "prism_tmin_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_tmin_min_gs": {
+      "feature": "prism_tmin_min_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Precip_growseason_mm": {
+      "feature": "Precip_growseason_mm",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "GDD_Accumulated": {
+      "feature": "GDD_Accumulated",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_kdd30_gs": {
+      "feature": "prism_kdd30_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Tmax_Days_Above_35": {
+      "feature": "Tmax_Days_Above_35",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_heat_exceedance_total_gs": {
+      "feature": "prism_heat_exceedance_total_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_et0_total_gs": {
+      "feature": "nldas_et0_total_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_rs_mean_gs": {
+      "feature": "nldas_rs_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_humidity_mean_gs": {
+      "feature": "nldas_humidity_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_vpd_mean_gs": {
+      "feature": "nldas_vpd_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_wind_mean_gs": {
+      "feature": "nldas_wind_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi1_prism_mean_gs": {
+      "feature": "spi1_prism_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi1_prism_min_gs": {
+      "feature": "spi1_prism_min_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi3_prism_mean_gs": {
+      "feature": "spi3_prism_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi3_prism_min_gs": {
+      "feature": "spi3_prism_min_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi6_prism_mean_gs": {
+      "feature": "spi6_prism_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi6_prism_min_gs": {
+      "feature": "spi6_prism_min_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi12_prism_mean_gs": {
+      "feature": "spi12_prism_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi12_prism_min_gs": {
+      "feature": "spi12_prism_min_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "SPEI_30_mean": {
+      "feature": "SPEI_30_mean",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "SPEI_30_min": {
+      "feature": "SPEI_30_min",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spei30_prism_nldas_max_gs": {
+      "feature": "spei30_prism_nldas_max_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spei30_prism_nldas_drought_days_gs": {
+      "feature": "spei30_prism_nldas_drought_days_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spei90_prism_nldas_mean_gs": {
+      "feature": "spei90_prism_nldas_mean_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spei90_prism_nldas_min_gs": {
+      "feature": "spei90_prism_nldas_min_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "cdhw_count_gs": {
+      "feature": "cdhw_count_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "CDHW_Event_Count": {
+      "feature": "CDHW_Event_Count",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "cdhw_max_duration_gs": {
+      "feature": "cdhw_max_duration_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "cdhw_max_severity_gs": {
+      "feature": "cdhw_max_severity_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "CDHW_Severity_Score": {
+      "feature": "CDHW_Severity_Score",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "pheno_veg_days": {
+      "feature": "pheno_veg_days",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "pheno_silk_days": {
+      "feature": "pheno_silk_days",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_tmax_mean_veg": {
+      "feature": "prism_tmax_mean_veg",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_tmax_days_gt35_veg": {
+      "feature": "prism_tmax_days_gt35_veg",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_ppt_total_veg": {
+      "feature": "prism_ppt_total_veg",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_et0_total_veg": {
+      "feature": "nldas_et0_total_veg",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_vpd_mean_veg": {
+      "feature": "nldas_vpd_mean_veg",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi1_prism_min_veg": {
+      "feature": "spi1_prism_min_veg",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spei30_prism_nldas_mean_veg": {
+      "feature": "spei30_prism_nldas_mean_veg",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spei30_prism_nldas_min_veg": {
+      "feature": "spei30_prism_nldas_min_veg",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "cdhw_count_veg": {
+      "feature": "cdhw_count_veg",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "cdhw_total_days_veg": {
+      "feature": "cdhw_total_days_veg",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "CDHW_Severity_vegetative": {
+      "feature": "CDHW_Severity_vegetative",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_tmax_mean_silk": {
+      "feature": "prism_tmax_mean_silk",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_tmax_days_gt35_silk": {
+      "feature": "prism_tmax_days_gt35_silk",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_ppt_total_silk": {
+      "feature": "prism_ppt_total_silk",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_et0_total_silk": {
+      "feature": "nldas_et0_total_silk",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_vpd_mean_silk": {
+      "feature": "nldas_vpd_mean_silk",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi1_prism_min_silk": {
+      "feature": "spi1_prism_min_silk",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spei30_prism_nldas_mean_silk": {
+      "feature": "spei30_prism_nldas_mean_silk",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spei30_prism_nldas_min_silk": {
+      "feature": "spei30_prism_nldas_min_silk",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "cdhw_count_silk": {
+      "feature": "cdhw_count_silk",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "cdhw_total_days_silk": {
+      "feature": "cdhw_total_days_silk",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "CDHW_Severity_silking": {
+      "feature": "CDHW_Severity_silking",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_tmax_mean_grain": {
+      "feature": "prism_tmax_mean_grain",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_tmax_days_gt35_grain": {
+      "feature": "prism_tmax_days_gt35_grain",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "prism_ppt_total_grain": {
+      "feature": "prism_ppt_total_grain",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_et0_total_grain": {
+      "feature": "nldas_et0_total_grain",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nldas_vpd_mean_grain": {
+      "feature": "nldas_vpd_mean_grain",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spi1_prism_min_grain": {
+      "feature": "spi1_prism_min_grain",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spei30_prism_nldas_mean_grain": {
+      "feature": "spei30_prism_nldas_mean_grain",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "spei30_prism_nldas_min_grain": {
+      "feature": "spei30_prism_nldas_min_grain",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "cdhw_count_grain": {
+      "feature": "cdhw_count_grain",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "cdhw_total_days_grain": {
+      "feature": "cdhw_total_days_grain",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "CDHW_Severity_grainfill": {
+      "feature": "CDHW_Severity_grainfill",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "noaa_hail_count_gs": {
+      "feature": "noaa_hail_count_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "noaa_thunderstorm_wind_count_gs": {
+      "feature": "noaa_thunderstorm_wind_count_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "noaa_tornado_count_gs": {
+      "feature": "noaa_tornado_count_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "noaa_max_hail_size_gs": {
+      "feature": "noaa_max_hail_size_gs",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "soil_awc": {
+      "feature": "soil_awc",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "soil_bulk_density": {
+      "feature": "soil_bulk_density",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "soil_clay": {
+      "feature": "soil_clay",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "soil_silt": {
+      "feature": "soil_silt",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "soil_organic_carbon": {
+      "feature": "soil_organic_carbon",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "elevation_mean_m": {
+      "feature": "elevation_mean_m",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "elevation_std_m": {
+      "feature": "elevation_std_m",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "slope_mean": {
+      "feature": "slope_mean",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nlcd_cropland_frac": {
+      "feature": "nlcd_cropland_frac",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nlcd_pasture_hay_frac": {
+      "feature": "nlcd_pasture_hay_frac",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nlcd_forest_frac": {
+      "feature": "nlcd_forest_frac",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nlcd_grass_shrub_frac": {
+      "feature": "nlcd_grass_shrub_frac",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nlcd_developed_frac": {
+      "feature": "nlcd_developed_frac",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "nlcd_water_wetland_frac": {
+      "feature": "nlcd_water_wetland_frac",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "CDHW_Flag": {
+      "feature": "CDHW_Flag",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "CDHW_Veg_Severity": {
+      "feature": "CDHW_Veg_Severity",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "CDHW_Silking_Severity": {
+      "feature": "CDHW_Silking_Severity",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "CDHW_GrainFill_Severity": {
+      "feature": "CDHW_GrainFill_Severity",
+      "source": "Original Dataset",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Phenological_Window": {
+      "feature": "Phenological_Window",
+      "source": "Engineered",
+      "scaling": "None"
+    },
+    "Year_Type": {
+      "feature": "Year_Type",
+      "source": "Engineered",
+      "scaling": "None"
+    },
+    "Fourier_sin_P1_0": {
+      "feature": "Fourier_sin_P1_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_cos_P1_0": {
+      "feature": "Fourier_cos_P1_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_sin_P3_0": {
+      "feature": "Fourier_sin_P3_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_cos_P3_0": {
+      "feature": "Fourier_cos_P3_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_sin_P5_0": {
+      "feature": "Fourier_sin_P5_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_cos_P5_0": {
+      "feature": "Fourier_cos_P5_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_sin_P7_0": {
+      "feature": "Fourier_sin_P7_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_cos_P7_0": {
+      "feature": "Fourier_cos_P7_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_sin_P11_0": {
+      "feature": "Fourier_sin_P11_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_cos_P11_0": {
+      "feature": "Fourier_cos_P11_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_sin_P19_0": {
+      "feature": "Fourier_sin_P19_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Fourier_cos_P19_0": {
+      "feature": "Fourier_cos_P19_0",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Inter_SPEI_Tmax": {
+      "feature": "Inter_SPEI_Tmax",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Inter_Heat_Precip": {
+      "feature": "Inter_Heat_Precip",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    },
+    "Inter_CDHW_GDD": {
+      "feature": "Inter_CDHW_GDD",
+      "source": "Engineered",
+      "scaling": "RobustScaler (fit on train)"
+    }
+  },
+  "total_features": 121
+}

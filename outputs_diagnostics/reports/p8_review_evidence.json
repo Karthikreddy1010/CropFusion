@@ -1,0 +1,235 @@
+{
+  "alignment": {
+    "n_test_rebuilt": 2345,
+    "n_rows_per_method": {
+      "static_conformal": 2345,
+      "standard_aci": 2345,
+      "sa_aci": 2345,
+      "phenology_stratified_cqr": 2345,
+      "weighted_conformal": 2345,
+      "locally_adaptive": 2345
+    },
+    "year_sequence_identical": true,
+    "county_name_sequence_identical": true,
+    "observed_yield_max_abs_diff": 5.000000000165983e-05,
+    "all_methods_same_observed": true,
+    "verified": true
+  },
+  "cdhw_severe_cut_median_of_positive": 2.319197416305542,
+  "method_summary": [
+    {
+      "method": "static_conformal",
+      "picp": 0.9488,
+      "ace": 0.048799999999999955,
+      "mpiw": 3.6493,
+      "winkler": 4.1473,
+      "worst_axis": "year_type",
+      "worst_stratum": "Extreme",
+      "worst_n": 202,
+      "worst_picp": 0.8762,
+      "rank_marginal_ace": 4.0,
+      "rank_marginal_winkler": 4.0,
+      "rank_worst_stratum_picp": 2.0
+    },
+    {
+      "method": "standard_aci",
+      "picp": 0.9296,
+      "ace": 0.02959999999999996,
+      "mpiw": 3.4151,
+      "winkler": 4.0788,
+      "worst_axis": "year_type",
+      "worst_stratum": "Extreme",
+      "worst_n": 202,
+      "worst_picp": 0.8515,
+      "rank_marginal_ace": 2.0,
+      "rank_marginal_winkler": 2.0,
+      "rank_worst_stratum_picp": 5.0
+    },
+    {
+      "method": "sa_aci",
+      "picp": 0.9194,
+      "ace": 0.019399999999999973,
+      "mpiw": 3.3177,
+      "winkler": 4.0751,
+      "worst_axis": "year_type",
+      "worst_stratum": "Extreme",
+      "worst_n": 202,
+      "worst_picp": 0.8069,
+      "rank_marginal_ace": 1.0,
+      "rank_marginal_winkler": 1.0,
+      "rank_worst_stratum_picp": 6.0
+    },
+    {
+      "method": "phenology_stratified_cqr",
+      "picp": 0.9493,
+      "ace": 0.04930000000000001,
+      "mpiw": 3.6506,
+      "winkler": 4.1475,
+      "worst_axis": "year_type",
+      "worst_stratum": "Extreme",
+      "worst_n": 202,
+      "worst_picp": 0.8762,
+      "rank_marginal_ace": 6.0,
+      "rank_marginal_winkler": 5.0,
+      "rank_worst_stratum_picp": 2.0
+    },
+    {
+      "method": "weighted_conformal",
+      "picp": 0.9471,
+      "ace": 0.04710000000000003,
+      "mpiw": 3.6367,
+      "winkler": 4.1413,
+      "worst_axis": "year_type",
+      "worst_stratum": "Extreme",
+      "worst_n": 202,
+      "worst_picp": 0.8713,
+      "rank_marginal_ace": 3.0,
+      "rank_marginal_winkler": 3.0,
+      "rank_worst_stratum_picp": 4.0
+    },
+    {
+      "method": "locally_adaptive",
+      "picp": 0.9488,
+      "ace": 0.048799999999999955,
+      "mpiw": 3.6987,
+      "winkler": 4.167,
+      "worst_axis": "year",
+      "worst_stratum": "2021",
+      "worst_n": 450,
+      "worst_picp": 0.8911,
+      "rank_marginal_ace": 4.0,
+      "rank_marginal_winkler": 6.0,
+      "rank_worst_stratum_picp": 1.0
+    }
+  ],
+  "worst_picp_by_axis": {
+    "locally_adaptive": {
+      "cdhw": 0.9045,
+      "drought_spei30_lt_-1": 0.9485,
+      "enso": 0.9416,
+      "heat_days_gt35": 0.9415,
+      "state": 0.9327,
+      "year": 0.8911,
+      "year_type": 0.896
+    },
+    "phenology_stratified_cqr": {
+      "cdhw": 0.8917,
+      "drought_spei30_lt_-1": 0.9485,
+      "enso": 0.9394,
+      "heat_days_gt35": 0.9344,
+      "state": 0.9152,
+      "year": 0.8933,
+      "year_type": 0.8762
+    },
+    "sa_aci": {
+      "cdhw": 0.828,
+      "drought_spei30_lt_-1": 0.9176,
+      "enso": 0.8924,
+      "heat_days_gt35": 0.8856,
+      "state": 0.8655,
+      "year": 0.8489,
+      "year_type": 0.8069
+    },
+    "standard_aci": {
+      "cdhw": 0.8599,
+      "drought_spei30_lt_-1": 0.9285,
+      "enso": 0.9095,
+      "heat_days_gt35": 0.9051,
+      "state": 0.886,
+      "year": 0.8556,
+      "year_type": 0.8515
+    },
+    "static_conformal": {
+      "cdhw": 0.8917,
+      "drought_spei30_lt_-1": 0.9485,
+      "enso": 0.9394,
+      "heat_days_gt35": 0.9344,
+      "state": 0.9152,
+      "year": 0.8933,
+      "year_type": 0.8762
+    },
+    "weighted_conformal": {
+      "cdhw": 0.8854,
+      "drought_spei30_lt_-1": 0.9467,
+      "enso": 0.9373,
+      "heat_days_gt35": 0.9317,
+      "state": 0.9123,
+      "year": 0.8933,
+      "year_type": 0.8713
+    }
+  },
+  "temporal_baselines": {
+    "trend_only": {
+      "r2": -0.1783,
+      "rmse": 1.84
+    },
+    "trend_plus_county_mean_anomaly": {
+      "r2": 0.4153,
+      "rmse": 1.2962,
+      "mae": 1.0779
+    },
+    "shipped_ensemble": {
+      "r2": 0.7031,
+      "rmse": 0.9237,
+      "mae": 0.7091
+    },
+    "trend_coef": [
+      0.10936,
+      -210.50299
+    ]
+  },
+  "loso_baselines": [
+    {
+      "state": "Illinois",
+      "aligned": true,
+      "trend_only_r2": 0.3056,
+      "trend_only_rmse": 2.0222,
+      "model_r2": 0.7583,
+      "model_rmse": 1.1932
+    },
+    {
+      "state": "Indiana",
+      "aligned": true,
+      "trend_only_r2": 0.403,
+      "trend_only_rmse": 1.5568,
+      "model_r2": 0.813,
+      "model_rmse": 0.8713
+    },
+    {
+      "state": "Iowa",
+      "aligned": true,
+      "trend_only_r2": 0.2117,
+      "trend_only_rmse": 1.9736,
+      "model_r2": 0.677,
+      "model_rmse": 1.2634
+    },
+    {
+      "state": "Minnesota",
+      "aligned": true,
+      "trend_only_r2": 0.4199,
+      "trend_only_rmse": 1.9025,
+      "model_r2": 0.6148,
+      "model_rmse": 1.5502
+    },
+    {
+      "state": "Missouri",
+      "aligned": true,
+      "trend_only_r2": -0.164,
+      "trend_only_rmse": 2.2562,
+      "model_r2": 0.6084,
+      "model_rmse": 1.3087
+    },
+    {
+      "state": "Ohio",
+      "aligned": true,
+      "trend_only_r2": 0.477,
+      "trend_only_rmse": 1.4357,
+      "model_r2": 0.7143,
+      "model_rmse": 1.0612
+    }
+  ],
+  "loso_baselines_macro": {
+    "trend_only_r2": 0.2755,
+    "model_r2": 0.6976
+  }
+}

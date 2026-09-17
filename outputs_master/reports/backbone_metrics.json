@@ -1,0 +1,49 @@
+{
+  "backbones": [
+    {
+      "Model": "NeuralCQR",
+      "RMSE": 0.9529,
+      "MAE": 0.7328,
+      "R2": 0.684,
+      "Coverage": 0.7552,
+      "MPIW": 2.0973,
+      "Winkler_Score": 4.7188
+    },
+    {
+      "Model": "LightGBM",
+      "RMSE": 0.8788,
+      "MAE": 0.6732,
+      "R2": 0.7313,
+      "Coverage": 0.661,
+      "MPIW": 1.77,
+      "Winkler_Score": 5.2387
+    },
+    {
+      "Model": "CatBoost",
+      "RMSE": 0.8908,
+      "MAE": 0.6918,
+      "R2": 0.7238,
+      "Coverage": 0.6725,
+      "MPIW": 1.9123,
+      "Winkler_Score": 5.1755
+    },
+    {
+      "Model": "XGBoost",
+      "RMSE": 0.9029,
+      "MAE": 0.6924,
+      "R2": 0.7163,
+      "Coverage": 0.7505,
+      "MPIW": 2.5516,
+      "Winkler_Score": 4.9962
+    },
+    {
+      "Model": "NeuralCQR_LightGBM_Ensemble",
+      "RMSE": 0.9237,
+      "MAE": 0.7091,
+      "R2": 0.7031,
+      "Coverage": 0.9194,
+      "MPIW": 3.3177,
+      "Winkler_Score": 4.0751
+    }
+  ]
+}

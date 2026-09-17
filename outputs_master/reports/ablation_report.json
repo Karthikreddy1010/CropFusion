@@ -1,0 +1,176 @@
+{
+  "configurations": [
+    {
+      "config": "1_backbone_only",
+      "n_features": 88,
+      "interval_head": false,
+      "calibration": "none",
+      "joint_training": false,
+      "training_paradigm": "point_only",
+      "n_optimization_stages": 1,
+      "backbone_receives_quantile_gradient": false,
+      "loss_terms_stage1": [
+        "huber",
+        "pinball_05",
+        "pinball_50",
+        "pinball_95",
+        "crossing",
+        "width"
+      ],
+      "loss_terms_stage2": null,
+      "epochs_trained": 200,
+      "best_epoch": 184,
+      "prediction_checksum": 26042.806878,
+      "rmse": 0.9511,
+      "mae": 0.7427,
+      "r_squared": 0.6852,
+      "picp": "n/a",
+      "mpiw": "n/a",
+      "ace": "n/a",
+      "winkler_score": "n/a"
+    },
+    {
+      "config": "2_plus_cdhw",
+      "n_features": 94,
+      "interval_head": false,
+      "calibration": "none",
+      "joint_training": false,
+      "training_paradigm": "point_only",
+      "n_optimization_stages": 1,
+      "backbone_receives_quantile_gradient": false,
+      "loss_terms_stage1": [
+        "huber",
+        "pinball_05",
+        "pinball_50",
+        "pinball_95",
+        "crossing",
+        "width"
+      ],
+      "loss_terms_stage2": null,
+      "epochs_trained": 148,
+      "best_epoch": 88,
+      "prediction_checksum": 26255.543805,
+      "rmse": 0.9629,
+      "mae": 0.7397,
+      "r_squared": 0.6773,
+      "picp": "n/a",
+      "mpiw": "n/a",
+      "ace": "n/a",
+      "winkler_score": "n/a"
+    },
+    {
+      "config": "3_plus_cqr",
+      "n_features": 94,
+      "interval_head": true,
+      "calibration": "static_conformal",
+      "joint_training": false,
+      "training_paradigm": "post_hoc_two_stage",
+      "n_optimization_stages": 2,
+      "backbone_receives_quantile_gradient": false,
+      "loss_terms_stage1": [
+        "huber"
+      ],
+      "loss_terms_stage2": [
+        "pinball_05",
+        "pinball_50",
+        "pinball_95",
+        "crossing"
+      ],
+      "epochs_trained": 348,
+      "best_epoch": 88,
+      "prediction_checksum": 26255.543805,
+      "rmse": 0.9629,
+      "mae": 0.7397,
+      "r_squared": 0.6773,
+      "picp": 0.867,
+      "mpiw": 3.3576,
+      "ace": 0.033,
+      "winkler_score": 4.7666
+    },
+    {
+      "config": "4_plus_aci",
+      "n_features": 94,
+      "interval_head": true,
+      "calibration": "aci",
+      "joint_training": false,
+      "training_paradigm": "post_hoc_two_stage",
+      "n_optimization_stages": 2,
+      "backbone_receives_quantile_gradient": false,
+      "loss_terms_stage1": [
+        "huber"
+      ],
+      "loss_terms_stage2": [
+        "pinball_05",
+        "pinball_50",
+        "pinball_95",
+        "crossing"
+      ],
+      "epochs_trained": 348,
+      "best_epoch": 88,
+      "prediction_checksum": 26255.543805,
+      "rmse": 0.9629,
+      "mae": 0.7397,
+      "r_squared": 0.6773,
+      "picp": 0.8759,
+      "mpiw": 3.4449,
+      "ace": 0.0241,
+      "winkler_score": 4.7519
+    },
+    {
+      "config": "5_full_joint",
+      "n_features": 94,
+      "interval_head": true,
+      "calibration": "aci",
+      "joint_training": true,
+      "training_paradigm": "joint_end_to_end",
+      "n_optimization_stages": 1,
+      "backbone_receives_quantile_gradient": true,
+      "loss_terms_stage1": [
+        "huber",
+        "pinball_05",
+        "pinball_50",
+        "pinball_95",
+        "crossing",
+        "width"
+      ],
+      "loss_terms_stage2": null,
+      "epochs_trained": 200,
+      "best_epoch": 187,
+      "prediction_checksum": 26220.958357,
+      "rmse": 0.963,
+      "mae": 0.7445,
+      "r_squared": 0.6773,
+      "picp": 0.9092,
+      "mpiw": 3.1562,
+      "ace": 0.0092,
+      "winkler_score": 4.1276
+    }
+  ],
+  "configuration_distinctness_checks": [
+    {
+      "comparison": "2_plus_cdhw vs 3_plus_cqr",
+      "expected_difference": "interval head added",
+      "point_difference_expected": true,
+      "identical_point_predictions": true,
+      "identical_mpiw": false,
+      "status": "FAIL"
+    },
+    {
+      "comparison": "3_plus_cqr vs 4_plus_aci",
+      "expected_difference": "static conformal -> ACI (calibration only)",
+      "point_difference_expected": false,
+      "identical_point_predictions": true,
+      "identical_mpiw": false,
+      "status": "PASS"
+    },
+    {
+      "comparison": "4_plus_aci vs 5_full_joint",
+      "expected_difference": "post-hoc -> joint end-to-end training",
+      "point_difference_expected": true,
+      "identical_point_predictions": false,
+      "identical_mpiw": false,
+      "status": "PASS"
+    }
+  ],
+  "all_configurations_distinct": false
+}

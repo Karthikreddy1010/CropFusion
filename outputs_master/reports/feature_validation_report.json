@@ -1,0 +1,6 @@
+{
+  "validation_passed": true,
+  "missing_required_climate_cols": [],
+  "duplicated_columns": [],
+  "total_columns": 121
+}

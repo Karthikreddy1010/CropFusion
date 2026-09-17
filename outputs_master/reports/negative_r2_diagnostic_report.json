@@ -1,0 +1,19 @@
+{
+  "train_mean": 8.0758,
+  "test_mean": 11.2861,
+  "mean_shift": 3.2103,
+  "ss_res": 2000.7854,
+  "ss_tot": 6738.0576,
+  "r2_test_sample_mean": 0.7031,
+  "r2_train_mean_baseline": 0.9353,
+  "temporal_variance": 0.1768,
+  "spatial_variance": 1.0328,
+  "dominant_source_of_error": "Spatial Heterogeneity",
+  "diagnosis_detail": "Spatial variance across Midwestern states dominates out-of-sample error.",
+  "recommendations": [
+    "Upgrade NeuralCQR backbone to multi-task residual architecture with dedicated Huber mean head.",
+    "Incorporate flexible Fourier temporal encodings to model long-term trends and oscillations.",
+    "Add static environmental descriptors (soil, topo, normals) for spatial context.",
+    "Optimize composite loss balancing Huber loss, pinball loss, and quantile crossing penalty."
+  ]
+}

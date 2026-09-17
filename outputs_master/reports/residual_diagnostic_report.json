@@ -1,0 +1,12 @@
+{
+  "residuals_mean": 0.1011,
+  "residuals_std": 0.9181,
+  "normality_ks_stat": 0.0303,
+  "normality_ks_p_value": 0.232706,
+  "is_normally_distributed": true,
+  "durbin_watson_stat": 1.7606,
+  "temporal_autocorrelation_detected": false,
+  "breusch_pagan_p_value": 0.0,
+  "heteroscedasticity_detected": true,
+  "spatial_autocorrelation_detected": true
+}

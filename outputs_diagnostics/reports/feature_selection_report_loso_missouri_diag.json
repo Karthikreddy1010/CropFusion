@@ -1,0 +1,2167 @@
+{
+  "mutual_information": [
+    {
+      "feature": "Fourier_sin_P19_0",
+      "score": 0.282673
+    },
+    {
+      "feature": "Yield_lag2",
+      "score": 0.2527
+    },
+    {
+      "feature": "Yield_lag1",
+      "score": 0.226659
+    },
+    {
+      "feature": "prism_tmax_mean_silk",
+      "score": 0.180842
+    },
+    {
+      "feature": "Fourier_sin_P11_0",
+      "score": 0.176459
+    },
+    {
+      "feature": "Fourier_cos_P19_0",
+      "score": 0.143002
+    },
+    {
+      "feature": "Fourier_cos_P11_0",
+      "score": 0.12461
+    },
+    {
+      "feature": "Fourier_sin_P7_0",
+      "score": 0.12359
+    },
+    {
+      "feature": "prism_kdd30_gs",
+      "score": 0.102714
+    },
+    {
+      "feature": "nlcd_cropland_frac",
+      "score": 0.100593
+    },
+    {
+      "feature": "prism_tmax_days_gt35_silk",
+      "score": 0.098571
+    },
+    {
+      "feature": "spi6_prism_min_gs",
+      "score": 0.096126
+    },
+    {
+      "feature": "nldas_vpd_mean_grain",
+      "score": 0.096118
+    },
+    {
+      "feature": "prism_heat_exceedance_total_gs",
+      "score": 0.095285
+    },
+    {
+      "feature": "pheno_silk_days",
+      "score": 0.094687
+    },
+    {
+      "feature": "Hist_Normal_GDD_Accumulated",
+      "score": 0.094556
+    },
+    {
+      "feature": "prism_tmax_mean_gs",
+      "score": 0.094435
+    },
+    {
+      "feature": "prism_tmax_mean_veg",
+      "score": 0.094085
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_silk",
+      "score": 0.092636
+    },
+    {
+      "feature": "Tmax_Days_Above_35",
+      "score": 0.092394
+    },
+    {
+      "feature": "spi3_prism_min_gs",
+      "score": 0.091589
+    },
+    {
+      "feature": "spei30_prism_nldas_min_grain",
+      "score": 0.090285
+    },
+    {
+      "feature": "nldas_vpd_mean_silk",
+      "score": 0.089673
+    },
+    {
+      "feature": "nldas_et0_total_silk",
+      "score": 0.089265
+    },
+    {
+      "feature": "nldas_rs_mean_gs",
+      "score": 0.088698
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_veg",
+      "score": 0.088527
+    },
+    {
+      "feature": "nldas_vpd_mean_veg",
+      "score": 0.087925
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_grain",
+      "score": 0.087873
+    },
+    {
+      "feature": "nldas_vpd_mean_gs",
+      "score": 0.087872
+    },
+    {
+      "feature": "CDHW_Severity_silking",
+      "score": 0.087848
+    },
+    {
+      "feature": "CDHW_Silking_Severity",
+      "score": 0.087815
+    },
+    {
+      "feature": "soil_bulk_density",
+      "score": 0.086881
+    },
+    {
+      "feature": "spei90_prism_nldas_mean_gs",
+      "score": 0.086823
+    },
+    {
+      "feature": "nldas_et0_total_veg",
+      "score": 0.086636
+    },
+    {
+      "feature": "cdhw_total_days_silk",
+      "score": 0.086496
+    },
+    {
+      "feature": "Inter_CDHW_GDD",
+      "score": 0.085774
+    },
+    {
+      "feature": "nldas_et0_total_grain",
+      "score": 0.084984
+    },
+    {
+      "feature": "nldas_et0_total_gs",
+      "score": 0.084505
+    },
+    {
+      "feature": "spei30_prism_nldas_min_silk",
+      "score": 0.084374
+    },
+    {
+      "feature": "spi6_prism_mean_gs",
+      "score": 0.084009
+    },
+    {
+      "feature": "Anom_Precip_growseason_mm",
+      "score": 0.083604
+    },
+    {
+      "feature": "CDHW_Event_Count",
+      "score": 0.082548
+    },
+    {
+      "feature": "spi3_prism_mean_gs",
+      "score": 0.081465
+    },
+    {
+      "feature": "cdhw_max_duration_gs",
+      "score": 0.080299
+    },
+    {
+      "feature": "Inter_Heat_Precip",
+      "score": 0.079362
+    },
+    {
+      "feature": "spi1_prism_mean_gs",
+      "score": 0.079346
+    },
+    {
+      "feature": "Fourier_sin_P5_0",
+      "score": 0.079252
+    },
+    {
+      "feature": "cdhw_max_severity_gs",
+      "score": 0.07925
+    },
+    {
+      "feature": "Rolling2yr_GDD_Accumulated_mean",
+      "score": 0.079048
+    },
+    {
+      "feature": "spi1_prism_min_silk",
+      "score": 0.078848
+    },
+    {
+      "feature": "soil_organic_carbon",
+      "score": 0.077626
+    },
+    {
+      "feature": "cdhw_count_gs",
+      "score": 0.077303
+    },
+    {
+      "feature": "Precip_growseason_mm",
+      "score": 0.077203
+    },
+    {
+      "feature": "prism_tmax_mean_grain",
+      "score": 0.075612
+    },
+    {
+      "feature": "cdhw_count_silk",
+      "score": 0.075408
+    },
+    {
+      "feature": "CDHW_Severity_Score",
+      "score": 0.075394
+    },
+    {
+      "feature": "nlcd_developed_frac",
+      "score": 0.075212
+    },
+    {
+      "feature": "SPEI_30_mean",
+      "score": 0.074647
+    },
+    {
+      "feature": "Rolling2yr_Tmax_Days_Above_35_mean",
+      "score": 0.074515
+    },
+    {
+      "feature": "nldas_humidity_mean_gs",
+      "score": 0.074169
+    },
+    {
+      "feature": "prism_tmax_max_gs",
+      "score": 0.073949
+    },
+    {
+      "feature": "GDD_Accumulated",
+      "score": 0.073788
+    },
+    {
+      "feature": "soil_clay",
+      "score": 0.073218
+    },
+    {
+      "feature": "Inter_SPEI_Tmax",
+      "score": 0.072868
+    },
+    {
+      "feature": "spi1_prism_min_grain",
+      "score": 0.072587
+    },
+    {
+      "feature": "prism_ppt_total_grain",
+      "score": 0.072156
+    },
+    {
+      "feature": "prism_ppt_total_veg",
+      "score": 0.071615
+    },
+    {
+      "feature": "Rolling3yr_GDD_Accumulated_mean",
+      "score": 0.071347
+    },
+    {
+      "feature": "nldas_wind_mean_gs",
+      "score": 0.070215
+    },
+    {
+      "feature": "Anom_GDD_Accumulated",
+      "score": 0.067875
+    },
+    {
+      "feature": "spei90_prism_nldas_min_gs",
+      "score": 0.06648
+    },
+    {
+      "feature": "nlcd_forest_frac",
+      "score": 0.066118
+    },
+    {
+      "feature": "pheno_veg_days",
+      "score": 0.065905
+    },
+    {
+      "feature": "CDHW_Severity_vegetative",
+      "score": 0.064959
+    },
+    {
+      "feature": "spei30_prism_nldas_drought_days_gs",
+      "score": 0.064886
+    },
+    {
+      "feature": "nlcd_pasture_hay_frac",
+      "score": 0.062302
+    },
+    {
+      "feature": "prism_tmin_mean_gs",
+      "score": 0.061521
+    },
+    {
+      "feature": "SPEI_30_min",
+      "score": 0.060862
+    },
+    {
+      "feature": "CDHW_Veg_Severity",
+      "score": 0.06048
+    },
+    {
+      "feature": "spei30_prism_nldas_min_veg",
+      "score": 0.059519
+    },
+    {
+      "feature": "slope_mean",
+      "score": 0.059295
+    },
+    {
+      "feature": "Fourier_cos_P7_0",
+      "score": 0.057928
+    },
+    {
+      "feature": "Hist_Normal_Precip_growseason_mm",
+      "score": 0.056031
+    },
+    {
+      "feature": "Rolling3yr_Tmax_Days_Above_35_mean",
+      "score": 0.05588
+    },
+    {
+      "feature": "elevation_mean_m",
+      "score": 0.053434
+    },
+    {
+      "feature": "soil_silt",
+      "score": 0.053224
+    },
+    {
+      "feature": "cdhw_count_veg",
+      "score": 0.053072
+    },
+    {
+      "feature": "nlcd_water_wetland_frac",
+      "score": 0.051898
+    },
+    {
+      "feature": "noaa_thunderstorm_wind_count_gs",
+      "score": 0.050501
+    },
+    {
+      "feature": "Rolling2yr_Precip_growseason_mm_mean",
+      "score": 0.0505
+    },
+    {
+      "feature": "cdhw_total_days_veg",
+      "score": 0.049115
+    },
+    {
+      "feature": "spi1_prism_min_veg",
+      "score": 0.047511
+    },
+    {
+      "feature": "spi12_prism_mean_gs",
+      "score": 0.046795
+    },
+    {
+      "feature": "prism_tmax_days_gt35_veg",
+      "score": 0.046705
+    },
+    {
+      "feature": "prism_tmin_min_gs",
+      "score": 0.046294
+    },
+    {
+      "feature": "spi12_prism_min_gs",
+      "score": 0.045764
+    },
+    {
+      "feature": "Fourier_cos_P5_0",
+      "score": 0.045692
+    },
+    {
+      "feature": "soil_awc",
+      "score": 0.043527
+    },
+    {
+      "feature": "Fourier_sin_P3_0",
+      "score": 0.043515
+    },
+    {
+      "feature": "Rolling3yr_Precip_growseason_mm_mean",
+      "score": 0.042597
+    },
+    {
+      "feature": "nlcd_grass_shrub_frac",
+      "score": 0.041998
+    },
+    {
+      "feature": "noaa_hail_count_gs",
+      "score": 0.039137
+    },
+    {
+      "feature": "prism_ppt_total_silk",
+      "score": 0.039056
+    },
+    {
+      "feature": "elevation_std_m",
+      "score": 0.0387
+    },
+    {
+      "feature": "CDHW_Flag",
+      "score": 0.038401
+    },
+    {
+      "feature": "noaa_max_hail_size_gs",
+      "score": 0.037139
+    },
+    {
+      "feature": "spei30_prism_nldas_max_gs",
+      "score": 0.03432
+    },
+    {
+      "feature": "spi1_prism_min_gs",
+      "score": 0.032934
+    },
+    {
+      "feature": "Fourier_cos_P3_0",
+      "score": 0.022703
+    },
+    {
+      "feature": "CDHW_Severity_grainfill",
+      "score": 0.021487
+    },
+    {
+      "feature": "CDHW_GrainFill_Severity",
+      "score": 0.019589
+    },
+    {
+      "feature": "prism_tmax_days_gt35_grain",
+      "score": 0.019402
+    },
+    {
+      "feature": "cdhw_total_days_grain",
+      "score": 0.016416
+    },
+    {
+      "feature": "cdhw_count_grain",
+      "score": 0.015647
+    },
+    {
+      "feature": "noaa_tornado_count_gs",
+      "score": 0.010493
+    },
+    {
+      "feature": "Fourier_cos_P1_0",
+      "score": 0.0
+    },
+    {
+      "feature": "Fourier_sin_P1_0",
+      "score": 0.0
+    }
+  ],
+  "lgbm_importance": [
+    {
+      "feature": "Yield_lag1",
+      "importance": 1332.0
+    },
+    {
+      "feature": "Yield_lag2",
+      "importance": 1084.0
+    },
+    {
+      "feature": "nldas_wind_mean_gs",
+      "importance": 862.0
+    },
+    {
+      "feature": "nlcd_developed_frac",
+      "importance": 819.0
+    },
+    {
+      "feature": "nldas_et0_total_silk",
+      "importance": 817.0
+    },
+    {
+      "feature": "prism_ppt_total_silk",
+      "importance": 812.0
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_silk",
+      "importance": 810.0
+    },
+    {
+      "feature": "spi1_prism_min_silk",
+      "importance": 802.0
+    },
+    {
+      "feature": "nlcd_pasture_hay_frac",
+      "importance": 788.0
+    },
+    {
+      "feature": "Rolling3yr_Precip_growseason_mm_mean",
+      "importance": 757.0
+    },
+    {
+      "feature": "spi3_prism_min_gs",
+      "importance": 746.0
+    },
+    {
+      "feature": "Anom_GDD_Accumulated",
+      "importance": 742.0
+    },
+    {
+      "feature": "soil_silt",
+      "importance": 742.0
+    },
+    {
+      "feature": "nldas_rs_mean_gs",
+      "importance": 733.0
+    },
+    {
+      "feature": "prism_tmin_min_gs",
+      "importance": 726.0
+    },
+    {
+      "feature": "soil_clay",
+      "importance": 711.0
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_veg",
+      "importance": 709.0
+    },
+    {
+      "feature": "spei30_prism_nldas_max_gs",
+      "importance": 709.0
+    },
+    {
+      "feature": "spi12_prism_mean_gs",
+      "importance": 689.0
+    },
+    {
+      "feature": "soil_bulk_density",
+      "importance": 685.0
+    },
+    {
+      "feature": "nlcd_water_wetland_frac",
+      "importance": 685.0
+    },
+    {
+      "feature": "nldas_vpd_mean_veg",
+      "importance": 682.0
+    },
+    {
+      "feature": "prism_ppt_total_veg",
+      "importance": 675.0
+    },
+    {
+      "feature": "spi6_prism_min_gs",
+      "importance": 661.0
+    },
+    {
+      "feature": "spi1_prism_min_veg",
+      "importance": 656.0
+    },
+    {
+      "feature": "elevation_std_m",
+      "importance": 655.0
+    },
+    {
+      "feature": "spi12_prism_min_gs",
+      "importance": 642.0
+    },
+    {
+      "feature": "spi1_prism_min_grain",
+      "importance": 638.0
+    },
+    {
+      "feature": "spi1_prism_min_gs",
+      "importance": 633.0
+    },
+    {
+      "feature": "elevation_mean_m",
+      "importance": 632.0
+    },
+    {
+      "feature": "Hist_Normal_Precip_growseason_mm",
+      "importance": 626.0
+    },
+    {
+      "feature": "prism_ppt_total_grain",
+      "importance": 623.0
+    },
+    {
+      "feature": "spei30_prism_nldas_min_veg",
+      "importance": 613.0
+    },
+    {
+      "feature": "soil_organic_carbon",
+      "importance": 606.0
+    },
+    {
+      "feature": "spei30_prism_nldas_min_silk",
+      "importance": 602.0
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_grain",
+      "importance": 600.0
+    },
+    {
+      "feature": "nlcd_grass_shrub_frac",
+      "importance": 597.0
+    },
+    {
+      "feature": "slope_mean",
+      "importance": 590.0
+    },
+    {
+      "feature": "nldas_vpd_mean_silk",
+      "importance": 589.0
+    },
+    {
+      "feature": "spei90_prism_nldas_min_gs",
+      "importance": 587.0
+    },
+    {
+      "feature": "Rolling2yr_Precip_growseason_mm_mean",
+      "importance": 569.0
+    },
+    {
+      "feature": "nldas_humidity_mean_gs",
+      "importance": 567.0
+    },
+    {
+      "feature": "prism_tmax_max_gs",
+      "importance": 567.0
+    },
+    {
+      "feature": "prism_tmax_mean_silk",
+      "importance": 560.0
+    },
+    {
+      "feature": "spei30_prism_nldas_min_grain",
+      "importance": 556.0
+    },
+    {
+      "feature": "soil_awc",
+      "importance": 553.0
+    },
+    {
+      "feature": "nlcd_cropland_frac",
+      "importance": 549.0
+    },
+    {
+      "feature": "prism_kdd30_gs",
+      "importance": 533.0
+    },
+    {
+      "feature": "nldas_et0_total_gs",
+      "importance": 530.0
+    },
+    {
+      "feature": "nldas_et0_total_veg",
+      "importance": 521.0
+    },
+    {
+      "feature": "nlcd_forest_frac",
+      "importance": 509.0
+    },
+    {
+      "feature": "Precip_growseason_mm",
+      "importance": 500.0
+    },
+    {
+      "feature": "spi6_prism_mean_gs",
+      "importance": 496.0
+    },
+    {
+      "feature": "nldas_vpd_mean_grain",
+      "importance": 487.0
+    },
+    {
+      "feature": "Rolling2yr_GDD_Accumulated_mean",
+      "importance": 458.0
+    },
+    {
+      "feature": "prism_tmax_mean_veg",
+      "importance": 447.0
+    },
+    {
+      "feature": "Anom_Precip_growseason_mm",
+      "importance": 437.0
+    },
+    {
+      "feature": "SPEI_30_min",
+      "importance": 433.0
+    },
+    {
+      "feature": "Rolling3yr_GDD_Accumulated_mean",
+      "importance": 432.0
+    },
+    {
+      "feature": "Inter_SPEI_Tmax",
+      "importance": 428.0
+    },
+    {
+      "feature": "prism_tmax_mean_grain",
+      "importance": 423.0
+    },
+    {
+      "feature": "Hist_Normal_GDD_Accumulated",
+      "importance": 414.0
+    },
+    {
+      "feature": "nldas_vpd_mean_gs",
+      "importance": 408.0
+    },
+    {
+      "feature": "spi1_prism_mean_gs",
+      "importance": 407.0
+    },
+    {
+      "feature": "spei30_prism_nldas_drought_days_gs",
+      "importance": 401.0
+    },
+    {
+      "feature": "prism_tmin_mean_gs",
+      "importance": 387.0
+    },
+    {
+      "feature": "noaa_thunderstorm_wind_count_gs",
+      "importance": 381.0
+    },
+    {
+      "feature": "spei90_prism_nldas_mean_gs",
+      "importance": 361.0
+    },
+    {
+      "feature": "spi3_prism_mean_gs",
+      "importance": 356.0
+    },
+    {
+      "feature": "SPEI_30_mean",
+      "importance": 349.0
+    },
+    {
+      "feature": "Fourier_sin_P19_0",
+      "importance": 336.0
+    },
+    {
+      "feature": "noaa_hail_count_gs",
+      "importance": 316.0
+    },
+    {
+      "feature": "Rolling3yr_Tmax_Days_Above_35_mean",
+      "importance": 314.0
+    },
+    {
+      "feature": "prism_tmax_mean_gs",
+      "importance": 308.0
+    },
+    {
+      "feature": "pheno_veg_days",
+      "importance": 280.0
+    },
+    {
+      "feature": "noaa_max_hail_size_gs",
+      "importance": 266.0
+    },
+    {
+      "feature": "nldas_et0_total_grain",
+      "importance": 266.0
+    },
+    {
+      "feature": "GDD_Accumulated",
+      "importance": 265.0
+    },
+    {
+      "feature": "Fourier_sin_P11_0",
+      "importance": 255.0
+    },
+    {
+      "feature": "Fourier_cos_P19_0",
+      "importance": 239.0
+    },
+    {
+      "feature": "Fourier_cos_P11_0",
+      "importance": 237.0
+    },
+    {
+      "feature": "Inter_Heat_Precip",
+      "importance": 211.0
+    },
+    {
+      "feature": "pheno_silk_days",
+      "importance": 211.0
+    },
+    {
+      "feature": "Fourier_sin_P7_0",
+      "importance": 191.0
+    },
+    {
+      "feature": "Fourier_sin_P5_0",
+      "importance": 185.0
+    },
+    {
+      "feature": "prism_heat_exceedance_total_gs",
+      "importance": 182.0
+    },
+    {
+      "feature": "Rolling2yr_Tmax_Days_Above_35_mean",
+      "importance": 179.0
+    },
+    {
+      "feature": "Fourier_cos_P7_0",
+      "importance": 172.0
+    },
+    {
+      "feature": "cdhw_max_severity_gs",
+      "importance": 126.0
+    },
+    {
+      "feature": "Fourier_sin_P3_0",
+      "importance": 125.0
+    },
+    {
+      "feature": "Fourier_cos_P5_0",
+      "importance": 105.0
+    },
+    {
+      "feature": "prism_tmax_days_gt35_silk",
+      "importance": 100.0
+    },
+    {
+      "feature": "CDHW_Severity_silking",
+      "importance": 88.0
+    },
+    {
+      "feature": "noaa_tornado_count_gs",
+      "importance": 77.0
+    },
+    {
+      "feature": "CDHW_Severity_Score",
+      "importance": 73.0
+    },
+    {
+      "feature": "Inter_CDHW_GDD",
+      "importance": 71.0
+    },
+    {
+      "feature": "CDHW_Severity_grainfill",
+      "importance": 67.0
+    },
+    {
+      "feature": "CDHW_Severity_vegetative",
+      "importance": 60.0
+    },
+    {
+      "feature": "Tmax_Days_Above_35",
+      "importance": 55.0
+    },
+    {
+      "feature": "Fourier_cos_P3_0",
+      "importance": 54.0
+    },
+    {
+      "feature": "prism_tmax_days_gt35_veg",
+      "importance": 42.0
+    },
+    {
+      "feature": "cdhw_total_days_silk",
+      "importance": 35.0
+    },
+    {
+      "feature": "CDHW_Event_Count",
+      "importance": 31.0
+    },
+    {
+      "feature": "cdhw_count_gs",
+      "importance": 27.0
+    },
+    {
+      "feature": "CDHW_Silking_Severity",
+      "importance": 27.0
+    },
+    {
+      "feature": "prism_tmax_days_gt35_grain",
+      "importance": 25.0
+    },
+    {
+      "feature": "cdhw_max_duration_gs",
+      "importance": 19.0
+    },
+    {
+      "feature": "cdhw_count_silk",
+      "importance": 18.0
+    },
+    {
+      "feature": "cdhw_count_grain",
+      "importance": 15.0
+    },
+    {
+      "feature": "cdhw_count_veg",
+      "importance": 14.0
+    },
+    {
+      "feature": "CDHW_Veg_Severity",
+      "importance": 14.0
+    },
+    {
+      "feature": "cdhw_total_days_veg",
+      "importance": 8.0
+    },
+    {
+      "feature": "CDHW_GrainFill_Severity",
+      "importance": 5.0
+    },
+    {
+      "feature": "cdhw_total_days_grain",
+      "importance": 3.0
+    },
+    {
+      "feature": "Fourier_cos_P1_0",
+      "importance": 0.0
+    },
+    {
+      "feature": "CDHW_Flag",
+      "importance": 0.0
+    },
+    {
+      "feature": "Fourier_sin_P1_0",
+      "importance": 0.0
+    }
+  ],
+  "rf_importance": [
+    {
+      "feature": "Yield_lag2",
+      "importance": 0.269933
+    },
+    {
+      "feature": "Yield_lag1",
+      "importance": 0.109267
+    },
+    {
+      "feature": "prism_tmax_mean_silk",
+      "importance": 0.071696
+    },
+    {
+      "feature": "spei30_prism_nldas_min_silk",
+      "importance": 0.045506
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_silk",
+      "importance": 0.040406
+    },
+    {
+      "feature": "Fourier_cos_P19_0",
+      "importance": 0.026909
+    },
+    {
+      "feature": "CDHW_Silking_Severity",
+      "importance": 0.024956
+    },
+    {
+      "feature": "CDHW_Severity_silking",
+      "importance": 0.023527
+    },
+    {
+      "feature": "prism_tmin_mean_gs",
+      "importance": 0.018704
+    },
+    {
+      "feature": "prism_ppt_total_veg",
+      "importance": 0.01868
+    },
+    {
+      "feature": "spi3_prism_min_gs",
+      "importance": 0.017662
+    },
+    {
+      "feature": "nldas_et0_total_silk",
+      "importance": 0.016336
+    },
+    {
+      "feature": "soil_bulk_density",
+      "importance": 0.014856
+    },
+    {
+      "feature": "Inter_CDHW_GDD",
+      "importance": 0.014403
+    },
+    {
+      "feature": "Rolling2yr_GDD_Accumulated_mean",
+      "importance": 0.014206
+    },
+    {
+      "feature": "prism_kdd30_gs",
+      "importance": 0.013595
+    },
+    {
+      "feature": "Fourier_sin_P11_0",
+      "importance": 0.012937
+    },
+    {
+      "feature": "prism_tmax_mean_gs",
+      "importance": 0.012274
+    },
+    {
+      "feature": "nldas_vpd_mean_veg",
+      "importance": 0.011432
+    },
+    {
+      "feature": "Anom_GDD_Accumulated",
+      "importance": 0.010891
+    },
+    {
+      "feature": "CDHW_Severity_Score",
+      "importance": 0.010425
+    },
+    {
+      "feature": "nldas_rs_mean_gs",
+      "importance": 0.009516
+    },
+    {
+      "feature": "nldas_et0_total_veg",
+      "importance": 0.008679
+    },
+    {
+      "feature": "Fourier_cos_P11_0",
+      "importance": 0.008242
+    },
+    {
+      "feature": "nldas_et0_total_gs",
+      "importance": 0.007593
+    },
+    {
+      "feature": "Fourier_sin_P19_0",
+      "importance": 0.007098
+    },
+    {
+      "feature": "prism_ppt_total_silk",
+      "importance": 0.006482
+    },
+    {
+      "feature": "spi1_prism_min_silk",
+      "importance": 0.006051
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_veg",
+      "importance": 0.004994
+    },
+    {
+      "feature": "Fourier_cos_P7_0",
+      "importance": 0.004888
+    },
+    {
+      "feature": "Fourier_sin_P5_0",
+      "importance": 0.004864
+    },
+    {
+      "feature": "Inter_SPEI_Tmax",
+      "importance": 0.004126
+    },
+    {
+      "feature": "prism_tmin_min_gs",
+      "importance": 0.004066
+    },
+    {
+      "feature": "GDD_Accumulated",
+      "importance": 0.00389
+    },
+    {
+      "feature": "nldas_wind_mean_gs",
+      "importance": 0.003646
+    },
+    {
+      "feature": "spei90_prism_nldas_mean_gs",
+      "importance": 0.003626
+    },
+    {
+      "feature": "nldas_humidity_mean_gs",
+      "importance": 0.003534
+    },
+    {
+      "feature": "prism_heat_exceedance_total_gs",
+      "importance": 0.003499
+    },
+    {
+      "feature": "spei30_prism_nldas_min_veg",
+      "importance": 0.003416
+    },
+    {
+      "feature": "nlcd_cropland_frac",
+      "importance": 0.003348
+    },
+    {
+      "feature": "spei90_prism_nldas_min_gs",
+      "importance": 0.003306
+    },
+    {
+      "feature": "spi1_prism_min_veg",
+      "importance": 0.003295
+    },
+    {
+      "feature": "nlcd_pasture_hay_frac",
+      "importance": 0.003131
+    },
+    {
+      "feature": "cdhw_max_severity_gs",
+      "importance": 0.003039
+    },
+    {
+      "feature": "prism_tmax_max_gs",
+      "importance": 0.002878
+    },
+    {
+      "feature": "Rolling3yr_Precip_growseason_mm_mean",
+      "importance": 0.002859
+    },
+    {
+      "feature": "Fourier_cos_P5_0",
+      "importance": 0.00278
+    },
+    {
+      "feature": "nldas_et0_total_grain",
+      "importance": 0.002626
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_grain",
+      "importance": 0.002622
+    },
+    {
+      "feature": "Precip_growseason_mm",
+      "importance": 0.002487
+    },
+    {
+      "feature": "Fourier_sin_P3_0",
+      "importance": 0.002469
+    },
+    {
+      "feature": "spi6_prism_min_gs",
+      "importance": 0.002446
+    },
+    {
+      "feature": "nldas_vpd_mean_grain",
+      "importance": 0.002435
+    },
+    {
+      "feature": "Fourier_sin_P7_0",
+      "importance": 0.002411
+    },
+    {
+      "feature": "soil_organic_carbon",
+      "importance": 0.002391
+    },
+    {
+      "feature": "Rolling2yr_Precip_growseason_mm_mean",
+      "importance": 0.002213
+    },
+    {
+      "feature": "nldas_vpd_mean_silk",
+      "importance": 0.002181
+    },
+    {
+      "feature": "spi12_prism_min_gs",
+      "importance": 0.002
+    },
+    {
+      "feature": "Rolling3yr_GDD_Accumulated_mean",
+      "importance": 0.001976
+    },
+    {
+      "feature": "prism_ppt_total_grain",
+      "importance": 0.001969
+    },
+    {
+      "feature": "spi12_prism_mean_gs",
+      "importance": 0.001851
+    },
+    {
+      "feature": "nldas_vpd_mean_gs",
+      "importance": 0.001811
+    },
+    {
+      "feature": "spei30_prism_nldas_min_grain",
+      "importance": 0.001704
+    },
+    {
+      "feature": "cdhw_count_silk",
+      "importance": 0.001665
+    },
+    {
+      "feature": "spi3_prism_mean_gs",
+      "importance": 0.001635
+    },
+    {
+      "feature": "SPEI_30_mean",
+      "importance": 0.001553
+    },
+    {
+      "feature": "Rolling3yr_Tmax_Days_Above_35_mean",
+      "importance": 0.001532
+    },
+    {
+      "feature": "soil_clay",
+      "importance": 0.001513
+    },
+    {
+      "feature": "spei30_prism_nldas_drought_days_gs",
+      "importance": 0.001498
+    },
+    {
+      "feature": "spi1_prism_mean_gs",
+      "importance": 0.001473
+    },
+    {
+      "feature": "spi1_prism_min_gs",
+      "importance": 0.001447
+    },
+    {
+      "feature": "Hist_Normal_Precip_growseason_mm",
+      "importance": 0.001416
+    },
+    {
+      "feature": "spi6_prism_mean_gs",
+      "importance": 0.001386
+    },
+    {
+      "feature": "pheno_silk_days",
+      "importance": 0.001372
+    },
+    {
+      "feature": "prism_tmax_mean_veg",
+      "importance": 0.001331
+    },
+    {
+      "feature": "nlcd_forest_frac",
+      "importance": 0.001329
+    },
+    {
+      "feature": "Rolling2yr_Tmax_Days_Above_35_mean",
+      "importance": 0.001252
+    },
+    {
+      "feature": "Hist_Normal_GDD_Accumulated",
+      "importance": 0.001251
+    },
+    {
+      "feature": "spei30_prism_nldas_max_gs",
+      "importance": 0.001154
+    },
+    {
+      "feature": "nlcd_water_wetland_frac",
+      "importance": 0.001137
+    },
+    {
+      "feature": "spi1_prism_min_grain",
+      "importance": 0.001116
+    },
+    {
+      "feature": "Anom_Precip_growseason_mm",
+      "importance": 0.001113
+    },
+    {
+      "feature": "elevation_mean_m",
+      "importance": 0.00111
+    },
+    {
+      "feature": "soil_silt",
+      "importance": 0.001105
+    },
+    {
+      "feature": "soil_awc",
+      "importance": 0.001044
+    },
+    {
+      "feature": "Inter_Heat_Precip",
+      "importance": 0.00104
+    },
+    {
+      "feature": "SPEI_30_min",
+      "importance": 0.000977
+    },
+    {
+      "feature": "nlcd_developed_frac",
+      "importance": 0.000975
+    },
+    {
+      "feature": "cdhw_total_days_silk",
+      "importance": 0.000891
+    },
+    {
+      "feature": "CDHW_Event_Count",
+      "importance": 0.00088
+    },
+    {
+      "feature": "prism_tmax_mean_grain",
+      "importance": 0.000878
+    },
+    {
+      "feature": "slope_mean",
+      "importance": 0.000868
+    },
+    {
+      "feature": "nlcd_grass_shrub_frac",
+      "importance": 0.000841
+    },
+    {
+      "feature": "pheno_veg_days",
+      "importance": 0.000814
+    },
+    {
+      "feature": "prism_tmax_days_gt35_silk",
+      "importance": 0.00081
+    },
+    {
+      "feature": "noaa_hail_count_gs",
+      "importance": 0.000743
+    },
+    {
+      "feature": "elevation_std_m",
+      "importance": 0.000727
+    },
+    {
+      "feature": "noaa_thunderstorm_wind_count_gs",
+      "importance": 0.000351
+    },
+    {
+      "feature": "Fourier_cos_P3_0",
+      "importance": 0.00032
+    },
+    {
+      "feature": "noaa_max_hail_size_gs",
+      "importance": 0.00029
+    },
+    {
+      "feature": "CDHW_GrainFill_Severity",
+      "importance": 0.00027
+    },
+    {
+      "feature": "CDHW_Severity_grainfill",
+      "importance": 0.000241
+    },
+    {
+      "feature": "Tmax_Days_Above_35",
+      "importance": 0.000221
+    },
+    {
+      "feature": "cdhw_count_gs",
+      "importance": 0.000208
+    },
+    {
+      "feature": "cdhw_total_days_grain",
+      "importance": 0.000207
+    },
+    {
+      "feature": "cdhw_max_duration_gs",
+      "importance": 0.000189
+    },
+    {
+      "feature": "cdhw_count_grain",
+      "importance": 0.000166
+    },
+    {
+      "feature": "prism_tmax_days_gt35_grain",
+      "importance": 0.000162
+    },
+    {
+      "feature": "CDHW_Veg_Severity",
+      "importance": 0.000129
+    },
+    {
+      "feature": "prism_tmax_days_gt35_veg",
+      "importance": 0.000122
+    },
+    {
+      "feature": "CDHW_Severity_vegetative",
+      "importance": 9.2e-05
+    },
+    {
+      "feature": "noaa_tornado_count_gs",
+      "importance": 6.3e-05
+    },
+    {
+      "feature": "cdhw_count_veg",
+      "importance": 2.7e-05
+    },
+    {
+      "feature": "cdhw_total_days_veg",
+      "importance": 1.7e-05
+    },
+    {
+      "feature": "CDHW_Flag",
+      "importance": 1.5e-05
+    },
+    {
+      "feature": "Fourier_cos_P1_0",
+      "importance": 0.0
+    },
+    {
+      "feature": "Fourier_sin_P1_0",
+      "importance": 0.0
+    }
+  ],
+  "permutation_importance": [
+    {
+      "feature": "Yield_lag2",
+      "importance": 0.278657
+    },
+    {
+      "feature": "Yield_lag1",
+      "importance": 0.228357
+    },
+    {
+      "feature": "prism_tmax_mean_silk",
+      "importance": 0.075251
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_silk",
+      "importance": 0.055952
+    },
+    {
+      "feature": "spei30_prism_nldas_min_silk",
+      "importance": 0.037985
+    },
+    {
+      "feature": "Fourier_cos_P19_0",
+      "importance": 0.034621
+    },
+    {
+      "feature": "Fourier_sin_P11_0",
+      "importance": 0.019035
+    },
+    {
+      "feature": "nldas_et0_total_silk",
+      "importance": 0.018594
+    },
+    {
+      "feature": "soil_bulk_density",
+      "importance": 0.017192
+    },
+    {
+      "feature": "spi3_prism_min_gs",
+      "importance": 0.014535
+    },
+    {
+      "feature": "prism_ppt_total_veg",
+      "importance": 0.014124
+    },
+    {
+      "feature": "nldas_et0_total_gs",
+      "importance": 0.012862
+    },
+    {
+      "feature": "nldas_vpd_mean_veg",
+      "importance": 0.011037
+    },
+    {
+      "feature": "Anom_GDD_Accumulated",
+      "importance": 0.010187
+    },
+    {
+      "feature": "prism_tmin_mean_gs",
+      "importance": 0.009964
+    },
+    {
+      "feature": "nldas_et0_total_veg",
+      "importance": 0.009521
+    },
+    {
+      "feature": "Fourier_cos_P11_0",
+      "importance": 0.009325
+    },
+    {
+      "feature": "nldas_rs_mean_gs",
+      "importance": 0.007434
+    },
+    {
+      "feature": "Fourier_sin_P19_0",
+      "importance": 0.007312
+    },
+    {
+      "feature": "CDHW_Silking_Severity",
+      "importance": 0.007243
+    },
+    {
+      "feature": "Rolling2yr_GDD_Accumulated_mean",
+      "importance": 0.007022
+    },
+    {
+      "feature": "Fourier_sin_P5_0",
+      "importance": 0.00654
+    },
+    {
+      "feature": "CDHW_Severity_silking",
+      "importance": 0.00635
+    },
+    {
+      "feature": "prism_kdd30_gs",
+      "importance": 0.006208
+    },
+    {
+      "feature": "prism_ppt_total_silk",
+      "importance": 0.005538
+    },
+    {
+      "feature": "Fourier_cos_P7_0",
+      "importance": 0.005473
+    },
+    {
+      "feature": "spi1_prism_min_silk",
+      "importance": 0.004982
+    },
+    {
+      "feature": "prism_tmax_mean_gs",
+      "importance": 0.004564
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_veg",
+      "importance": 0.004371
+    },
+    {
+      "feature": "prism_tmin_min_gs",
+      "importance": 0.004062
+    },
+    {
+      "feature": "spei90_prism_nldas_min_gs",
+      "importance": 0.003822
+    },
+    {
+      "feature": "Inter_CDHW_GDD",
+      "importance": 0.003692
+    },
+    {
+      "feature": "nldas_wind_mean_gs",
+      "importance": 0.003193
+    },
+    {
+      "feature": "nlcd_cropland_frac",
+      "importance": 0.003037
+    },
+    {
+      "feature": "nlcd_pasture_hay_frac",
+      "importance": 0.002942
+    },
+    {
+      "feature": "Fourier_sin_P3_0",
+      "importance": 0.002697
+    },
+    {
+      "feature": "Fourier_sin_P7_0",
+      "importance": 0.002559
+    },
+    {
+      "feature": "Rolling3yr_Precip_growseason_mm_mean",
+      "importance": 0.002536
+    },
+    {
+      "feature": "nldas_humidity_mean_gs",
+      "importance": 0.002503
+    },
+    {
+      "feature": "CDHW_Severity_Score",
+      "importance": 0.002381
+    },
+    {
+      "feature": "prism_tmax_max_gs",
+      "importance": 0.002214
+    },
+    {
+      "feature": "Fourier_cos_P5_0",
+      "importance": 0.002181
+    },
+    {
+      "feature": "nldas_vpd_mean_grain",
+      "importance": 0.001901
+    },
+    {
+      "feature": "spei30_prism_nldas_mean_grain",
+      "importance": 0.001879
+    },
+    {
+      "feature": "cdhw_max_severity_gs",
+      "importance": 0.001857
+    },
+    {
+      "feature": "spi6_prism_min_gs",
+      "importance": 0.001836
+    },
+    {
+      "feature": "spei30_prism_nldas_min_veg",
+      "importance": 0.001833
+    },
+    {
+      "feature": "spi1_prism_min_veg",
+      "importance": 0.00183
+    },
+    {
+      "feature": "nldas_vpd_mean_silk",
+      "importance": 0.001828
+    },
+    {
+      "feature": "prism_heat_exceedance_total_gs",
+      "importance": 0.001802
+    },
+    {
+      "feature": "soil_organic_carbon",
+      "importance": 0.001708
+    },
+    {
+      "feature": "Rolling3yr_GDD_Accumulated_mean",
+      "importance": 0.001549
+    },
+    {
+      "feature": "nldas_vpd_mean_gs",
+      "importance": 0.001515
+    },
+    {
+      "feature": "spi12_prism_min_gs",
+      "importance": 0.001506
+    },
+    {
+      "feature": "prism_ppt_total_grain",
+      "importance": 0.00149
+    },
+    {
+      "feature": "Precip_growseason_mm",
+      "importance": 0.001451
+    },
+    {
+      "feature": "GDD_Accumulated",
+      "importance": 0.001436
+    },
+    {
+      "feature": "spei30_prism_nldas_min_grain",
+      "importance": 0.001425
+    },
+    {
+      "feature": "Rolling2yr_Precip_growseason_mm_mean",
+      "importance": 0.001371
+    },
+    {
+      "feature": "Inter_SPEI_Tmax",
+      "importance": 0.001368
+    },
+    {
+      "feature": "Hist_Normal_GDD_Accumulated",
+      "importance": 0.001355
+    },
+    {
+      "feature": "spi12_prism_mean_gs",
+      "importance": 0.001324
+    },
+    {
+      "feature": "spei90_prism_nldas_mean_gs",
+      "importance": 0.001262
+    },
+    {
+      "feature": "Rolling3yr_Tmax_Days_Above_35_mean",
+      "importance": 0.001254
+    },
+    {
+      "feature": "nldas_et0_total_grain",
+      "importance": 0.001229
+    },
+    {
+      "feature": "spi3_prism_mean_gs",
+      "importance": 0.00122
+    },
+    {
+      "feature": "soil_clay",
+      "importance": 0.001197
+    },
+    {
+      "feature": "spi1_prism_min_gs",
+      "importance": 0.001146
+    },
+    {
+      "feature": "spi6_prism_mean_gs",
+      "importance": 0.0011
+    },
+    {
+      "feature": "nlcd_forest_frac",
+      "importance": 0.001096
+    },
+    {
+      "feature": "pheno_silk_days",
+      "importance": 0.001036
+    },
+    {
+      "feature": "spei30_prism_nldas_drought_days_gs",
+      "importance": 0.001024
+    },
+    {
+      "feature": "Hist_Normal_Precip_growseason_mm",
+      "importance": 0.000993
+    },
+    {
+      "feature": "prism_tmax_mean_veg",
+      "importance": 0.000969
+    },
+    {
+      "feature": "spi1_prism_mean_gs",
+      "importance": 0.000963
+    },
+    {
+      "feature": "spei30_prism_nldas_max_gs",
+      "importance": 0.00093
+    },
+    {
+      "feature": "Rolling2yr_Tmax_Days_Above_35_mean",
+      "importance": 0.000882
+    },
+    {
+      "feature": "soil_silt",
+      "importance": 0.00088
+    },
+    {
+      "feature": "nlcd_water_wetland_frac",
+      "importance": 0.00083
+    },
+    {
+      "feature": "elevation_mean_m",
+      "importance": 0.000779
+    },
+    {
+      "feature": "soil_awc",
+      "importance": 0.000778
+    },
+    {
+      "feature": "spi1_prism_min_grain",
+      "importance": 0.000762
+    },
+    {
+      "feature": "SPEI_30_mean",
+      "importance": 0.000714
+    },
+    {
+      "feature": "Anom_Precip_growseason_mm",
+      "importance": 0.000659
+    },
+    {
+      "feature": "nlcd_developed_frac",
+      "importance": 0.000633
+    },
+    {
+      "feature": "slope_mean",
+      "importance": 0.000614
+    },
+    {
+      "feature": "SPEI_30_min",
+      "importance": 0.000588
+    },
+    {
+      "feature": "Inter_Heat_Precip",
+      "importance": 0.000587
+    },
+    {
+      "feature": "prism_tmax_mean_grain",
+      "importance": 0.000584
+    },
+    {
+      "feature": "cdhw_total_days_silk",
+      "importance": 0.000568
+    },
+    {
+      "feature": "pheno_veg_days",
+      "importance": 0.000541
+    },
+    {
+      "feature": "nlcd_grass_shrub_frac",
+      "importance": 0.000525
+    },
+    {
+      "feature": "elevation_std_m",
+      "importance": 0.000501
+    },
+    {
+      "feature": "noaa_hail_count_gs",
+      "importance": 0.000501
+    },
+    {
+      "feature": "prism_tmax_days_gt35_silk",
+      "importance": 0.000486
+    },
+    {
+      "feature": "CDHW_Event_Count",
+      "importance": 0.000453
+    },
+    {
+      "feature": "cdhw_count_silk",
+      "importance": 0.00044
+    },
+    {
+      "feature": "Fourier_cos_P3_0",
+      "importance": 0.00031
+    },
+    {
+      "feature": "noaa_thunderstorm_wind_count_gs",
+      "importance": 0.000239
+    },
+    {
+      "feature": "noaa_max_hail_size_gs",
+      "importance": 0.000229
+    },
+    {
+      "feature": "CDHW_GrainFill_Severity",
+      "importance": 0.000215
+    },
+    {
+      "feature": "cdhw_count_gs",
+      "importance": 0.000192
+    },
+    {
+      "feature": "cdhw_total_days_grain",
+      "importance": 0.000144
+    },
+    {
+      "feature": "Tmax_Days_Above_35",
+      "importance": 0.00013
+    },
+    {
+      "feature": "CDHW_Severity_grainfill",
+      "importance": 0.00012
+    },
+    {
+      "feature": "CDHW_Veg_Severity",
+      "importance": 9.3e-05
+    },
+    {
+      "feature": "CDHW_Severity_vegetative",
+      "importance": 8.9e-05
+    },
+    {
+      "feature": "cdhw_count_grain",
+      "importance": 8.6e-05
+    },
+    {
+      "feature": "prism_tmax_days_gt35_grain",
+      "importance": 8.5e-05
+    },
+    {
+      "feature": "cdhw_max_duration_gs",
+      "importance": 8.4e-05
+    },
+    {
+      "feature": "prism_tmax_days_gt35_veg",
+      "importance": 7.4e-05
+    },
+    {
+      "feature": "noaa_tornado_count_gs",
+      "importance": 4.3e-05
+    },
+    {
+      "feature": "cdhw_count_veg",
+      "importance": 1.5e-05
+    },
+    {
+      "feature": "CDHW_Flag",
+      "importance": 7e-06
+    },
+    {
+      "feature": "cdhw_total_days_veg",
+      "importance": 3e-06
+    },
+    {
+      "feature": "Fourier_cos_P1_0",
+      "importance": 0.0
+    },
+    {
+      "feature": "Fourier_sin_P1_0",
+      "importance": 0.0
+    }
+  ],
+  "protected_features": [
+    "prism_tmax_mean_gs",
+    "prism_tmax_max_gs",
+    "prism_tmin_mean_gs",
+    "Precip_growseason_mm",
+    "GDD_Accumulated",
+    "Tmax_Days_Above_35",
+    "spi1_prism_mean_gs",
+    "spi1_prism_min_gs",
+    "CDHW_Event_Count",
+    "CDHW_Severity_Score",
+    "noaa_hail_count_gs",
+    "noaa_thunderstorm_wind_count_gs",
+    "noaa_tornado_count_gs",
+    "noaa_max_hail_size_gs",
+    "soil_awc",
+    "soil_bulk_density",
+    "soil_clay",
+    "soil_silt",
+    "soil_organic_carbon",
+    "elevation_mean_m",
+    "slope_mean",
+    "nlcd_cropland_frac",
+    "nlcd_pasture_hay_frac",
+    "CDHW_Flag",
+    "CDHW_Veg_Severity",
+    "CDHW_Silking_Severity",
+    "CDHW_GrainFill_Severity",
+    "Fourier_sin_P1_0",
+    "Fourier_cos_P1_0",
+    "Fourier_sin_P3_0",
+    "Fourier_cos_P3_0",
+    "Fourier_sin_P5_0",
+    "Fourier_cos_P5_0",
+    "Fourier_sin_P7_0",
+    "Fourier_cos_P7_0",
+    "Fourier_sin_P11_0",
+    "Fourier_cos_P11_0",
+    "Fourier_sin_P19_0",
+    "Fourier_cos_P19_0",
+    "Yield_lag1",
+    "Yield_lag2",
+    "Hist_Normal_Precip_growseason_mm",
+    "Hist_Normal_GDD_Accumulated"
+  ],
+  "consensus_votes": {
+    "prism_tmax_mean_gs": 4,
+    "prism_tmax_max_gs": 4,
+    "prism_tmin_mean_gs": 3,
+    "prism_tmin_min_gs": 3,
+    "Precip_growseason_mm": 4,
+    "GDD_Accumulated": 3,
+    "prism_kdd30_gs": 4,
+    "Tmax_Days_Above_35": 1,
+    "prism_heat_exceedance_total_gs": 3,
+    "nldas_et0_total_gs": 4,
+    "nldas_rs_mean_gs": 4,
+    "nldas_humidity_mean_gs": 4,
+    "nldas_vpd_mean_gs": 4,
+    "nldas_wind_mean_gs": 4,
+    "spi1_prism_mean_gs": 4,
+    "spi1_prism_min_gs": 3,
+    "spi3_prism_mean_gs": 4,
+    "spi3_prism_min_gs": 4,
+    "spi6_prism_mean_gs": 4,
+    "spi6_prism_min_gs": 4,
+    "spi12_prism_mean_gs": 3,
+    "spi12_prism_min_gs": 3,
+    "SPEI_30_mean": 3,
+    "SPEI_30_min": 1,
+    "spei30_prism_nldas_max_gs": 2,
+    "spei30_prism_nldas_drought_days_gs": 4,
+    "spei90_prism_nldas_mean_gs": 4,
+    "spei90_prism_nldas_min_gs": 4,
+    "cdhw_count_gs": 1,
+    "CDHW_Event_Count": 1,
+    "cdhw_max_duration_gs": 1,
+    "cdhw_max_severity_gs": 3,
+    "CDHW_Severity_Score": 3,
+    "pheno_veg_days": 2,
+    "pheno_silk_days": 3,
+    "prism_tmax_mean_veg": 4,
+    "prism_tmax_days_gt35_veg": 0,
+    "prism_ppt_total_veg": 4,
+    "nldas_et0_total_veg": 4,
+    "nldas_vpd_mean_veg": 4,
+    "spi1_prism_min_veg": 3,
+    "spei30_prism_nldas_mean_veg": 4,
+    "spei30_prism_nldas_min_veg": 3,
+    "cdhw_count_veg": 0,
+    "cdhw_total_days_veg": 0,
+    "CDHW_Severity_vegetative": 1,
+    "prism_tmax_mean_silk": 4,
+    "prism_tmax_days_gt35_silk": 1,
+    "prism_ppt_total_silk": 3,
+    "nldas_et0_total_silk": 4,
+    "nldas_vpd_mean_silk": 4,
+    "spi1_prism_min_silk": 4,
+    "spei30_prism_nldas_mean_silk": 4,
+    "spei30_prism_nldas_min_silk": 4,
+    "cdhw_count_silk": 2,
+    "cdhw_total_days_silk": 1,
+    "CDHW_Severity_silking": 3,
+    "prism_tmax_mean_grain": 2,
+    "prism_tmax_days_gt35_grain": 0,
+    "prism_ppt_total_grain": 4,
+    "nldas_et0_total_grain": 3,
+    "nldas_vpd_mean_grain": 4,
+    "spi1_prism_min_grain": 2,
+    "spei30_prism_nldas_mean_grain": 4,
+    "spei30_prism_nldas_min_grain": 4,
+    "cdhw_count_grain": 0,
+    "cdhw_total_days_grain": 0,
+    "CDHW_Severity_grainfill": 0,
+    "noaa_hail_count_gs": 1,
+    "noaa_thunderstorm_wind_count_gs": 1,
+    "noaa_tornado_count_gs": 0,
+    "noaa_max_hail_size_gs": 1,
+    "soil_awc": 1,
+    "soil_bulk_density": 4,
+    "soil_clay": 4,
+    "soil_silt": 1,
+    "soil_organic_carbon": 4,
+    "elevation_mean_m": 1,
+    "elevation_std_m": 1,
+    "slope_mean": 1,
+    "nlcd_cropland_frac": 4,
+    "nlcd_pasture_hay_frac": 4,
+    "nlcd_forest_frac": 4,
+    "nlcd_grass_shrub_frac": 1,
+    "nlcd_developed_frac": 2,
+    "nlcd_water_wetland_frac": 1,
+    "CDHW_Flag": 0,
+    "CDHW_Veg_Severity": 0,
+    "CDHW_Silking_Severity": 3,
+    "CDHW_GrainFill_Severity": 0,
+    "Fourier_sin_P1_0": 0,
+    "Fourier_cos_P1_0": 0,
+    "Fourier_sin_P3_0": 2,
+    "Fourier_cos_P3_0": 0,
+    "Fourier_sin_P5_0": 3,
+    "Fourier_cos_P5_0": 2,
+    "Fourier_sin_P7_0": 3,
+    "Fourier_cos_P7_0": 2,
+    "Fourier_sin_P11_0": 3,
+    "Fourier_cos_P11_0": 3,
+    "Fourier_sin_P19_0": 4,
+    "Fourier_cos_P19_0": 3,
+    "Inter_SPEI_Tmax": 4,
+    "Inter_Heat_Precip": 1,
+    "Inter_CDHW_GDD": 3,
+    "Yield_lag1": 4,
+    "Yield_lag2": 4,
+    "Rolling2yr_Precip_growseason_mm_mean": 3,
+    "Rolling3yr_Precip_growseason_mm_mean": 3,
+    "Rolling2yr_GDD_Accumulated_mean": 4,
+    "Rolling3yr_GDD_Accumulated_mean": 4,
+    "Rolling2yr_Tmax_Days_Above_35_mean": 1,
+    "Rolling3yr_Tmax_Days_Above_35_mean": 3,
+    "Hist_Normal_Precip_growseason_mm": 3,
+    "Anom_Precip_growseason_mm": 2,
+    "Hist_Normal_GDD_Accumulated": 3,
+    "Anom_GDD_Accumulated": 4
+  },
+  "selected_features": [
+    "prism_tmax_mean_gs",
+    "prism_tmax_max_gs",
+    "prism_tmin_mean_gs",
+    "prism_tmin_min_gs",
+    "Precip_growseason_mm",
+    "GDD_Accumulated",
+    "prism_kdd30_gs",
+    "Tmax_Days_Above_35",
+    "prism_heat_exceedance_total_gs",
+    "nldas_et0_total_gs",
+    "nldas_rs_mean_gs",
+    "nldas_humidity_mean_gs",
+    "nldas_vpd_mean_gs",
+    "nldas_wind_mean_gs",
+    "spi1_prism_mean_gs",
+    "spi1_prism_min_gs",
+    "spi3_prism_mean_gs",
+    "spi3_prism_min_gs",
+    "spi6_prism_mean_gs",
+    "spi6_prism_min_gs",
+    "spi12_prism_mean_gs",
+    "spi12_prism_min_gs",
+    "SPEI_30_mean",
+    "spei30_prism_nldas_max_gs",
+    "spei30_prism_nldas_drought_days_gs",
+    "spei90_prism_nldas_mean_gs",
+    "spei90_prism_nldas_min_gs",
+    "CDHW_Event_Count",
+    "cdhw_max_severity_gs",
+    "CDHW_Severity_Score",
+    "pheno_veg_days",
+    "pheno_silk_days",
+    "prism_tmax_mean_veg",
+    "prism_ppt_total_veg",
+    "nldas_et0_total_veg",
+    "nldas_vpd_mean_veg",
+    "spi1_prism_min_veg",
+    "spei30_prism_nldas_mean_veg",
+    "spei30_prism_nldas_min_veg",
+    "prism_tmax_mean_silk",
+    "prism_ppt_total_silk",
+    "nldas_et0_total_silk",
+    "nldas_vpd_mean_silk",
+    "spi1_prism_min_silk",
+    "spei30_prism_nldas_mean_silk",
+    "spei30_prism_nldas_min_silk",
+    "cdhw_count_silk",
+    "CDHW_Severity_silking",
+    "prism_tmax_mean_grain",
+    "prism_ppt_total_grain",
+    "nldas_et0_total_grain",
+    "nldas_vpd_mean_grain",
+    "spi1_prism_min_grain",
+    "spei30_prism_nldas_mean_grain",
+    "spei30_prism_nldas_min_grain",
+    "noaa_hail_count_gs",
+    "noaa_thunderstorm_wind_count_gs",
+    "noaa_tornado_count_gs",
+    "noaa_max_hail_size_gs",
+    "soil_awc",
+    "soil_bulk_density",
+    "soil_clay",
+    "soil_silt",
+    "soil_organic_carbon",
+    "elevation_mean_m",
+    "slope_mean",
+    "nlcd_cropland_frac",
+    "nlcd_pasture_hay_frac",
+    "nlcd_forest_frac",
+    "nlcd_developed_frac",
+    "CDHW_Flag",
+    "CDHW_Veg_Severity",
+    "CDHW_Silking_Severity",
+    "CDHW_GrainFill_Severity",
+    "Fourier_sin_P1_0",
+    "Fourier_cos_P1_0",
+    "Fourier_sin_P3_0",
+    "Fourier_cos_P3_0",
+    "Fourier_sin_P5_0",
+    "Fourier_cos_P5_0",
+    "Fourier_sin_P7_0",
+    "Fourier_cos_P7_0",
+    "Fourier_sin_P11_0",
+    "Fourier_cos_P11_0",
+    "Fourier_sin_P19_0",
+    "Fourier_cos_P19_0",
+    "Inter_SPEI_Tmax",
+    "Inter_CDHW_GDD",
+    "Yield_lag1",
+    "Yield_lag2",
+    "Rolling2yr_Precip_growseason_mm_mean",
+    "Rolling3yr_Precip_growseason_mm_mean",
+    "Rolling2yr_GDD_Accumulated_mean",
+    "Rolling3yr_GDD_Accumulated_mean",
+    "Rolling3yr_Tmax_Days_Above_35_mean",
+    "Hist_Normal_Precip_growseason_mm",
+    "Anom_Precip_growseason_mm",
+    "Hist_Normal_GDD_Accumulated",
+    "Anom_GDD_Accumulated"
+  ],
+  "dropped_features": [
+    "SPEI_30_min",
+    "cdhw_count_gs",
+    "cdhw_max_duration_gs",
+    "prism_tmax_days_gt35_veg",
+    "cdhw_count_veg",
+    "cdhw_total_days_veg",
+    "CDHW_Severity_vegetative",
+    "prism_tmax_days_gt35_silk",
+    "cdhw_total_days_silk",
+    "prism_tmax_days_gt35_grain",
+    "cdhw_count_grain",
+    "cdhw_total_days_grain",
+    "CDHW_Severity_grainfill",
+    "elevation_std_m",
+    "nlcd_grass_shrub_frac",
+    "nlcd_water_wetland_frac",
+    "Inter_Heat_Precip",
+    "Rolling2yr_Tmax_Days_Above_35_mean"
+  ]
+}

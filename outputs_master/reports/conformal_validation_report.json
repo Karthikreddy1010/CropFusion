@@ -1,0 +1,53 @@
+{
+  "all_passed": true,
+  "methods": {
+    "static_conformal": {
+      "non_negative_widths": true,
+      "negative_width_count": 0,
+      "invalid_bounds_count": 0,
+      "min_width": 2.60218374033502,
+      "max_width": 5.86864467296024,
+      "mean_width": 3.649328052068178
+    },
+    "standard_aci": {
+      "non_negative_widths": true,
+      "negative_width_count": 0,
+      "invalid_bounds_count": 0,
+      "min_width": 2.4109497755441733,
+      "max_width": 5.591173806416526,
+      "mean_width": 3.415135146821766
+    },
+    "sa_aci": {
+      "non_negative_widths": true,
+      "negative_width_count": 0,
+      "invalid_bounds_count": 0,
+      "min_width": 2.3321224210201414,
+      "max_width": 5.223977790599962,
+      "mean_width": 3.3176573204573954
+    },
+    "phenology_stratified_cqr": {
+      "non_negative_widths": true,
+      "negative_width_count": 0,
+      "invalid_bounds_count": 0,
+      "min_width": 2.6023222808710162,
+      "max_width": 5.868783213496238,
+      "mean_width": 3.6505611552712467
+    },
+    "weighted_conformal": {
+      "non_negative_widths": true,
+      "negative_width_count": 0,
+      "invalid_bounds_count": 0,
+      "min_width": 2.5895511129620825,
+      "max_width": 5.856012045587303,
+      "mean_width": 3.636695424695241
+    },
+    "locally_adaptive": {
+      "non_negative_widths": true,
+      "negative_width_count": 0,
+      "invalid_bounds_count": 0,
+      "min_width": 1.8077453647793806,
+      "max_width": 7.706412178438411,
+      "mean_width": 3.69870794726097
+    }
+  }
+}

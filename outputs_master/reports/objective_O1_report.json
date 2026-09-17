@@ -1,0 +1,16 @@
+{
+  "with_cdhw": {
+    "rmse": 0.9529,
+    "mae": 0.7328,
+    "r_squared": 0.684
+  },
+  "without_cdhw": {
+    "rmse": 0.9701,
+    "mae": 0.7555,
+    "r_squared": 0.6724
+  },
+  "delta_rmse": 0.0172,
+  "delta_mae": 0.0227,
+  "delta_r2": 0.0116,
+  "hypothesis_supported": true
+}

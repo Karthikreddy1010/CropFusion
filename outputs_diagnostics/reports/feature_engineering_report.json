@@ -1,0 +1,48 @@
+{
+  "features_added": [
+    "Phenological_Window",
+    "Year_Type",
+    "Fourier_sin_P1_0",
+    "Fourier_cos_P1_0",
+    "Fourier_sin_P3_0",
+    "Fourier_cos_P3_0",
+    "Fourier_sin_P5_0",
+    "Fourier_cos_P5_0",
+    "Fourier_sin_P7_0",
+    "Fourier_cos_P7_0",
+    "Fourier_sin_P11_0",
+    "Fourier_cos_P11_0",
+    "Fourier_sin_P19_0",
+    "Fourier_cos_P19_0",
+    "Inter_SPEI_Tmax",
+    "Inter_Heat_Precip",
+    "Inter_CDHW_GDD"
+  ],
+  "decisions": [],
+  "cdhw_existing": {
+    "CDHW_Flag": {
+      "present": true,
+      "mean": 0.2716,
+      "max": 1.0
+    },
+    "CDHW_Event_Count": {
+      "present": true,
+      "mean": 1.6797,
+      "max": 42.0
+    },
+    "CDHW_Severity_Score": {
+      "present": true,
+      "mean": 5.3315,
+      "max": 260.4653
+    }
+  },
+  "phenological_windows": {
+    "Grain_Fill": 21297,
+    "Silking_R1": 1440
+  },
+  "year_type_classification": {
+    "Normal": 16561,
+    "Extreme": 3537,
+    "Moderate": 2639
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "total_time_seconds": 3613.0,
+  "dataset_rows": 22737,
+  "dataset_cols": 121,
+  "features_used": 94,
+  "temporal_split": {
+    "fit": 15751,
+    "dev": 978,
+    "cal": 1433,
+    "test": 2345,
+    "train": 16729,
+    "val": 1433
+  },
+  "loso_folds": 6,
+  "calibration_methods": [
+    "static_conformal",
+    "standard_aci",
+    "sa_aci",
+    "phenology_stratified_cqr",
+    "weighted_conformal",
+    "locally_adaptive"
+  ],
+  "backbones_trained": [
+    "NeuralCQR",
+    "LightGBM",
+    "CatBoost",
+    "XGBoost"
+  ],
+  "outputs_dir": "/content/outputs_master",
+  "compliance_status": "FULL_METHODOLOGY_COMPLIANCE_100%",
+  "leakage_status": "ZERO_OVERLAP_VERIFIED_BY_ROW_ID",
+  "leakage_experiments_audited": 7
+}

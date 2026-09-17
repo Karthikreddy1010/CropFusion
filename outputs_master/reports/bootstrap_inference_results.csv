@@ -1,0 +1,13 @@
+Cluster_Type,Metric,Mean,CI_95_Lower,CI_95_Upper,Iterations
+County_Block_Bootstrap,R2,0.7026,0.677,0.7269,2000
+County_Block_Bootstrap,RMSE,0.9234,0.8887,0.9592,2000
+County_Block_Bootstrap,PICP,0.9194,0.9075,0.9305,2000
+County_Block_Bootstrap,MPIW,3.3178,3.2926,3.3441,2000
+County_Block_Bootstrap,ACE,0.0194,0.0075,0.0305,2000
+County_Block_Bootstrap,WINKLER,4.0741,3.9209,4.2408,2000
+Year_Block_Bootstrap,R2,0.6994,0.6483,0.746,2000
+Year_Block_Bootstrap,RMSE,0.9226,0.8448,1.0071,2000
+Year_Block_Bootstrap,PICP,0.9196,0.8824,0.954,2000
+Year_Block_Bootstrap,MPIW,3.322,3.1825,3.4744,2000
+Year_Block_Bootstrap,ACE,0.0225,0.0019,0.054,2000
+Year_Block_Bootstrap,WINKLER,4.077,3.875,4.297,2000

@@ -1,0 +1,114 @@
+{
+  "comprehensive_metrics": [
+    {
+      "Model_or_Method": "NeuralCQR",
+      "Type": "Backbone_or_Ensemble",
+      "RMSE": 0.9529,
+      "MAE": 0.7328,
+      "R2": 0.684,
+      "Coverage_PICP": 0.7552,
+      "MPIW_Width": 2.0973,
+      "Winkler_Score": 4.7188
+    },
+    {
+      "Model_or_Method": "LightGBM",
+      "Type": "Backbone_or_Ensemble",
+      "RMSE": 0.8788,
+      "MAE": 0.6732,
+      "R2": 0.7313,
+      "Coverage_PICP": 0.661,
+      "MPIW_Width": 1.77,
+      "Winkler_Score": 5.2387
+    },
+    {
+      "Model_or_Method": "CatBoost",
+      "Type": "Backbone_or_Ensemble",
+      "RMSE": 0.8908,
+      "MAE": 0.6918,
+      "R2": 0.7238,
+      "Coverage_PICP": 0.6725,
+      "MPIW_Width": 1.9123,
+      "Winkler_Score": 5.1755
+    },
+    {
+      "Model_or_Method": "XGBoost",
+      "Type": "Backbone_or_Ensemble",
+      "RMSE": 0.9029,
+      "MAE": 0.6924,
+      "R2": 0.7163,
+      "Coverage_PICP": 0.7505,
+      "MPIW_Width": 2.5516,
+      "Winkler_Score": 4.9962
+    },
+    {
+      "Model_or_Method": "NeuralCQR_LightGBM_Ensemble",
+      "Type": "Backbone_or_Ensemble",
+      "RMSE": 0.9237,
+      "MAE": 0.7091,
+      "R2": 0.7031,
+      "Coverage_PICP": 0.9194,
+      "MPIW_Width": 3.3177,
+      "Winkler_Score": 4.0751
+    },
+    {
+      "Model_or_Method": "Static Conformal",
+      "Type": "Conformal_Calibration",
+      "RMSE": 0.9237,
+      "MAE": null,
+      "R2": 0.7031,
+      "Coverage_PICP": 0.9488,
+      "MPIW_Width": 3.6493,
+      "Winkler_Score": 4.1473
+    },
+    {
+      "Model_or_Method": "Standard ACI",
+      "Type": "Conformal_Calibration",
+      "RMSE": 0.9237,
+      "MAE": null,
+      "R2": 0.7031,
+      "Coverage_PICP": 0.9296,
+      "MPIW_Width": 3.4151,
+      "Winkler_Score": 4.0788
+    },
+    {
+      "Model_or_Method": "SA-ACI",
+      "Type": "Conformal_Calibration",
+      "RMSE": 0.9237,
+      "MAE": null,
+      "R2": 0.7031,
+      "Coverage_PICP": 0.9194,
+      "MPIW_Width": 3.3177,
+      "Winkler_Score": 4.0751
+    },
+    {
+      "Model_or_Method": "Phenology-Stratified CQR",
+      "Type": "Conformal_Calibration",
+      "RMSE": 0.9237,
+      "MAE": null,
+      "R2": 0.7031,
+      "Coverage_PICP": 0.9493,
+      "MPIW_Width": 3.6506,
+      "Winkler_Score": 4.1475
+    },
+    {
+      "Model_or_Method": "Weighted Conformal",
+      "Type": "Conformal_Calibration",
+      "RMSE": 0.9237,
+      "MAE": null,
+      "R2": 0.7031,
+      "Coverage_PICP": 0.9471,
+      "MPIW_Width": 3.6367,
+      "Winkler_Score": 4.1413
+    },
+    {
+      "Model_or_Method": "Locally Adaptive",
+      "Type": "Conformal_Calibration",
+      "RMSE": 0.9237,
+      "MAE": null,
+      "R2": 0.7031,
+      "Coverage_PICP": 0.9488,
+      "MPIW_Width": 3.6987,
+      "Winkler_Score": 4.167
+    }
+  ]
+}

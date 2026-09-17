@@ -1,0 +1,24 @@
+{
+  "NeuralCQR": {
+    "rmse": 0.8085,
+    "mae": 0.6155,
+    "r_squared": 0.88,
+    "picp": 0.8791,
+    "mpiw": 2.4864
+  },
+  "LightGBM": {
+    "rmse": 0.5809,
+    "mae": 0.4396,
+    "r_squared": 0.938
+  },
+  "NeuralCQR_LightGBM_Ensemble": {
+    "ensemble_weight_neuralcqr": 0.0,
+    "ensemble_weight_lightgbm": 1.0,
+    "rmse": 0.5809,
+    "mae": 0.4396,
+    "r_squared": 0.938
+  },
+  "n_train": 14355,
+  "n_val": 2051,
+  "n_test": 4101
+}

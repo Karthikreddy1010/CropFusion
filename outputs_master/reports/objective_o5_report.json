@@ -1,0 +1,222 @@
+{
+  "descriptive_association": {
+    "pearson_r": 0.1661,
+    "spearman_rho": 0.0972,
+    "naive_ols_slope": 0.014295,
+    "naive_ols_p_value": 0.0,
+    "naive_p_values_are_invalid_because": "county-year rows are spatially and temporally dependent; the naive p-value assumes independent sampling and is reported only to show the size of the distortion"
+  },
+  "primary_inference": {
+    "predictor": "CDHW_Severity_Score",
+    "slope": 0.014295,
+    "intercept": 3.298686,
+    "r_squared": 0.027592,
+    "n_observations": 2345,
+    "n_clusters": 5,
+    "cluster_unit": "year",
+    "method": "OLS with cluster-robust (CR1) standard errors",
+    "std_error": 0.007139,
+    "t_statistic": 2.0025,
+    "degrees_of_freedom": 4,
+    "p_value": 0.11578,
+    "ci_95": [
+      -0.005525,
+      0.034115
+    ],
+    "inference_supported": true,
+    "significant_at_0.05": false
+  },
+  "secondary_inference_county_clustered": {
+    "predictor": "CDHW_Severity_Score",
+    "slope": 0.014295,
+    "intercept": 3.298686,
+    "r_squared": 0.027592,
+    "n_observations": 2345,
+    "n_clusters": 555,
+    "cluster_unit": "county (GEOID)",
+    "method": "OLS with cluster-robust (CR1) standard errors",
+    "std_error": 0.002236,
+    "t_statistic": 6.3933,
+    "degrees_of_freedom": 554,
+    "p_value": 0.0,
+    "ci_95": [
+      0.009903,
+      0.018687
+    ],
+    "inference_supported": true,
+    "significant_at_0.05": true
+  },
+  "corroborating_year_block_bootstrap": {
+    "method": "year-block cluster bootstrap of OLS slope",
+    "cluster_unit": "year",
+    "n_blocks": 5,
+    "n_boot": 2000,
+    "slope_mean": 0.022668,
+    "ci_95": [
+      0.004272,
+      0.067332
+    ],
+    "p_value": 0.023,
+    "inference_supported": true
+  },
+  "effective_sample_size": {
+    "n_observations": 2345,
+    "n_clusters": 5,
+    "mean_cluster_size": 469.0,
+    "icc": 0.1945,
+    "design_effect": 92.04,
+    "n_effective": 25
+  },
+  "regression": {
+    "slope": 0.014295,
+    "intercept": 3.298686,
+    "r_squared": 0.027592,
+    "std_error": 0.007139,
+    "ci_95_slope": [
+      -0.005525,
+      0.034115
+    ],
+    "se_type": "cluster-robust (CR1), clustered by year"
+  },
+  "stage_correlations": {
+    "Vegetative": {
+      "column": "CDHW_Veg_Severity",
+      "pearson_r_descriptive": 0.1666,
+      "spearman_rho_descriptive": 0.0756,
+      "cluster_robust_slope": 0.067581,
+      "cluster_robust_p_value": 0.036872,
+      "cluster_robust_ci_95": [
+        0.006693,
+        0.128469
+      ],
+      "r_squared": 0.027771
+    },
+    "Silking_R1": {
+      "column": "CDHW_Silking_Severity",
+      "pearson_r_descriptive": 0.1227,
+      "spearman_rho_descriptive": 0.0517,
+      "cluster_robust_slope": 0.011995,
+      "cluster_robust_p_value": 0.087912,
+      "cluster_robust_ci_95": [
+        -0.002825,
+        0.026815
+      ],
+      "r_squared": 0.015046
+    },
+    "Grain_Fill": {
+      "column": "CDHW_GrainFill_Severity",
+      "pearson_r_descriptive": 0.1034,
+      "spearman_rho_descriptive": 0.0457,
+      "cluster_robust_slope": 0.040403,
+      "cluster_robust_p_value": 0.039373,
+      "cluster_robust_ci_95": [
+        0.003191,
+        0.077614
+      ],
+      "r_squared": 0.0107
+    }
+  },
+  "phenological_stage_widths": {
+    "Silking_R1": {
+      "count": 73,
+      "mean_mpiw": 4.0571,
+      "median_mpiw": 4.0292,
+      "std_mpiw": 0.4109
+    },
+    "Grain_Fill": {
+      "count": 2272,
+      "mean_mpiw": 3.2939,
+      "median_mpiw": 3.2129,
+      "std_mpiw": 0.4337
+    }
+  },
+  "group_comparison_by_year_type": {
+    "unit_of_independence": "year",
+    "per_year_mean_width": [
+      {
+        "year": 2019,
+        "year_type": "Moderate",
+        "mean_width": 4.3025
+      },
+      {
+        "year": 2019,
+        "year_type": "Normal",
+        "mean_width": 3.6452
+      },
+      {
+        "year": 2020,
+        "year_type": "Extreme",
+        "mean_width": 3.2335
+      },
+      {
+        "year": 2020,
+        "year_type": "Moderate",
+        "mean_width": 3.2636
+      },
+      {
+        "year": 2020,
+        "year_type": "Normal",
+        "mean_width": 3.2812
+      },
+      {
+        "year": 2021,
+        "year_type": "Extreme",
+        "mean_width": 3.7554
+      },
+      {
+        "year": 2021,
+        "year_type": "Moderate",
+        "mean_width": 3.4862
+      },
+      {
+        "year": 2021,
+        "year_type": "Normal",
+        "mean_width": 3.1046
+      },
+      {
+        "year": 2022,
+        "year_type": "Extreme",
+        "mean_width": 3.2789
+      },
+      {
+        "year": 2022,
+        "year_type": "Moderate",
+        "mean_width": 3.1014
+      },
+      {
+        "year": 2022,
+        "year_type": "Normal",
+        "mean_width": 3.0023
+      },
+      {
+        "year": 2023,
+        "year_type": "Extreme",
+        "mean_width": 3.6336
+      },
+      {
+        "year": 2023,
+        "year_type": "Moderate",
+        "mean_width": 3.4643
+      },
+      {
+        "year": 2023,
+        "year_type": "Normal",
+        "mean_width": 3.3016
+      }
+    ],
+    "n_years_per_type": {
+      "Extreme": 4,
+      "Moderate": 5,
+      "Normal": 5
+    },
+    "test_used": "Kruskal-Wallis on year-level means",
+    "statistic": 0.7829,
+    "p_value": 0.67609,
+    "inference_supported": true,
+    "significant_at_0.05": false
+  },
+  "statistically_detectable": false,
+  "variance_explained_fraction": 0.027592,
+  "effect_magnitude_label": "weak",
+  "interpretation": "Prediction interval width shows a positive association with CDHW severity that is not statistically distinguishable from zero once dependence is accounted for (cluster-robust slope = 0.0143, 95% CI [-0.005525, 0.034115], p = 0.11578). The association is weak in magnitude: CDHW severity explains R\u00b2 = 0.0276 (2.8%) of the variation in interval width, so severity alone accounts for only a small fraction of the observed variation. Statistical detectability and effect magnitude are distinct conclusions and are reported separately here."
+}

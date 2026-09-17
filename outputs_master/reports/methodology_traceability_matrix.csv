@@ -1,0 +1,16 @@
+Methodology Section,Objective,Python File,Function,Output Artifact,Artifact Status,Validator Check,Validator Status
+§4.1 Compound Encoding,O1,feature_engineering.py,_compute_phenology_aligned_cdhw,feature_validation_report.json,PRESENT,n/a,n/a
+§4.2 Neural CQR Head,O2,model_training.py,train_neural_cqr,models/NeuralCQR,MISSING,n/a,n/a
+§4.3 ACI Recalibration,O3,aci_calibrator.py,adaptive_conformal_inference,predictions.csv,PRESENT,n/a,n/a
+§4.2 Joint vs Posthoc,O4,evaluation.py,evaluate_objective_o4,objective_O4_report.md,PRESENT,M11,PASS
+§5.8 Severity Attribution,O5,evaluation.py,evaluate_objective_o5,objective_o5_report.md,PRESENT,M15,PASS
+§4.5 Shift-Robust Conformal,O6,evaluation.py,evaluate_objective_o6,objective_O6_report.md,PRESENT,M15,PASS
+§4.4 Autocorrelation Diagnostic,Robustness,evaluation.py,block_bootstrap_county,evaluation_summary.md,PRESENT,n/a,n/a
+§4.6 Ablation Study,Ablation,main.py,_run_ablation,ablation_report.json,PRESENT,M12,FAIL
+§4.7 Computational Complexity,Benchmark,evaluation.py,benchmark_computational_complexity,computational_benchmark.csv,MISSING,M18,PASS
+§5.1 Temporal Split,Splitting,splitting.py,temporal_split_4way,leakage_audit_report.md,PRESENT,M6,PASS
+§5.2 LOSO Cross-Validation,Generalization,main.py,_run_loso_cv,loso_summary.csv,PRESENT,M1,PASS
+§5.2 Leakage Provenance,Integrity,leakage_provenance.py,assert_disjoint,leakage_provenance_audit.json,PRESENT,M2,PASS
+§5.5 Statistical Significance,Testing,evaluation.py,wilcoxon_signed_rank_test,statistical_tests_report.md,PRESENT,n/a,n/a
+§5.6 Calibration Curves,Calibration,visualization.py,plot_all_calibration_curves,calibration_curves.png,PRESENT,n/a,n/a
+§5.8 SHAP Consistency,Interpretability,visualization.py,export_shap_consistency_report,shap_consistency_report.json,PRESENT,M16,PASS

@@ -1,0 +1,127 @@
+{
+  "models_requested": [
+    "NeuralCQR",
+    "LightGBM",
+    "CatBoost",
+    "XGBoost"
+  ],
+  "models_with_computed_shap": [
+    "NeuralCQR",
+    "LightGBM",
+    "CatBoost",
+    "XGBoost"
+  ],
+  "models_excluded": [],
+  "attribution_provenance": {
+    "NeuralCQR": {
+      "status": "computed",
+      "method": "shap.GradientExplainer (mean head)",
+      "n_background": 200,
+      "n_explained": 500
+    },
+    "LightGBM": {
+      "status": "computed",
+      "method": "shap.TreeExplainer",
+      "n_background": 200,
+      "n_explained": 500
+    },
+    "CatBoost": {
+      "status": "computed",
+      "method": "shap.TreeExplainer",
+      "n_background": 200,
+      "n_explained": 500
+    },
+    "XGBoost": {
+      "status": "computed",
+      "method": "shap.TreeExplainer",
+      "n_background": 200,
+      "n_explained": 500
+    }
+  },
+  "attribution_method": "mean |SHAP value| per feature, normalized to sum to 1",
+  "n_background_samples": 200,
+  "n_explained_samples": 500,
+  "mean_spearman_correlation": 0.6752,
+  "mean_kendall_tau_correlation": 0.5341,
+  "shap_similarity_index": 0.6046,
+  "agreement_label": "strong agreement",
+  "agreement_bands": {
+    "negligible": "|value| < 0.20",
+    "limited": "0.20 <= |value| < 0.40",
+    "moderate": "0.40 <= |value| < 0.60",
+    "strong": "|value| >= 0.60"
+  },
+  "pairwise": [
+    {
+      "model_a": "NeuralCQR",
+      "model_b": "LightGBM",
+      "spearman": 0.4522,
+      "kendall_tau": 0.3168,
+      "top10_overlap": 3,
+      "top10_jaccard": 0.1765
+    },
+    {
+      "model_a": "NeuralCQR",
+      "model_b": "CatBoost",
+      "spearman": 0.5077,
+      "kendall_tau": 0.3624,
+      "top10_overlap": 3,
+      "top10_jaccard": 0.1765
+    },
+    {
+      "model_a": "NeuralCQR",
+      "model_b": "XGBoost",
+      "spearman": 0.449,
+      "kendall_tau": 0.3199,
+      "top10_overlap": 2,
+      "top10_jaccard": 0.1111
+    },
+    {
+      "model_a": "LightGBM",
+      "model_b": "CatBoost",
+      "spearman": 0.8365,
+      "kendall_tau": 0.6735,
+      "top10_overlap": 9,
+      "top10_jaccard": 0.8182
+    },
+    {
+      "model_a": "LightGBM",
+      "model_b": "XGBoost",
+      "spearman": 0.9345,
+      "kendall_tau": 0.8109,
+      "top10_overlap": 9,
+      "top10_jaccard": 0.8182
+    },
+    {
+      "model_a": "CatBoost",
+      "model_b": "XGBoost",
+      "spearman": 0.8716,
+      "kendall_tau": 0.7207,
+      "top10_overlap": 9,
+      "top10_jaccard": 0.8182
+    }
+  ],
+  "top_20_consensus_features": [
+    "county_baseline",
+    "spei30_prism_nldas_mean_silk",
+    "Yield_lag1",
+    "spi1_prism_min_silk",
+    "prism_kdd30_gs",
+    "prism_ppt_total_silk",
+    "nldas_et0_total_silk",
+    "prism_tmax_mean_silk",
+    "spei30_prism_nldas_mean_veg",
+    "nldas_vpd_mean_veg",
+    "prism_ppt_total_veg",
+    "Fourier_sin_P5_0",
+    "Fourier_cos_P19_0",
+    "CDHW_Silking_Severity",
+    "spei30_prism_nldas_min_silk",
+    "prism_tmax_mean_veg",
+    "Fourier_sin_P19_0",
+    "spei30_prism_nldas_drought_days_gs",
+    "spi12_prism_mean_gs",
+    "Fourier_sin_P7_0"
+  ],
+  "interpretation": "Cross-backbone attribution agreement is strong agreement (similarity index = 0.6046, mean Spearman = 0.6752, mean Kendall tau = 0.5341). Rank-correlation bands used: |value| < 0.20 negligible, < 0.40 limited, < 0.60 moderate, otherwise strong. Different model families can fit similarly well while distributing credit across correlated predictors differently, so limited agreement does not by itself invalidate any single model's attributions -- but it does mean the attribution ranking should not be presented as a model-independent finding."
+}

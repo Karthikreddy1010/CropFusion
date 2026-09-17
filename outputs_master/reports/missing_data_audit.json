@@ -1,0 +1,64 @@
+{
+  "missing_percentage_before": {
+    "Corn_Yield_tha": 9.81,
+    "Corn_Yield_buacre": 9.81,
+    "spi6_prism_mean_gs": 2.56,
+    "spi6_prism_min_gs": 2.56,
+    "spi12_prism_mean_gs": 2.56,
+    "spi12_prism_min_gs": 2.56,
+    "prism_tmax_mean_grain": 6.33,
+    "nldas_vpd_mean_grain": 6.33,
+    "spi1_prism_min_grain": 6.33,
+    "spei30_prism_nldas_mean_grain": 6.33,
+    "spei30_prism_nldas_min_grain": 6.33,
+    "noaa_max_hail_size_gs": 0.0,
+    "soil_awc": 0.86,
+    "soil_bulk_density": 0.86,
+    "soil_clay": 0.86,
+    "soil_silt": 0.86,
+    "soil_organic_carbon": 0.86
+  },
+  "missing_mechanism": "Structural pre-2000 data gaps (NOAA Storm Events / USDM Drought Monitor)",
+  "imputation_methods": {
+    "noaa_hail_count_gs": "zero_fill_with_indicator",
+    "noaa_thunderstorm_wind_count_gs": "zero_fill_with_indicator",
+    "noaa_tornado_count_gs": "zero_fill_with_indicator",
+    "noaa_max_hail_size_gs": "zero_fill_with_indicator",
+    "Corn_Yield_tha": "no_imputation",
+    "Corn_Yield_buacre": "no_imputation"
+  },
+  "remaining_nans": {
+    "Corn_Yield_tha": 2230,
+    "Corn_Yield_buacre": 2230,
+    "spi6_prism_mean_gs": 583,
+    "spi6_prism_min_gs": 583,
+    "spi12_prism_mean_gs": 583,
+    "spi12_prism_min_gs": 583,
+    "prism_tmax_mean_grain": 1440,
+    "nldas_vpd_mean_grain": 1440,
+    "spi1_prism_min_grain": 1440,
+    "spei30_prism_nldas_mean_grain": 1440,
+    "spei30_prism_nldas_min_grain": 1440,
+    "soil_awc": 195,
+    "soil_bulk_density": 195,
+    "soil_clay": 195,
+    "soil_silt": 195,
+    "soil_organic_carbon": 195
+  },
+  "columns_removed": [],
+  "columns_preserved_despite_missingness": [
+    "noaa_hail_count_gs",
+    "noaa_thunderstorm_wind_count_gs",
+    "noaa_tornado_count_gs",
+    "noaa_max_hail_size_gs"
+  ],
+  "disaster_columns_intentionally_retained": [
+    "Has_Drought",
+    "Has_Storm",
+    "Has_ERA5",
+    "Has_CDHW",
+    "Storm_Events_Total",
+    "DSCI_growseason_mean"
+  ],
+  "methodology_note": "Disaster columns intentionally retained with indicator flags per \u00a74.1 methodology requirement; learned statistics strictly train-fitted."
+}

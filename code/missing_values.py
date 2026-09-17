@@ -127,8 +127,9 @@ def _handle_storm_missing(
 
         before_missing = int(df[col].isnull().sum())
         # Fill missing where Has_Storm == 0 with 0
-        mask_no_storm = df["Has_Storm"] == 0
-        df.loc[mask_no_storm & df[col].isnull(), col] = 0.0
+        if "Has_Storm" in df.columns:
+            mask_no_storm = df["Has_Storm"] == 0
+            df.loc[mask_no_storm & df[col].isnull(), col] = 0.0
 
         # Any remaining missing (Has_Storm == 1 but still NaN) — also zero-fill
         remaining = int(df[col].isnull().sum())

@@ -208,6 +208,8 @@ def _state_target_stats(df: pd.DataFrame) -> Dict[str, Any]:
         state_df = df[df["State"] == state]
         result[state] = {}
         for t in [cfg.PRIMARY_TARGET, cfg.SECONDARY_TARGET]:
+            if t not in state_df.columns:
+                continue
             s = state_df[t].dropna()
             result[state][t] = {
                 "count": int(len(s)),

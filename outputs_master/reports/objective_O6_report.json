@@ -1,0 +1,189 @@
+{
+  "n_methods_compared": 6,
+  "methods_compared": [
+    "sa_aci",
+    "standard_aci",
+    "weighted_conformal",
+    "static_conformal",
+    "phenology_stratified_cqr",
+    "locally_adaptive"
+  ],
+  "rankings": [
+    {
+      "Method": "sa_aci",
+      "PICP": 0.9194,
+      "MPIW": 3.3177,
+      "ACE": 0.0194,
+      "Winkler_Score": 4.0751,
+      "RMSE": 0.9237,
+      "MAE": 0.7091,
+      "Rank_Winkler": 1.0,
+      "Rank_ACE": 1.0,
+      "Rank_MPIW": 1.0,
+      "Average_Rank": 1.0
+    },
+    {
+      "Method": "standard_aci",
+      "PICP": 0.9296,
+      "MPIW": 3.4151,
+      "ACE": 0.0296,
+      "Winkler_Score": 4.0788,
+      "RMSE": 0.9237,
+      "MAE": 0.7091,
+      "Rank_Winkler": 2.0,
+      "Rank_ACE": 2.0,
+      "Rank_MPIW": 2.0,
+      "Average_Rank": 2.0
+    },
+    {
+      "Method": "weighted_conformal",
+      "PICP": 0.9471,
+      "MPIW": 3.6367,
+      "ACE": 0.0471,
+      "Winkler_Score": 4.1413,
+      "RMSE": 0.9237,
+      "MAE": 0.7091,
+      "Rank_Winkler": 3.0,
+      "Rank_ACE": 3.0,
+      "Rank_MPIW": 3.0,
+      "Average_Rank": 3.0
+    },
+    {
+      "Method": "static_conformal",
+      "PICP": 0.9488,
+      "MPIW": 3.6493,
+      "ACE": 0.0488,
+      "Winkler_Score": 4.1473,
+      "RMSE": 0.9237,
+      "MAE": 0.7091,
+      "Rank_Winkler": 4.0,
+      "Rank_ACE": 4.5,
+      "Rank_MPIW": 4.0,
+      "Average_Rank": 4.166666666666667
+    },
+    {
+      "Method": "phenology_stratified_cqr",
+      "PICP": 0.9493,
+      "MPIW": 3.6506,
+      "ACE": 0.0493,
+      "Winkler_Score": 4.1475,
+      "RMSE": 0.9237,
+      "MAE": 0.7091,
+      "Rank_Winkler": 5.0,
+      "Rank_ACE": 6.0,
+      "Rank_MPIW": 5.0,
+      "Average_Rank": 5.333333333333333
+    },
+    {
+      "Method": "locally_adaptive",
+      "PICP": 0.9488,
+      "MPIW": 3.6987,
+      "ACE": 0.0488,
+      "Winkler_Score": 4.167,
+      "RMSE": 0.9237,
+      "MAE": 0.7091,
+      "Rank_Winkler": 6.0,
+      "Rank_ACE": 4.5,
+      "Rank_MPIW": 6.0,
+      "Average_Rank": 5.5
+    }
+  ],
+  "ranking_basis": "mean of ranks on Winkler, ACE and MPIW",
+  "ranking_status": "descriptive ranking only",
+  "friedman_test": {
+    "methods": [
+      "static_conformal",
+      "standard_aci",
+      "sa_aci",
+      "phenology_stratified_cqr",
+      "weighted_conformal",
+      "locally_adaptive"
+    ],
+    "k": 6,
+    "n_blocks": 5,
+    "block_unit": "year",
+    "alpha": 0.05,
+    "statistic": 4.1954,
+    "p_value": 0.52164,
+    "test_executed": true,
+    "significant_at_alpha": false,
+    "average_ranks": {
+      "static_conformal": 4.1,
+      "standard_aci": 2.5,
+      "sa_aci": 3.0,
+      "phenology_stratified_cqr": 4.0,
+      "weighted_conformal": 3.0,
+      "locally_adaptive": 4.4
+    },
+    "nemenyi": {
+      "k": 6,
+      "n_blocks": 5,
+      "alpha": 0.05,
+      "q_alpha": 2.85,
+      "critical_difference": 3.3722,
+      "formula": "CD = q_alpha * sqrt(k(k+1)/(6N))"
+    },
+    "block_means": {
+      "2019": {
+        "static_conformal": 3.8729,
+        "standard_aci": 3.8729,
+        "sa_aci": 3.875,
+        "phenology_stratified_cqr": 3.8744,
+        "weighted_conformal": 3.8646,
+        "locally_adaptive": 3.9622
+      },
+      "2020": {
+        "static_conformal": 4.0411,
+        "standard_aci": 3.932,
+        "sa_aci": 3.9422,
+        "phenology_stratified_cqr": 4.0427,
+        "weighted_conformal": 4.0336,
+        "locally_adaptive": 3.9793
+      },
+      "2021": {
+        "static_conformal": 4.3707,
+        "standard_aci": 4.4563,
+        "sa_aci": 4.473,
+        "phenology_stratified_cqr": 4.3692,
+        "weighted_conformal": 4.3715,
+        "locally_adaptive": 4.3456
+      },
+      "2022": {
+        "static_conformal": 3.9902,
+        "standard_aci": 3.8494,
+        "sa_aci": 3.8082,
+        "phenology_stratified_cqr": 3.9895,
+        "weighted_conformal": 3.9821,
+        "locally_adaptive": 4.003
+      },
+      "2023": {
+        "static_conformal": 4.4625,
+        "standard_aci": 4.3066,
+        "sa_aci": 4.302,
+        "phenology_stratified_cqr": 4.4622,
+        "weighted_conformal": 4.4557,
+        "locally_adaptive": 4.5654
+      }
+    },
+    "nemenyi_pairwise": [],
+    "n_significant_pairs": 0
+  },
+  "nemenyi_posthoc": {
+    "k": 6,
+    "n_blocks": 5,
+    "alpha": 0.05,
+    "q_alpha": 2.85,
+    "critical_difference": 3.3722,
+    "formula": "CD = q_alpha * sqrt(k(k+1)/(6N))"
+  },
+  "nemenyi_pairwise": [],
+  "practical_significance": {
+    "winkler_best": 4.0751,
+    "winkler_worst": 4.167,
+    "winkler_relative_spread_pct": 2.21,
+    "picp_min": 0.9194,
+    "picp_max": 0.9493,
+    "mpiw_relative_spread_pct": 10.3
+  },
+  "claims_statistical_superiority": false
+}
