@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
@@ -47,6 +48,10 @@ class QuantileModelSet:
     # and O4 to prove the two conditions took different code paths.
     training_paradigm: str = None
     paradigm_fingerprint: Dict[str, Any] = None
+    # F0a: when the target was standardised for training, predictions come back
+    # in standardised units and must be mapped to t/ha by predict_intervals.
+    target_mu: float = 0.0
+    target_sd: float = 1.0
 
 
 # ─────────────────────────────────────────────────────────────
@@ -105,8 +110,10 @@ class NeuralCQRNet(nn.Module):
         input_dim: int,
         hidden_dims: Tuple[int, ...] = cfg.NEURAL_CQR_HIDDEN_DIMS,
         dropout_rate: float = cfg.NEURAL_CQR_DROPOUT,
+        monotone_heads: bool = False,
     ) -> None:
         super().__init__()
+        self.monotone_heads = bool(monotone_heads)
         self.in_proj = nn.Linear(input_dim, hidden_dims[0])
         self.in_bn = nn.BatchNorm1d(hidden_dims[0])
         self.in_act = nn.GELU()
@@ -143,9 +150,21 @@ class NeuralCQRNet(nn.Module):
         h = self.backbone(h)
 
         y_mean = self.mean_head(h)
-        q05 = self.q05_head(h)
-        q50 = self.q50_head(h)
-        q95 = self.q95_head(h)
+
+        if self.monotone_heads:
+            # F1: q05 and q95 are non-negative offsets from q50, so
+            # q05 <= q50 <= q95 holds by construction and the crossing
+            # penalty has nothing left to correct.
+            q50 = self.q50_head(h)
+            q05 = q50 - nn.functional.softplus(self.q05_head(h))
+            q95 = q50 + nn.functional.softplus(self.q95_head(h))
+        else:
+            # Head order is load-bearing: the order in which the heads are
+            # called fixes the order in which their gradients accumulate into
+            # the shared backbone, and changing it shifts results at ~1e-3.
+            q05 = self.q05_head(h)
+            q50 = self.q50_head(h)
+            q95 = self.q95_head(h)
 
         return y_mean, q05, q50, q95
 
@@ -170,6 +189,7 @@ def cqr_composite_loss(
     lambda_huber: float = cfg.LAMBDA_HUBER,
     lambda_crossing: float = cfg.LAMBDA_CROSSING,
     lambda_width: float = cfg.LAMBDA_WIDTH,
+    huber_delta: float = cfg.HUBER_DELTA,
 ) -> Tuple[torch.Tensor, Dict[str, float]]:
     """Composite Multi-Objective Loss Function (§3).
 
@@ -178,7 +198,11 @@ def cqr_composite_loss(
             + lambda_crossing * [ReLU(q05 - q50) + ReLU(q50 - q95)]
             + lambda_width * Width^2
     """
-    huber_l = nn.functional.huber_loss(y_mean, y_true, delta=1.0)
+    # F0a: delta is in target units. Below delta Huber is quadratic (mean-
+    # seeking, matching RMSE/R2); above it the gradient saturates and the head
+    # drifts toward a conditional median. cfg.HUBER_DELTA_SIGMA keeps delta a
+    # fixed multiple of the target sd when STANDARDIZE_TARGET is on.
+    huber_l = nn.functional.huber_loss(y_mean, y_true, delta=float(huber_delta))
 
     loss_05 = pinball_loss(y_true, q05, 0.05)
     loss_50 = pinball_loss(y_true, q50, 0.50)
@@ -214,24 +238,41 @@ def cqr_composite_loss(
 # ─────────────────────────────────────────────────────────────
 
 class ModelEMA:
-    """Exponential Moving Average (EMA) of model weights for enhanced stability (vectorized)."""
+    """Exponential Moving Average (EMA) of model weights for enhanced stability.
+
+    F0b fix (2026-09-17): the previous version aliased ``ema_model`` to the live
+    module and tracked only ``parameters()``, so BatchNorm buffers were never
+    averaged and ``apply_shadow`` was never called by any caller -- the shadow
+    was recomputed every step and discarded. ``state_dict()`` now returns the
+    averaged weights without mutating the live model, which is what the
+    no-validation refit needs.
+    """
 
     def __init__(self, model: nn.Module, decay: float = 0.99) -> None:
         self.decay = decay
-        self.ema_model = model
-        self.params = [p for p in model.parameters() if p.requires_grad]
-        self.shadow = [p.clone().detach() for p in self.params]
+        self.model = model
+        self.ema_model = model  # retained for backward compatibility
+        self.shadow = {
+            k: v.detach().clone()
+            for k, v in model.state_dict().items()
+        }
 
     def update(self) -> None:
         d = self.decay
         with torch.no_grad():
-            for s, p in zip(self.shadow, self.params):
-                s.mul_(d).add_(p.data, alpha=1.0 - d)
+            for k, v in self.model.state_dict().items():
+                sh = self.shadow[k]
+                if sh.dtype.is_floating_point:
+                    sh.mul_(d).add_(v.detach(), alpha=1.0 - d)
+                else:
+                    # Integer buffers (e.g. num_batches_tracked) are copied.
+                    sh.copy_(v.detach())
+
+    def state_dict(self) -> Dict[str, torch.Tensor]:
+        return {k: v.detach().clone() for k, v in self.shadow.items()}
 
     def apply_shadow(self, model: Optional[nn.Module] = None) -> None:
-        with torch.no_grad():
-            for p, s in zip(self.params, self.shadow):
-                p.data.copy_(s)
+        (model if model is not None else self.model).load_state_dict(self.state_dict())
 
 
 # ─────────────────────────────────────────────────────────────
@@ -260,6 +301,7 @@ def train_neural_cqr(
     patience: int = cfg.EARLY_STOPPING_PATIENCE,
     early_stopping: bool = True,
     seed: int = cfg.RANDOM_SEED,
+    schedule_t_max: Optional[int] = None,
 ) -> QuantileModelSet:
     """Train the Neural CQR model under one of two genuinely different paradigms.
 
@@ -294,6 +336,13 @@ def train_neural_cqr(
     and ``paradigm_fingerprint`` on the returned object record which path ran.
     """
     if not joint_training:
+        if bool(getattr(cfg, "STANDARDIZE_TARGET", False)):
+            # The post-hoc (Condition A) path trains on the raw target. Running
+            # the O4 joint-vs-post-hoc comparison with F0a enabled would change
+            # two things at once (D3), so standardisation must be extended to
+            # this path before that comparison is rerun.
+            logger.warning("STANDARDIZE_TARGET is on but the post-hoc path is not standardised; "
+                           "joint-vs-post-hoc comparisons are not like-for-like until this is addressed.")
         return _train_neural_cqr_posthoc(
             X_train=X_train, y_train=y_train, X_val=X_val, y_val=y_val,
             feature_cols=feature_cols, epochs=epochs, batch_size=batch_size, lr=lr,
@@ -309,17 +358,39 @@ def train_neural_cqr(
     logger.info("Training PyTorch Multi-Task Neural CQR Net (%s mode, §4.2, seed=%d, es_mode=%s, early_stopping=%s)",
                 mode_str, seed, early_stopping_mode if has_val else "none", has_val)
 
+    # ── F0a: target standardisation, computed on the TRAINING array only ──
+    # y_train here is already the modelling target (the detrended anomaly when
+    # cfg.DETREND_TARGET is on), so mu/sd never see DEV, CAL or TEST rows.
+    _standardize = bool(getattr(cfg, "STANDARDIZE_TARGET", False))
+    if _standardize:
+        target_mu = float(np.mean(y_train))
+        target_sd = float(np.std(y_train))
+        if not np.isfinite(target_sd) or target_sd < 1e-8:
+            target_sd = 1.0
+        huber_delta = float(getattr(cfg, "HUBER_DELTA_SIGMA", 1.345))
+        logger.info("  F0a: target standardised on train (mu=%.4f, sd=%.4f); huber delta=%.3f sigma",
+                    target_mu, target_sd, huber_delta)
+    else:
+        target_mu, target_sd = 0.0, 1.0
+        huber_delta = float(getattr(cfg, "HUBER_DELTA", 1.0))
+
+    y_train_model = (np.asarray(y_train, dtype=float) - target_mu) / target_sd
+
     input_dim = X_train.shape[1]
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = NeuralCQRNet(input_dim=input_dim, hidden_dims=hidden_dims, dropout_rate=dropout_rate).to(device)
-    ema = ModelEMA(model, decay=0.99)
+    model = NeuralCQRNet(
+        input_dim=input_dim, hidden_dims=hidden_dims, dropout_rate=dropout_rate,
+        monotone_heads=bool(getattr(cfg, "NEURAL_MONOTONE_HEADS", False)),
+    ).to(device)
+    ema = ModelEMA(model, decay=float(getattr(cfg, "EMA_DECAY", 0.99)))
 
     t_X_tr = torch.tensor(X_train, dtype=torch.float32)
-    t_y_tr = torch.tensor(y_train, dtype=torch.float32).unsqueeze(1)
+    t_y_tr = torch.tensor(y_train_model, dtype=torch.float32).unsqueeze(1)
     if has_val:
+        y_val_model = (np.asarray(y_val, dtype=float) - target_mu) / target_sd
         t_X_va = torch.tensor(X_val, dtype=torch.float32).to(device)
-        t_y_va = torch.tensor(y_val, dtype=torch.float32).unsqueeze(1).to(device)
-        y_val_np = y_val.flatten()
+        t_y_va = torch.tensor(y_val_model, dtype=torch.float32).unsqueeze(1).to(device)
+        y_val_np = np.asarray(y_val, dtype=float).flatten()
     else:
         t_X_va, t_y_va, y_val_np = None, None, None
 
@@ -330,7 +401,12 @@ def train_neural_cqr(
     train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True, generator=g, drop_last=False)
 
     optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
-    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, eta_min=1e-5)
+    # F0c: T_max defaults to this run's epoch budget (legacy behaviour). The
+    # final refit passes the DEV run's budget via schedule_t_max so that the
+    # epoch count selected on DEV is reached along the same LR trajectory.
+    _t_max = int(schedule_t_max) if schedule_t_max else int(epochs)
+    _eta_min = float(getattr(cfg, "LR_ETA_MIN", 1e-5))
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max(1, _t_max), eta_min=_eta_min)
 
     best_stop_metric = float("inf")
     best_weights = None
@@ -359,7 +435,8 @@ def train_neural_cqr(
             y_mean, q05, q50, q95 = model(batch_x)
             loss, m_dict = cqr_composite_loss(
                 batch_y, y_mean, q05, q50, q95,
-                lambda_pinball, lambda_huber, lambda_crossing, lambda_width
+                lambda_pinball, lambda_huber, lambda_crossing, lambda_width,
+                huber_delta=huber_delta,
             )
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
@@ -383,16 +460,20 @@ def train_neural_cqr(
                 val_mean, val_q05, val_q50, val_q95 = model(t_X_va)
                 _, val_m_dict = cqr_composite_loss(
                     t_y_va, val_mean, val_q05, val_q50, val_q95,
-                    lambda_pinball, lambda_huber, lambda_crossing, lambda_width
+                    lambda_pinball, lambda_huber, lambda_crossing, lambda_width,
+                    huber_delta=huber_delta,
                 )
 
             val_pinball = val_m_dict["loss_pinball"]
             val_huber = val_m_dict["loss_huber"]
 
-            val_p_np = val_mean.squeeze().cpu().numpy()
-            val_q05_np = val_q05.squeeze().cpu().numpy()
-            val_q50_np = val_q50.squeeze().cpu().numpy()
-            val_q95_np = val_q95.squeeze().cpu().numpy()
+            # F0a: the network works in standardised units when the flag is on;
+            # every reported validation metric is mapped back to t/ha so that
+            # early stopping and the logs stay comparable across flag settings.
+            val_p_np = val_mean.squeeze().cpu().numpy() * target_sd + target_mu
+            val_q05_np = val_q05.squeeze().cpu().numpy() * target_sd + target_mu
+            val_q50_np = val_q50.squeeze().cpu().numpy() * target_sd + target_mu
+            val_q95_np = val_q95.squeeze().cpu().numpy() * target_sd + target_mu
 
             val_rmse_val = float(np.sqrt(np.mean((y_val_np - val_p_np) ** 2)))
             val_mae_val = float(np.mean(np.abs(y_val_np - val_p_np)))
@@ -448,8 +529,13 @@ def train_neural_cqr(
                             epoch, early_stopping_mode, best_stop_metric, best_epoch)
                 break
         else:
-            # Final refit mode: No validation set passed, no early stopping
-            best_weights = {k: v.cpu().clone() for k, v in ema.ema_model.state_dict().items()}
+            # Final refit mode: No validation set passed, no early stopping.
+            # F0b: ema.state_dict() returns the averaged weights WITHOUT
+            # mutating the live model, so training continues from the raw
+            # weights on the next epoch. With USE_EMA_WEIGHTS off this is the
+            # legacy behaviour (the last epoch's weights).
+            _src = ema.state_dict() if bool(getattr(cfg, "USE_EMA_WEIGHTS", False)) else model.state_dict()
+            best_weights = {k: v.cpu().clone() for k, v in _src.items()}
             best_epoch = epoch
             history.append({
                 "epoch": epoch,
@@ -483,6 +569,8 @@ def train_neural_cqr(
         epochs_trained=len(history),
         best_epoch=best_epoch,
         training_history=history,
+        target_mu=target_mu,
+        target_sd=target_sd,
     )
     result.training_paradigm = "joint_end_to_end"
     result.paradigm_fingerprint = {
@@ -496,6 +584,11 @@ def train_neural_cqr(
         "lambda_huber": lambda_huber,
         "lambda_crossing": lambda_crossing,
         "lambda_width": lambda_width,
+        "huber_delta": huber_delta,
+        "standardized_target": _standardize,
+        "monotone_heads": bool(getattr(cfg, "NEURAL_MONOTONE_HEADS", False)),
+        "ema_weights_used": bool(getattr(cfg, "USE_EMA_WEIGHTS", False)) and not has_val,
+        "schedule_t_max": _t_max,
     }
     return result
 
@@ -785,6 +878,7 @@ def train_neural_cqr_final(
     lambda_crossing: float = cfg.LAMBDA_CROSSING,
     lambda_width: float = cfg.LAMBDA_WIDTH,
     seed: int = cfg.RANDOM_SEED,
+    schedule_t_max: Optional[int] = None,
 ) -> QuantileModelSet:
     """Train PyTorch Neural CQR model for the final refit on 1985-2015.
 
@@ -813,6 +907,13 @@ def train_neural_cqr_final(
         lambda_width=lambda_width,
         early_stopping=False,
         seed=seed,
+        # F0c: without this the refit compresses the whole cosine schedule into
+        # `epochs`, so the frozen DEV epoch count is reached at a different
+        # learning rate than during the DEV run that chose it.
+        schedule_t_max=(
+            schedule_t_max if schedule_t_max is not None
+            else (cfg.BASELINE_MAX_EPOCHS if bool(getattr(cfg, "LR_SCHEDULE_MATCH_DEV", False)) else None)
+        ),
     )
 
 
@@ -848,6 +949,15 @@ def predict_intervals(
         if preds.ndim == 0: preds = np.array([preds.item()])
         if q_lo.ndim == 0: q_lo = np.array([q_lo.item()])
         if q_hi.ndim == 0: q_hi = np.array([q_hi.item()])
+
+        # F0a: undo the training-time target standardisation. Defaults
+        # (mu=0, sd=1) leave the legacy path bit-identical.
+        _mu = float(getattr(model_set, "target_mu", 0.0) or 0.0)
+        _sd = float(getattr(model_set, "target_sd", 1.0) or 1.0)
+        if _sd != 1.0 or _mu != 0.0:
+            preds = preds * _sd + _mu
+            q_lo = q_lo * _sd + _mu
+            q_hi = q_hi * _sd + _mu
         return preds, q_lo, q_hi
     else:
         # Non-neural tree baselines
@@ -952,14 +1062,58 @@ def train_xgb_quantile(
 
 
 def save_model_artifacts(model_set: QuantileModelSet, model_name: str, scaler: Any = None, hyperparams: dict = None) -> None:
-    """Save model metadata and hyperparameter logs."""
+    """Save model metadata, hyperparameters and the fitted weights.
+
+    C8: only the metadata JSON was written, so `outputs_*/models/` came out empty
+    and no run could be reproduced from its artefacts. Weights now go to
+    cfg.MODELS_DIR alongside the scaler.
+    """
     from utils import save_report
     info = {
         "model_name": model_name,
         "is_neural": model_set.is_neural,
         "feature_count": len(model_set.feature_cols) if model_set.feature_cols else 0,
+        "feature_cols": list(model_set.feature_cols or []),
         "hyperparams": hyperparams or {},
+        "target_mu": float(getattr(model_set, "target_mu", 0.0) or 0.0),
+        "target_sd": float(getattr(model_set, "target_sd", 1.0) or 1.0),
+        "training_paradigm": getattr(model_set, "training_paradigm", None),
+        "paradigm_fingerprint": getattr(model_set, "paradigm_fingerprint", None),
+        "epochs_trained": getattr(model_set, "epochs_trained", None),
+        "best_epoch": getattr(model_set, "best_epoch", None),
     }
+
+    saved: List[str] = []
+    try:
+        models_dir = Path(cfg.MODELS_DIR)
+        models_dir.mkdir(parents=True, exist_ok=True)
+
+        if model_set.is_neural:
+            path = models_dir / f"model_{model_name}_state_dict.pt"
+            torch.save(model_set.point_model.state_dict(), path)
+            saved.append(path.name)
+        else:
+            import joblib
+            for role, mdl in (("point", model_set.point_model),
+                              ("lower", model_set.lower_model),
+                              ("upper", model_set.upper_model)):
+                if mdl is None:
+                    continue
+                path = models_dir / f"model_{model_name}_{role}.joblib"
+                joblib.dump(mdl, path)
+                saved.append(path.name)
+
+        if scaler is not None:
+            import joblib
+            path = models_dir / f"scaler_{model_name}.joblib"
+            joblib.dump(scaler, path)
+            saved.append(path.name)
+    except Exception as exc:  # never fail a run over artefact saving
+        logger.warning("Could not save weights for %s: %s", model_name, exc)
+        info["weight_save_error"] = str(exc)
+
+    info["saved_artifacts"] = saved
+    logger.info("Saved %d weight artefact(s) for %s -> %s", len(saved), model_name, cfg.MODELS_DIR)
     save_report(info, f"model_{model_name}_metadata.json")
 
 

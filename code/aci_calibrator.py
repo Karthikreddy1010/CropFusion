@@ -355,6 +355,7 @@ def severity_aware_adaptive_conformal(
     window: int = cfg.ACI_WINDOW_SIZE,
     cdhw_severity_test: Optional[np.ndarray] = None,
     cdhw_severity_cal: Optional[np.ndarray] = None,
+    severity_weighting: Optional[bool] = None,
 ) -> CalibrationResult:
     """Severity-Aware Adaptive Conformal Inference (SA-ACI / CDHW-ACI).
 
@@ -365,12 +366,23 @@ def severity_aware_adaptive_conformal(
                 5 if S_t < 1.0 (Normal: smooth 5-yr baseline)
     2. Non-linear severity-weighted conformity scores:
        E_i^{(S)} = E_i * (1 + lambda * log(1 + S_i))
-    3. Observation-level sharpness preservation:
-       Interval scaled inverse to local severity score.
+    3. Observation-level severity scaling:
+       The threshold is scaled UP with local severity, so a row under heavy
+       compound stress receives a wider interval.
+
+       Correction (2026-09-17, audit C5): this step previously divided the
+       threshold by the severity weight, which narrowed intervals under stress
+       -- the opposite of the stated intent, and the likely reason SA-ACI ranked
+       worst on every conditional axis. Set cfg.ACI_SEVERITY_WEIGHTING = False
+       to switch the severity mechanism off entirely (fixed window, unit
+       weights), which leaves a plain windowed ACI.
     4. Decaying learning rate: eta_t = gamma0 / sqrt(t + 1).
     """
     logger.info("Calibrating with Severity-Aware Adaptive Conformal Inference (SA-ACI)")
-    logger.info("  gamma0=%.4f, default_window=%d, nominal_alpha=%.2f", gamma, window, alpha)
+    _sev_on = bool(getattr(cfg, "ACI_SEVERITY_WEIGHTING", True)) if severity_weighting is None         else bool(severity_weighting)
+    _sev_lambda = float(getattr(cfg, "ACI_SEVERITY_LAMBDA", 0.05))
+    logger.info("  gamma0=%.4f, default_window=%d, nominal_alpha=%.2f, severity_weighting=%s (lambda=%.3f)",
+                gamma, window, alpha, _sev_on, _sev_lambda)
 
     scores_cal = np.maximum(q_lo_cal - y_cal, y_cal - q_hi_cal)
     unique_years = np.sort(np.unique(years_test))
@@ -393,7 +405,9 @@ def severity_aware_adaptive_conformal(
 
         yr_sev = float(np.mean(cdhw_severity_test[year_mask])) if cdhw_severity_test is not None else 0.0
 
-        if yr_sev >= 5.0:
+        if not _sev_on:
+            dyn_window = int(window)
+        elif yr_sev >= 5.0:
             dyn_window = 2
         elif yr_sev >= 1.0:
             dyn_window = 3
@@ -406,8 +420,14 @@ def severity_aware_adaptive_conformal(
         window_sev = np.concatenate(buffer_sev[-dyn_window:])
 
         raw_w_scores = np.maximum(window_lo - window_y, window_y - window_hi)
-        sev_weights = 1.0 + 0.05 * np.log1p(np.maximum(window_sev, 0.0))
-        adj_w_scores = raw_w_scores * sev_weights
+        sev_weights = (1.0 + _sev_lambda * np.log1p(np.maximum(window_sev, 0.0))
+                       if _sev_on else np.ones_like(raw_w_scores))
+        # Normalised (locally adaptive) conformity scores, Lei et al. 2018: the
+        # score is divided by the local scale during calibration and the
+        # threshold is multiplied by it at test time. Doing only one of the two
+        # breaks the correspondence -- the committed code multiplied here and
+        # divided at test, which is what made severe rows the narrowest.
+        adj_w_scores = raw_w_scores / sev_weights
 
         n_w = len(adj_w_scores)
         q_level_w = min(np.ceil((1 - alpha_t) * (n_w + 1)) / n_w, 1.0)
@@ -415,8 +435,16 @@ def severity_aware_adaptive_conformal(
         current_threshold = float(np.quantile(adj_w_scores, q_level_w))
 
         this_sev = cdhw_severity_test[year_mask] if cdhw_severity_test is not None else np.zeros(n_year)
-        this_weights = 1.0 + 0.05 * np.log1p(np.maximum(this_sev, 0.0))
-        eff_threshold = current_threshold / np.maximum(this_weights, 0.5)
+        if _sev_on:
+            this_weights = 1.0 + _sev_lambda * np.log1p(np.maximum(this_sev, 0.0))
+            # C5 fix: MULTIPLY, matching the division applied to the calibration
+            # scores above. A more severe row gets a larger threshold and
+            # therefore a wider interval; marginal coverage is preserved because
+            # the scores were normalised by the same weight.
+            eff_threshold = current_threshold * this_weights
+        else:
+            this_weights = np.ones(n_year)
+            eff_threshold = np.full(n_year, current_threshold)
 
         yr_lo = q_lo_test[year_mask] - eff_threshold
         yr_hi = q_hi_test[year_mask] + eff_threshold
@@ -473,6 +501,9 @@ def severity_aware_adaptive_conformal(
             "window": window,
             "year_history": history,
             "final_alpha_t": float(alpha_t),
+            "severity_weighting": _sev_on,
+            "severity_lambda": _sev_lambda if _sev_on else 0.0,
+            "severity_direction": "widen" if _sev_on else "none",
         },
     )
 

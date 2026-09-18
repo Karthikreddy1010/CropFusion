@@ -346,7 +346,10 @@ def generate_final_audit(output_path: Optional[Path] = None) -> Path:
             A(f"- **WARNING — {c['id']}**: {c['requirement']} — {c.get('evidence')}")
     A("")
 
-    out = output_path or (cfg.PROJECT_ROOT / "FINAL_METHODOLOGY_AUDIT.md")
+    # C8: write it inside the run's own output folder. Writing to PROJECT_ROOT
+    # put it at /content/ on Colab, outside anything synced back, so the 18 Sep
+    # run's audit was lost when the session ended.
+    out = output_path or (cfg.OUTPUT_DIR / "FINAL_METHODOLOGY_AUDIT.md")
     out.write_text("\n".join(lines), encoding="utf-8")
     logger.info("Final methodology audit written -> %s", out)
     return out

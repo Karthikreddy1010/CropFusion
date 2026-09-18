@@ -107,7 +107,10 @@ master_dataset/
 *.grb2
 
 # ---- Local working docs (design specs, scratch notes) -------
-docs/
+# docs/supplement/ is tracked: it holds the C7 disclosure of how the LOSO
+# hyperparameters were originally selected, which belongs in the record.
+docs/*
+!docs/supplement/
 
 # ---- Master-pipeline outputs --------------------------------
 # Same policy as outputs/ above: the run REPORTS are the
@@ -120,3 +123,6 @@ outputs_diagnostics/*
 
 # ---- Scratch logs -------------------------------------------
 *.log
+
+# Cached partition bundles from the W3 ladder (regenerable, ~53 MB each)
+*.joblib

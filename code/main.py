@@ -18,7 +18,7 @@ Executes the complete pipeline matching Paper3_Methodology_Updated_v2:
     - Wilcoxon Signed-Rank + Secondary Paired t-Test + Holm-Bonferroni / BH (§5.5)
     - County Block Bootstrap & Year Block Bootstrap (§4.4, §5.3)
 12. Computational Complexity Benchmark: single/batch latency, throughput, memory (§4.7)
-13. 7-Fold Leave-One-State-Out CV (Per-fold scaler fitting for Zero Leakage §5.2)
+13. Six-state Leave-One-State-Out CV (Per-fold scaler fitting for Zero Leakage §5.2)
 14. 5-Row Ablation Study (§4.6)
 15. Visualization suite
 16. Report export in JSON, CSV, and Markdown formats
@@ -87,6 +87,15 @@ def main() -> None:
     logger.info("=" * 70)
     logger.info("PAPER 3: ADAPTIVE CONFORMAL INFERENCE PIPELINE (FULL COMPLIANCE)")
     logger.info("=" * 70)
+
+    # C7 / D5: declare the protocol before anything is fitted, and record where
+    # the live config disagrees with it. A run whose config has drifted from the
+    # declared protocol is still produced -- but it says so, in its own folder.
+    from frozen_protocol import write_protocol
+    _protocol = write_protocol()
+    logger.info("Frozen protocol %s (hash %s); config matches: %s",
+                _protocol["protocol_version"], _protocol["protocol_hash"],
+                _protocol["config_matches_protocol"])
 
     # ══════════════════════════════════════════════════════════
     # PHASE 1: DATA LOADING & METHODOLOGY VALIDATION
@@ -1852,6 +1861,37 @@ def _run_loso_cv(
     if fold_metrics:
         save_report_csv(pd.DataFrame(fold_metrics), "loso_fold_metrics.csv")
 
+    # C8: register every LOSO fold. The registry previously held only the three
+    # temporal experiments, so the six spatial folds -- the ones the paper's
+    # transfer claim rests on -- left no provenance record.
+    try:
+        from experiment_registry import ExperimentRegistry
+        _reg = ExperimentRegistry()
+        for _f in fold_metrics:
+            if "rmse" not in _f:
+                continue
+            _state = str(_f.get("state", "unknown")).replace(" ", "_").upper()
+            _reg.register_experiment(
+                experiment_id=f"EXP_LOSO_{_state}",
+                model="NeuralCQR+LightGBM_Ensemble",
+                role="LOSO",
+                features=int(_f.get("n_features", 0)),
+                detrending=("Linear_fold_FIT_only" if _f.get("target_detrending") else "None"),
+                fit_period="1985-2013 (five non-held-out states)",
+                dev_period="2014-2015 (five non-held-out states)",
+                cal_period="2016-2023 (five non-held-out states)",
+                test_period=f"all years, held-out {_f.get('state')}",
+                ensemble_weight=_f.get("neuralcqr_ensemble_weight"),
+                conformal_method="static_conformal",
+                rmse=_f.get("rmse"), mae=_f.get("mae"), r2=_f.get("r_squared"),
+                picp=_f.get("picp"), ace=_f.get("ace"), mpiw=_f.get("mpiw"),
+                winkler=_f.get("winkler_score"),
+                notes=(f"LOSO fold; fold trend {_f.get('fold_trend_t_ha_per_year')} t/ha/yr; "
+                       f"n_test={_f.get('n_test')}"),
+            )
+    except Exception as _reg_exc:
+        logger.warning("Could not register LOSO folds: %s", _reg_exc)
+
     valid_folds = [f for f in fold_metrics if "rmse" in f]
     if valid_folds:
         for metric_name in ["rmse", "mae", "r_squared", "picp", "mpiw"]:
@@ -2100,18 +2140,36 @@ def _run_ablation(
     # methodologies mean the ablation is invalid, not that the effect is zero.
     by_name = {c["config"]: c for c in report["configurations"]}
     checks = []
-    for a, b, what, expect_point_diff in (
-        ("2_plus_cdhw", "3_plus_cqr", "interval head added", True),
-        ("3_plus_cqr", "4_plus_aci", "static conformal -> ACI (calibration only)", False),
-        ("4_plus_aci", "5_full_joint", "post-hoc -> joint end-to-end training", True),
+    # M12 correction (2026-09-17): config 2 is point-only (Huber alone) and
+    # config 3 is POST-HOC CQR, whose first stage trains the backbone and mean
+    # head on Huber alone with the same seed and data. Identical point
+    # predictions between them is therefore the defining property of a post-hoc
+    # interval head, not a failure -- the old expectation asserted the opposite
+    # and made M12 fail on correct behaviour. What must change from 2 to 3 is
+    # that intervals exist at all.
+    for a, b, what, mode in (
+        ("2_plus_cdhw", "3_plus_cqr",
+         "interval head added (post-hoc: the point path is unchanged by design)", "interval_appears"),
+        ("3_plus_cqr", "4_plus_aci", "static conformal -> ACI (calibration only)", "interval_differs"),
+        ("4_plus_aci", "5_full_joint", "post-hoc -> joint end-to-end training", "point_differs"),
     ):
         if a not in by_name or b not in by_name:
             continue
         same_points = abs(by_name[a].get("prediction_checksum", 0.0)
                           - by_name[b].get("prediction_checksum", -1.0)) < 1e-9
         same_intervals = (by_name[a].get("mpiw") == by_name[b].get("mpiw"))
-        if expect_point_diff:
+        expect_point_diff = (mode == "point_differs")
+        if mode == "point_differs":
             status = "FAIL" if same_points else "PASS"
+        elif mode == "interval_appears":
+            # The point row has no interval at all; the CQR row must have one.
+            # Point-only rows record mpiw as the string "n/a", so a numeric
+            # value is what marks a real interval.
+            def _has_interval(v):
+                return isinstance(v, (int, float)) and not isinstance(v, bool)
+            a_has = _has_interval(by_name[a].get("mpiw"))
+            b_has = _has_interval(by_name[b].get("mpiw"))
+            status = "PASS" if (not a_has and b_has) else "FAIL"
         else:
             # 3 vs 4 differ only in calibration, which by construction cannot
             # move point predictions; the intervals must differ instead.
@@ -2284,7 +2342,7 @@ def _generate_methodology_compliance_report() -> None:
     The previous version was a fixed Markdown string that declared every section
     "Verified", stated "**100% Methodology Compliance** ... with **Zero Data
     Leakage**", described the temporal split with the superseded 1985-2015 /
-    2016-2018 boundaries, and called LOSO "(7 Folds)" when the protocol has six.
+    2016-2018 boundaries, and overstated the LOSO fold count; the protocol has six.
     None of it was computed. This version reports only what the validator and
     the leakage audit actually found.
     """

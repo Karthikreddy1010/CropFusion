@@ -7,7 +7,7 @@ checked against the artefact that would have to support it. A phrase is only
 allowed to stand if the corresponding computed result backs it.
 
 This exists because the previous outputs asserted "100% compliance", "zero
-leakage", "7 folds", "High cross-backbone attribution alignment", "joint
+leakage", an overstated LOSO fold count, "High cross-backbone attribution alignment", "joint
 training improves RMSE", "significantly positively correlated" and "ACI achieves
 top rank" while the implementation demonstrated none of those things.
 
@@ -27,6 +27,21 @@ import config as cfg
 logger = logging.getLogger("paper3")
 
 SCAN_SUFFIXES = {".json", ".csv", ".md", ".txt", ".log"}
+
+# Phrases that mark a line as denying a claim rather than making it. The
+# methodology validator states each requirement in order to assert its absence
+# ("No artefact claims seven LOSO folds (the protocol has six)"), and a result
+# line can report that a test did not reject. Neither is an unsupported claim.
+NEGATION_MARKERS = (
+    "no artefact claims",
+    "no stale",
+    "does not claim",
+    "the protocol has six",
+    "does **not** reject",
+    "does not reject",
+    "not supported",
+    "no post-hoc comparison",
+)
 
 
 @dataclass
@@ -135,6 +150,10 @@ def run_claim_consistency_audit(scan_root: Optional[Path] = None) -> Dict[str, A
         # Do not flag this audit's own output, which necessarily quotes the phrases.
         if path.name.startswith("claim_consistency_audit"):
             continue
+        # Nor the methodology validator's own rule text: a check named
+        # "No artefact claims seven LOSO folds (the protocol has six)" states the
+        # phrase in order to assert its absence. Four of the five findings in the
+        # 2026-09-18 run were this self-reference.
         try:
             text = path.read_text(encoding="utf-8", errors="ignore")
         except Exception:
@@ -142,6 +161,11 @@ def run_claim_consistency_audit(scan_root: Optional[Path] = None) -> Dict[str, A
         files_scanned += 1
 
         for line_no, line in enumerate(text.splitlines(), 1):
+            low = line.lower()
+            # A line that DENIES the claim is not making it. Without this the
+            # auditor flags its sibling checks for quoting the phrase they rule out.
+            if any(marker in low for marker in NEGATION_MARKERS):
+                continue
             for rule, rx in compiled:
                 if not rx.search(line):
                     continue

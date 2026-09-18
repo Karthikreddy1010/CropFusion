@@ -724,9 +724,32 @@ def run_full_evaluation(
                 raw_p_values.append(test_res["p_value"])
                 baseline_names.append(baseline_name)
 
+        # C3: the multiple-comparison corrections must be applied to the
+        # year-level p-values. Correcting row-level p-values only spreads an
+        # invalid inference across more comparisons -- every one of them came
+        # out at p = 0.0 because ~2300 county-year rows were treated as
+        # independent samples. The row-level corrections are still recorded,
+        # under a name that says what they are.
+        year_p_values, year_names = [], []
+        for baseline_name in baselines:
+            dep = report["dependence_aware_comparisons"].get(f"{primary_key}_vs_{baseline_name}", {})
+            ylt = dep.get("year_level_paired_test", {})
+            if ylt.get("inference_supported") and ylt.get("paired_t_p_value") is not None:
+                year_p_values.append(float(ylt["paired_t_p_value"]))
+                year_names.append(baseline_name)
+
+        if year_p_values:
+            report["holm_bonferroni"] = holm_bonferroni_correction(year_p_values, year_names)
+            report["benjamini_hochberg"] = benjamini_hochberg_correction(year_p_values, year_names)
+            report["multiple_comparison_unit"] = "year (paired t on year-level means)"
+        else:
+            report["multiple_comparison_unit"] = "none (year-level inference not supported)"
+
         if raw_p_values:
-            report["holm_bonferroni"] = holm_bonferroni_correction(raw_p_values, baseline_names)
-            report["benjamini_hochberg"] = benjamini_hochberg_correction(raw_p_values, baseline_names)
+            report["holm_bonferroni_row_level_invalid"] = holm_bonferroni_correction(
+                raw_p_values, baseline_names)
+            report["benjamini_hochberg_row_level_invalid"] = benjamini_hochberg_correction(
+                raw_p_values, baseline_names)
 
         # 3. Block Bootstraps (§4.4 & §5.3)
         if test_df is not None:
@@ -914,12 +937,15 @@ def aggregate_loso_results(
             "held_out_state": r.get("state", "Unknown"),
             "NeuralCQR_weight": r.get("neuralcqr_ensemble_weight", np.nan),
             "LightGBM_weight": r.get("lightgbm_ensemble_weight", np.nan),
-            "val_r2_neural_alone": r.get("val_r2_neural_alone", np.nan),
-            "val_r2_lgb_alone": r.get("val_r2_lgb_alone", np.nan),
-            "val_r2_best_blend": r.get("val_r2_best_blend", np.nan),
-            "validation_RMSE": r.get("validation_rmse", np.nan),
-            "validation_MAE": r.get("validation_mae", np.nan),
-            "selected_objective": r.get("selected_objective", "Maximize R2 on dev val_fold"),
+            # _run_loso_cv writes these under dev_* names; the val_*/validation_*
+            # spellings never existed, so every one of these columns came out NaN.
+            "dev_r2_neural_alone": r.get("dev_r2_neural_alone", r.get("val_r2_neural_alone", np.nan)),
+            "dev_r2_lgb_alone": r.get("dev_r2_lgb_alone", r.get("val_r2_lgb_alone", np.nan)),
+            "dev_r2_selected_blend": r.get("dev_r2_selected_blend", r.get("val_r2_best_blend", np.nan)),
+            "dev_RMSE_selected_blend": r.get("dev_rmse_selected_blend", r.get("validation_rmse", np.nan)),
+            "dev_MAE_selected_blend": r.get("dev_mae_selected_blend", r.get("validation_mae", np.nan)),
+            "weight_selection_partition": r.get("weight_selection_partition", "LOSO_DEV_2014_2015"),
+            "selected_objective": r.get("weight_selection_objective", r.get("selected_objective", "Maximize R2 on LOSO DEV")),
         })
     ensemble_df = pd.DataFrame(ensemble_rows)
     save_report_csv(ensemble_df, "loso_ensemble_weights.csv")
@@ -1637,16 +1663,34 @@ def export_statistical_tests_report_md(eval_report: Dict[str, Any]) -> None:
     from utils import save_report_markdown
 
     md = "# Statistical Significance Testing Report (§5.5)\n\n"
-    md += "## 1. Primary Pairwise Tests: Wilcoxon Signed-Rank\n\n"
-    if "statistical_tests" in eval_report and eval_report["statistical_tests"]:
-        for k, v in eval_report["statistical_tests"].items():
-            stat_str = f"`{v.get('statistic')}`" if v.get('statistic') is not None else "N/A"
-            p_str = f"`{v.get('p_value')}`" if v.get('p_value') is not None else "N/A"
-            md += f"- **{k}**: Wilcoxon W = {stat_str}, p-value = {p_str}\n"
-    else:
-        md += "- *Pairwise Wilcoxon signed-rank tests were not recorded or executed.*\n"
+    md += ("The unit of independence is the **year**. County-year rows within a year share "
+           "weather and are not independent, so row-level tests over ~2300 rows are "
+           "anti-conservative — they produced p = 0.0 against every comparator. Those are "
+           "kept in the appendix as diagnostics and must not be cited.\n\n")
 
-    md += "\n## 2. Secondary Robustness Check: Paired t-Tests & Effect Sizes (Cohen's d)\n\n"
+    md += "## 1. Primary Pairwise Tests: year-level paired comparison\n\n"
+    dep = eval_report.get("dependence_aware_comparisons", {})
+    if dep:
+        for k, v in dep.items():
+            y = v.get("year_level_paired_test", {})
+            b = v.get("year_block_cluster_bootstrap", {})
+            if not y.get("inference_supported"):
+                md += f"- **{k}**: inference not supported ({y.get('reason', 'n/a')})\n"
+                continue
+            md += (f"- **{k}**: mean difference = `{y.get('mean_difference')}` over "
+                   f"`{y.get('n_years')}` years, paired t p = `{y.get('paired_t_p_value')}`, "
+                   f"95% CI = `{y.get('ci_95_mean_difference')}`, Cohen's dz = `{y.get('cohens_dz')}`; "
+                   f"year-block bootstrap p = `{b.get('p_value')}`, CI = `{b.get('ci_95')}`\n")
+        n_years = next((v.get("year_level_paired_test", {}).get("n_years") for v in dep.values()), None)
+        if n_years:
+            md += (f"\nWith {n_years} test years, a non-significant result is weak evidence of "
+                   "no difference, not evidence of equivalence.\n")
+    else:
+        md += "- *Dependence-aware comparisons were not recorded.*\n"
+
+    md += ("\n## 2. Row-level paired t-tests and Cohen's d (diagnostic only)\n\n"
+           "*Each county-year row is treated as independent, which it is not. "
+           "Reported for completeness; not valid for inference.*\n\n")
     if "paired_t_tests" in eval_report and eval_report["paired_t_tests"]:
         for k, v in eval_report["paired_t_tests"].items():
             t_str = f"`{v.get('statistic')}`" if v.get('statistic') is not None else "N/A"
@@ -1666,7 +1710,8 @@ def export_statistical_tests_report_md(eval_report: Dict[str, Any]) -> None:
     else:
         md += "- *Omnibus Friedman/Nemenyi rank test not executed; pairwise Wilcoxon signed-rank and block bootstraps serve as authoritative statistical inference.*\n"
 
-    md += "\n## 4. Multiple Comparison Corrections\n\n"
+    md += (f"\n## 4. Multiple Comparison Corrections\n\n"
+           f"Applied to **{eval_report.get('multiple_comparison_unit', 'year-level')}** p-values.\n\n")
     if "holm_bonferroni" in eval_report and eval_report["holm_bonferroni"]:
         md += "### Holm-Bonferroni Correction\n"
         for entry in eval_report["holm_bonferroni"]:
@@ -1691,6 +1736,21 @@ def export_statistical_tests_report_md(eval_report: Dict[str, Any]) -> None:
         for m in ["r2", "rmse", "picp", "mpiw", "ace", "winkler"]:
             if m in yb:
                 md += f"- **{m.upper()}**: Mean = `{yb[m]['mean']}`, 95% CI = `[{yb[m]['ci_95'][0]}, {yb[m]['ci_95'][1]}]`\n"
+
+    md += ("\n## Appendix. Row-level tests (anti-conservative, do not cite)\n\n"
+           "Retained so the contrast with the year-level results above is visible.\n\n")
+    if eval_report.get("statistical_tests"):
+        for k, v in eval_report["statistical_tests"].items():
+            stat_str = f"`{v.get('statistic')}`" if v.get('statistic') is not None else "N/A"
+            p_str = f"`{v.get('p_value')}`" if v.get('p_value') is not None else "N/A"
+            md += f"- **{k}**: row-level Wilcoxon W = {stat_str}, p-value = {p_str}\n"
+    for key, label in (("holm_bonferroni_row_level_invalid", "Holm-Bonferroni"),
+                       ("benjamini_hochberg_row_level_invalid", "Benjamini-Hochberg")):
+        if eval_report.get(key):
+            md += f"\n### {label} on row-level p-values (invalid)\n"
+            for entry in eval_report[key]:
+                p = entry.get("corrected_p_value", entry.get("bh_corrected_p_value"))
+                md += f"- **{entry['baseline']}**: adjusted p = `{p}`\n"
 
     save_report_markdown(md, "statistical_tests_report.md")
 

@@ -380,7 +380,10 @@ def validate_artifact_integrity() -> Dict[str, Any]:
         })
 
     completion_pct = round(((len(required_artifacts) - missing_count) / len(required_artifacts)) * 100.0, 2)
-    compliance_status = "FULL_METHODOLOGY_COMPLIANCE_100%" if missing_count == 0 else "PARTIAL_COMPLIANCE"
+    # This audits ARTEFACT PRESENCE, not methodological correctness: a run can
+    # produce every expected file and still be scientifically wrong. The old
+    # "FULL_METHODOLOGY_COMPLIANCE_100%" label claimed the latter.
+    compliance_status = "ALL_EXPECTED_ARTEFACTS_PRESENT" if missing_count == 0 else "ARTEFACTS_MISSING"
 
     report = {
         "overall_completion_percentage": completion_pct,
