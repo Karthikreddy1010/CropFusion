@@ -46,9 +46,9 @@
       "RMSE": 0.9237,
       "MAE": 0.7091,
       "R2": 0.7031,
-      "Coverage_PICP": 0.9194,
-      "MPIW_Width": 3.3177,
-      "Winkler_Score": 4.0751
+      "Coverage_PICP": 0.9241,
+      "MPIW_Width": 3.3203,
+      "Winkler_Score": 4.0396
     },
     {
       "Model_or_Method": "Static Conformal",
@@ -76,9 +76,9 @@
       "RMSE": 0.9237,
       "MAE": null,
       "R2": 0.7031,
-      "Coverage_PICP": 0.9194,
-      "MPIW_Width": 3.3177,
-      "Winkler_Score": 4.0751
+      "Coverage_PICP": 0.9241,
+      "MPIW_Width": 3.3203,
+      "Winkler_Score": 4.0396
     },
     {
       "Model_or_Method": "Phenology-Stratified CQR",

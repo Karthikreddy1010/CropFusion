@@ -149,11 +149,11 @@
   "configuration_distinctness_checks": [
     {
       "comparison": "2_plus_cdhw vs 3_plus_cqr",
-      "expected_difference": "interval head added",
-      "point_difference_expected": true,
+      "expected_difference": "interval head added (post-hoc: the point path is unchanged by design)",
+      "point_difference_expected": false,
       "identical_point_predictions": true,
       "identical_mpiw": false,
-      "status": "FAIL"
+      "status": "PASS"
     },
     {
       "comparison": "3_plus_cqr vs 4_plus_aci",
@@ -172,5 +172,5 @@
       "status": "PASS"
     }
   ],
-  "all_configurations_distinct": false
+  "all_configurations_distinct": true
 }

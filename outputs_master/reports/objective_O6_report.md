@@ -4,7 +4,7 @@
 
 | Method                   |   PICP |   MPIW |    ACE |   Winkler_Score |   RMSE |    MAE |   Rank_Winkler |   Rank_ACE |   Rank_MPIW |   Average_Rank |
 |:-------------------------|-------:|-------:|-------:|----------------:|-------:|-------:|---------------:|-----------:|------------:|---------------:|
-| sa_aci                   | 0.9194 | 3.3177 | 0.0194 |          4.0751 | 0.9237 | 0.7091 |              1 |        1   |           1 |        1       |
+| sa_aci                   | 0.9241 | 3.3203 | 0.0241 |          4.0396 | 0.9237 | 0.7091 |              1 |        1   |           1 |        1       |
 | standard_aci             | 0.9296 | 3.4151 | 0.0296 |          4.0788 | 0.9237 | 0.7091 |              2 |        2   |           2 |        2       |
 | weighted_conformal       | 0.9471 | 3.6367 | 0.0471 |          4.1413 | 0.9237 | 0.7091 |              3 |        3   |           3 |        3       |
 | static_conformal         | 0.9488 | 3.6493 | 0.0488 |          4.1473 | 0.9237 | 0.7091 |              4 |        4.5 |           4 |        4.16667 |
@@ -17,12 +17,12 @@
 
 ## Statistical testing
 - **Blocking unit**: `year` (5 blocks) — per-observation blocking would treat correlated county-year rows as independent.
-- **Friedman**: Q = `4.1954`, p = `0.52164`
-- **Average ranks**: `{'static_conformal': 4.1, 'standard_aci': 2.5, 'sa_aci': 3.0, 'phenology_stratified_cqr': 4.0, 'weighted_conformal': 3.0, 'locally_adaptive': 4.4}`
+- **Friedman**: Q = `7.2989`, p = `0.199346`
+- **Average ranks**: `{'static_conformal': 4.3, 'standard_aci': 3.1, 'sa_aci': 1.8, 'phenology_stratified_cqr': 4.2, 'weighted_conformal': 3.2, 'locally_adaptive': 4.4}`
 - **Nemenyi CD** (k = 6, N = 5, α = 0.05): `3.3722` (q_α = `2.85`)
-- **Conclusion**: the omnibus test does **not** reject at α = 0.05 (p = `0.52164`). No post-hoc comparison is performed and no method is claimed to be statistically superior. The ordering above is descriptive.
+- **Conclusion**: the omnibus test does **not** reject at α = 0.05 (p = `0.199346`). No post-hoc comparison is performed and no method is claimed to be statistically superior. The ordering above is descriptive.
 
 ## Practical significance
-- Winkler score spans `4.0751` to `4.167` (2.21% relative spread)
-- PICP spans `0.9194` to `0.9493` (nominal 0.9)
-- MPIW relative spread: `10.3%`
+- Winkler score spans `4.0396` to `4.167` (3.06% relative spread)
+- PICP spans `0.9241` to `0.9493` (nominal 0.9)
+- MPIW relative spread: `10.23%`

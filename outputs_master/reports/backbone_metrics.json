@@ -41,9 +41,9 @@
       "RMSE": 0.9237,
       "MAE": 0.7091,
       "R2": 0.7031,
-      "Coverage": 0.9194,
-      "MPIW": 3.3177,
-      "Winkler_Score": 4.0751
+      "Coverage": 0.9241,
+      "MPIW": 3.3203,
+      "Winkler_Score": 4.0396
     }
   ]
 }

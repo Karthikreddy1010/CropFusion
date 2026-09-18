@@ -1,5 +1,5 @@
 {
-  "total_time_seconds": 3613.0,
+  "total_time_seconds": 3338.1,
   "dataset_rows": 22737,
   "dataset_cols": 121,
   "features_used": 94,
@@ -27,7 +27,7 @@
     "XGBoost"
   ],
   "outputs_dir": "/content/outputs_master",
-  "compliance_status": "FULL_METHODOLOGY_COMPLIANCE_100%",
+  "compliance_status": "ALL_EXPECTED_ARTEFACTS_PRESENT",
   "leakage_status": "ZERO_OVERLAP_VERIFIED_BY_ROW_ID",
   "leakage_experiments_audited": 7
 }

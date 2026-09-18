@@ -11,10 +11,10 @@
   "rankings": [
     {
       "Method": "sa_aci",
-      "PICP": 0.9194,
-      "MPIW": 3.3177,
-      "ACE": 0.0194,
-      "Winkler_Score": 4.0751,
+      "PICP": 0.9241,
+      "MPIW": 3.3203,
+      "ACE": 0.0241,
+      "Winkler_Score": 4.0396,
       "RMSE": 0.9237,
       "MAE": 0.7091,
       "Rank_Winkler": 1.0,
@@ -103,16 +103,16 @@
     "n_blocks": 5,
     "block_unit": "year",
     "alpha": 0.05,
-    "statistic": 4.1954,
-    "p_value": 0.52164,
+    "statistic": 7.2989,
+    "p_value": 0.199346,
     "test_executed": true,
     "significant_at_alpha": false,
     "average_ranks": {
-      "static_conformal": 4.1,
-      "standard_aci": 2.5,
-      "sa_aci": 3.0,
-      "phenology_stratified_cqr": 4.0,
-      "weighted_conformal": 3.0,
+      "static_conformal": 4.3,
+      "standard_aci": 3.1,
+      "sa_aci": 1.8,
+      "phenology_stratified_cqr": 4.2,
+      "weighted_conformal": 3.2,
       "locally_adaptive": 4.4
     },
     "nemenyi": {
@@ -127,7 +127,7 @@
       "2019": {
         "static_conformal": 3.8729,
         "standard_aci": 3.8729,
-        "sa_aci": 3.875,
+        "sa_aci": 3.8558,
         "phenology_stratified_cqr": 3.8744,
         "weighted_conformal": 3.8646,
         "locally_adaptive": 3.9622
@@ -135,7 +135,7 @@
       "2020": {
         "static_conformal": 4.0411,
         "standard_aci": 3.932,
-        "sa_aci": 3.9422,
+        "sa_aci": 3.9274,
         "phenology_stratified_cqr": 4.0427,
         "weighted_conformal": 4.0336,
         "locally_adaptive": 3.9793
@@ -143,7 +143,7 @@
       "2021": {
         "static_conformal": 4.3707,
         "standard_aci": 4.4563,
-        "sa_aci": 4.473,
+        "sa_aci": 4.4408,
         "phenology_stratified_cqr": 4.3692,
         "weighted_conformal": 4.3715,
         "locally_adaptive": 4.3456
@@ -151,7 +151,7 @@
       "2022": {
         "static_conformal": 3.9902,
         "standard_aci": 3.8494,
-        "sa_aci": 3.8082,
+        "sa_aci": 3.7818,
         "phenology_stratified_cqr": 3.9895,
         "weighted_conformal": 3.9821,
         "locally_adaptive": 4.003
@@ -159,7 +159,7 @@
       "2023": {
         "static_conformal": 4.4625,
         "standard_aci": 4.3066,
-        "sa_aci": 4.302,
+        "sa_aci": 4.2152,
         "phenology_stratified_cqr": 4.4622,
         "weighted_conformal": 4.4557,
         "locally_adaptive": 4.5654
@@ -178,12 +178,12 @@
   },
   "nemenyi_pairwise": [],
   "practical_significance": {
-    "winkler_best": 4.0751,
+    "winkler_best": 4.0396,
     "winkler_worst": 4.167,
-    "winkler_relative_spread_pct": 2.21,
-    "picp_min": 0.9194,
+    "winkler_relative_spread_pct": 3.06,
+    "picp_min": 0.9241,
     "picp_max": 0.9493,
-    "mpiw_relative_spread_pct": 10.3
+    "mpiw_relative_spread_pct": 10.23
   },
   "claims_statistical_superiority": false
 }

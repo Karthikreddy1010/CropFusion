@@ -1,11 +1,11 @@
 Metric,Value,p_value,Inference
-Pearson_r_descriptive,0.1661,,descriptive only (rows are not independent)
-Spearman_rho_descriptive,0.0972,,descriptive only (rows are not independent)
-Slope_cluster_robust_year,0.014295,0.11578,PRIMARY: OLS + CR1 SE clustered by year
-Slope_cluster_robust_county,0.014295,0.0,secondary: clustered by county
-Slope_year_block_bootstrap,0.022668,0.023,corroborating year-block bootstrap
-R_squared,0.0276,,effect magnitude (unaffected by SE correction)
-Effective_sample_size,25.0,,"from n=2345 rows, ICC=0.1945"
-Slope_cluster_robust_Vegetative,0.067581,0.036872,clustered by year
-Slope_cluster_robust_Silking_R1,0.011995,0.087912,clustered by year
-Slope_cluster_robust_Grain_Fill,0.040403,0.039373,clustered by year
+Pearson_r_descriptive,0.2755,,descriptive only (rows are not independent)
+Spearman_rho_descriptive,0.2436,,descriptive only (rows are not independent)
+Slope_cluster_robust_year,0.024459,0.060539,PRIMARY: OLS + CR1 SE clustered by year
+Slope_cluster_robust_county,0.024459,0.0,secondary: clustered by county
+Slope_year_block_bootstrap,0.036396,0.02,corroborating year-block bootstrap
+R_squared,0.0759,,effect magnitude (unaffected by SE correction)
+Effective_sample_size,35.0,,"from n=2345 rows, ICC=0.1391"
+Slope_cluster_robust_Vegetative,0.102162,0.006882,clustered by year
+Slope_cluster_robust_Silking_R1,0.021742,0.042131,clustered by year
+Slope_cluster_robust_Grain_Fill,0.062166,0.003537,clustered by year

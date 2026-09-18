@@ -6,7 +6,7 @@ Methodology Section,Objective,Python File,Function,Output Artifact,Artifact Stat
 §5.8 Severity Attribution,O5,evaluation.py,evaluate_objective_o5,objective_o5_report.md,PRESENT,M15,PASS
 §4.5 Shift-Robust Conformal,O6,evaluation.py,evaluate_objective_o6,objective_O6_report.md,PRESENT,M15,PASS
 §4.4 Autocorrelation Diagnostic,Robustness,evaluation.py,block_bootstrap_county,evaluation_summary.md,PRESENT,n/a,n/a
-§4.6 Ablation Study,Ablation,main.py,_run_ablation,ablation_report.json,PRESENT,M12,FAIL
+§4.6 Ablation Study,Ablation,main.py,_run_ablation,ablation_report.json,PRESENT,M12,PASS
 §4.7 Computational Complexity,Benchmark,evaluation.py,benchmark_computational_complexity,computational_benchmark.csv,MISSING,M18,PASS
 §5.1 Temporal Split,Splitting,splitting.py,temporal_split_4way,leakage_audit_report.md,PRESENT,M6,PASS
 §5.2 LOSO Cross-Validation,Generalization,main.py,_run_loso_cv,loso_summary.csv,PRESENT,M1,PASS

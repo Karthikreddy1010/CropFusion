@@ -193,47 +193,65 @@ LAMBDA_HUBER: float = 1.0
 LAMBDA_CROSSING: float = 10.0
 LAMBDA_WIDTH: float = 0.005
 
+# ─────────────────────────────────────────────────────────────────────
+# W3 / F0 ladder flags (added 2026-09-17)
+#
+# Every flag below defaults to the behaviour of the 2026-09-16 run, so
+# enabling one is a single, DEV-testable experimental variable (spec
+# docs/superpowers/specs/2026-09-17-paper3-audit-remediation-design.md,
+# rules D2/D3). Nothing here may be selected on TEST years or on a
+# held-out LOSO state.
+# ─────────────────────────────────────────────────────────────────────
+
+# F0a — target standardisation and Huber delta.
+#   The detrended FIT target has sd = 1.785 t/ha, so the legacy
+#   delta = 1.0 sits at 0.56 sigma: Huber runs in its linear (MAE)
+#   region for 58.8% of FIT rows, which makes the mean head estimate a
+#   conditional median while RMSE/R2 (and LightGBM's default L2
+#   objective) target the mean. With residual skew -0.79 the two differ
+#   most in the low-yield years.
+STANDARDIZE_TARGET: bool = False      # True -> train on (y - mu)/sigma from the TRAIN partition only
+HUBER_DELTA: float = 1.0              # used when STANDARDIZE_TARGET is False (legacy value)
+HUBER_DELTA_SIGMA: float = 1.345      # used when STANDARDIZE_TARGET is True; classic robust choice
+
+# F0b — exponential moving average of weights.
+#   ModelEMA kept the shadow but never applied it, so the final refit
+#   (no validation, no early stopping) used the last epoch's weights.
+USE_EMA_WEIGHTS: bool = False         # True -> the no-validation refit returns EMA-averaged weights
+EMA_DECAY: float = 0.99
+
+# F0c — learning-rate schedule.
+#   CosineAnnealingLR(eta_min=1e-5) with LEARNING_RATE=3e-5 decays only
+#   from 3e-5 to 1e-5. T_max also equals the epoch budget, so the final
+#   refit follows a different LR curve than the DEV run that chose its
+#   epoch count.
+LR_ETA_MIN: float = 1e-5              # legacy absolute floor
+LR_SCHEDULE_MATCH_DEV: bool = False   # True -> refit reuses the DEV run's T_max so the LR curve matches
+
+# F1 — monotone quantile heads.
+#   q50 = f, q05 = f - softplus(a), q95 = f + softplus(b): crossing
+#   becomes impossible by construction instead of being penalised.
+NEURAL_MONOTONE_HEADS: bool = False
+
+# C5 — SA-ACI severity weighting (audit blocker).
+#   The published implementation DIVIDED the conformal threshold by the
+#   severity weight, so intervals got NARROWER exactly where the compound
+#   drought-heat stress was worst. The methodology text claimed the
+#   weighting was disabled, but no switch existed. Both are fixed here:
+#   the weight now widens, and the switch is real.
+ACI_SEVERITY_WEIGHTING: bool = True   # False -> fixed window, unit weights (windowed ACI)
+ACI_SEVERITY_LAMBDA: float = 0.05     # lambda in E_i * (1 + lambda * log1p(S_i))
+
 # LOSO-SPECIFIC HYPERPARAMETERS
 #
-# History (each validated against a real full-pipeline run, not just
-# sandbox tests):
-#   1. Original (lr=1e-3, batch=64, epochs=40, patience=20, es="pinball"),
-#      county_baseline leaking a constant 0.0 into every held-out-state row
-#      -> LOSO R2 = 0.429
-#   2. Reused the temporal-split fix's hyperparameters as-is for LOSO too,
-#      county_baseline still leaking -> LOSO R2 dropped to 0.268
-#   3. Tried a moderate in-between regime based on sandbox testing,
-#      county_baseline still leaking -> LOSO R2 dropped further to 0.223
-#      (worse; sandbox testing did NOT predict this correctly)
+# C7 (2026-09-18): the selection history for these values lived here and
+# documented six rounds judged by leave-one-state-out R2 -- i.e. chosen with
+# held-out information. It now lives in
+# docs/supplement/development_history.md, disclosed rather than deleted.
 #
-# Root cause found after two failed hyperparameter-only attempts:
-# `county_baseline` (a per-county historical-mean feature, genuinely
-# informative for temporal/random-row splits where the same counties
-# appear in train and test) is structurally broken for LOSO -- it's built
-# ONLY from the development states' GEOIDs, so for every held-out-state
-# test row (a GEOID that was NEVER in training) it resolves to a constant
-# placeholder (0.0) for the entire test set. It's not just noisy, it
-# carries zero information for the one task that most needs genuine
-# spatial signal -- and the more thoroughly the model trains, the more it
-# leans on this feature, which is exactly why "better" training (rounds 2
-# and 3) made LOSO worse, not better.
-#
-#   4. county_baseline excluded from the LOSO feature list entirely (see
-#      `_run_loso_cv` in main.py), keeping the temporal-split-tuned
-#      hyperparameters -> LOSO R2 recovered to 0.289, no more negative
-#      folds (Minnesota -0.033 -> +0.060), but still below the original
-#      0.429 -- 2-fold sandbox testing at the time suggested the original
-#      hyperparameters might do even better than the tuned ones once the
-#      leaky feature was actually gone (Minnesota: 0.53 with original hp
-#      vs 0.44 with tuned hp), so that combination gets tested here.
-#
-#   5. (current) county_baseline excluded (fix from round 4 kept) +
-#      original hyperparameters restored for LOSO specifically. Basis:
-#      the round-4 sandbox comparison above, run on 2 rebuilt folds
-#      (Illinois, Minnesota) with the leaky feature actually removed --
-#      original hyperparameters were competitive-to-better, especially on
-#      the harder fold. Validated on the real six-fold run -- see
-#      `reports/loso_summary.csv`.
+# These values are PENDING re-derivation on each fold's own DEV rows. Until
+# that lands, every LOSO number carries the C7 caveat, and
+# code/frozen_protocol.py records them as PENDING.
 LOSO_LEARNING_RATE: float = 1e-3
 LOSO_BATCH_SIZE: int = 64
 LOSO_WEIGHT_DECAY: float = 1e-4
@@ -241,20 +259,9 @@ LOSO_MAX_EPOCHS: int = 200
 LOSO_EARLY_STOPPING_PATIENCE: int = 20
 LOSO_EARLY_STOPPING_MODE: str = "pinball"
 
-#   6. (merge fix) Root-caused why round 5 (above) still only reached
-#      LOSO R2=0.35 on the real six-fold run despite the county_baseline
-#      fix: train_neural_cqr()'s `hidden_dims` argument was never
-#      overridden for LOSO, so every fold silently trained the small
-#      (64, 32) net that was tuned specifically for the temporal-split
-#      regime (lr=3e-5, patience=60, 200 epochs, es_mode="rmse"). Under
-#      the much shorter/faster LOSO schedule (lr=1e-3, 40 epochs), that
-#      small net is capacity-starved and underfits each state's fold.
-#      A prior sandbox run (see PATCH_NOTES.md / final_clean lineage)
-#      showed that reusing the larger (256, 128, 64, 32) architecture
-#      with this exact same short LOSO schedule (epochs=40, batch=64,
-#      lr=1e-3) recovered LOSO R2 to ~0.55 without touching the
-#      temporal-split config at all. Kept as a separate LOSO-only
-#      architecture so the tuned main-pipeline net is untouched.
+# LOSO architecture: kept separate from the temporal-split net. Selection
+# history (including the round that motivated the larger net) is in
+# docs/supplement/development_history.md. Also PENDING re-derivation on DEV.
 LOSO_HIDDEN_DIMS: Tuple[int, ...] = (256, 128, 64, 32)
 LOSO_DROPOUT: float = 0.25
 

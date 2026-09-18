@@ -1,7 +1,7 @@
 # Final Model Decisions Lock File (§18)
 
 **Status**: `LOCKED — NO MODELING DECISIONS MAY CHANGE BEYOND THIS POINT`
-**Timestamp**: `2026-09-16T13:49:20Z`
+**Timestamp**: `2026-09-18T19:05:29Z`
 
 ## 1. Frozen Partitions
 - **FIT (1985–2013)**: Preprocessing, detrending, baseline, feature selection, candidate fitting

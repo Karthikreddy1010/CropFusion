@@ -15,7 +15,7 @@
 - **sa_aci**:
   - Non-negative widths: True
   - Invalid bounds (q_lo > q_hi): 0
-  - Mean interval width: 3.3177 (min: 2.3321, max: 5.2240)
+  - Mean interval width: 3.3203 (min: 2.3173, max: 5.4774)
 - **phenology_stratified_cqr**:
   - Non-negative widths: True
   - Invalid bounds (q_lo > q_hi): 0

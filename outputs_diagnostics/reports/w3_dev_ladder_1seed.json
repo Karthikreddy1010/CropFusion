@@ -1,0 +1,116 @@
+{
+  "generated": "2026-09-17 20:49:11",
+  "seeds": [
+    42
+  ],
+  "epochs": 200,
+  "fit_n": 15751,
+  "dev_n": 978,
+  "n_features": 94,
+  "fit_target_sd": 1.7850189806556294,
+  "neural": [
+    {
+      "variant": "E0",
+      "label": "baseline (current config)",
+      "n_seeds": 1,
+      "rmse_mean": 1.0334668700889735,
+      "rmse_sd": NaN,
+      "r2_mean": 0.6060020438983404,
+      "r2_sd": NaN,
+      "picp_mean": 0.6881390593047034,
+      "mpiw_mean": 2.1685191298280757,
+      "crossing_mean": 0.0
+    },
+    {
+      "variant": "E1",
+      "label": "F0a target standardised, delta=1.345 sigma",
+      "n_seeds": 1,
+      "rmse_mean": 1.0523056693572301,
+      "rmse_sd": NaN,
+      "r2_mean": 0.5915069506033541,
+      "r2_sd": NaN,
+      "picp_mean": 0.7198364008179959,
+      "mpiw_mean": 2.3399080572833366,
+      "crossing_mean": 0.0
+    },
+    {
+      "variant": "E3",
+      "label": "F0c lr=1e-3, wider net",
+      "n_seeds": 1,
+      "rmse_mean": 1.0187359671686576,
+      "rmse_sd": NaN,
+      "r2_mean": 0.6171539858989348,
+      "r2_sd": NaN,
+      "picp_mean": 0.5950920245398773,
+      "mpiw_mean": 1.5467226956656739,
+      "crossing_mean": 0.0
+    },
+    {
+      "variant": "E3b",
+      "label": "F0c lr=3e-4, current net",
+      "n_seeds": 1,
+      "rmse_mean": 1.0200980386946914,
+      "rmse_sd": NaN,
+      "r2_mean": 0.6161295550837975,
+      "r2_sd": NaN,
+      "picp_mean": 0.6676891615541922,
+      "mpiw_mean": 2.059235865680657,
+      "crossing_mean": 0.0
+    },
+    {
+      "variant": "E4",
+      "label": "F1 monotone quantile heads",
+      "n_seeds": 1,
+      "rmse_mean": 1.0223657408260651,
+      "rmse_sd": NaN,
+      "r2_mean": 0.6144209518547442,
+      "r2_sd": NaN,
+      "picp_mean": 0.6441717791411042,
+      "mpiw_mean": 1.9685006532322897,
+      "crossing_mean": 0.0
+    },
+    {
+      "variant": "E5",
+      "label": "F0d lambda_width = 0",
+      "n_seeds": 1,
+      "rmse_mean": 1.0358299699629523,
+      "rmse_sd": NaN,
+      "r2_mean": 0.6041981718772127,
+      "r2_sd": NaN,
+      "picp_mean": 0.7464212678936605,
+      "mpiw_mean": 2.4699012403260223,
+      "crossing_mean": 0.0
+    }
+  ],
+  "lightgbm": [
+    {
+      "variant": "LG0",
+      "label": "LightGBM default (1000 trees)",
+      "seed": -1,
+      "rmse": 1.1590013907388093,
+      "mae": 0.8921012249556701,
+      "r2": 0.5044713546245223,
+      "bias": -0.0046829890631591535,
+      "picp": 0.5337423312883436,
+      "mpiw": 1.9191716138661497,
+      "crossing_rate": 0.0,
+      "best_epoch": 1000,
+      "seconds": 0.0
+    },
+    {
+      "variant": "LG1",
+      "label": "LightGBM DEV-tuned n_estimators",
+      "seed": -1,
+      "rmse": 1.160621248149129,
+      "mae": 0.8918301989630942,
+      "r2": 0.5030852533061079,
+      "bias": -0.022537063476342736,
+      "picp": 0.5010224948875256,
+      "mpiw": 1.755550890534263,
+      "crossing_rate": 0.0,
+      "best_epoch": 558,
+      "seconds": 0.0
+    }
+  ],
+  "decision_rule": "D2: accept a variant only if DEV RMSE improves on E0 averaged over seeds."
+}

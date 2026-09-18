@@ -21,9 +21,9 @@
       "non_negative_widths": true,
       "negative_width_count": 0,
       "invalid_bounds_count": 0,
-      "min_width": 2.3321224210201414,
-      "max_width": 5.223977790599962,
-      "mean_width": 3.3176573204573954
+      "min_width": 2.3173283500994337,
+      "max_width": 5.477381339061278,
+      "mean_width": 3.3202976782341644
     },
     "phenology_stratified_cqr": {
       "non_negative_widths": true,

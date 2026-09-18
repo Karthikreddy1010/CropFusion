@@ -1,0 +1,188 @@
+{
+  "protocol_version": "1.0.0-2026-09-18",
+  "protocol_hash": "dde12630b692d07d",
+  "config_matches_protocol": true,
+  "mismatches": [],
+  "changelog": [
+    {
+      "version": "1.0.0-2026-09-18",
+      "change": "First frozen protocol. Captures the state after the audit fixes C3, C5 and C8. LOSO hyperparameters are marked as pending re-derivation on DEV; until that lands the LOSO numbers carry the C7 caveat."
+    }
+  ],
+  "protocol": {
+    "version": "1.0.0-2026-09-18",
+    "partitions": {
+      "fit_years": [
+        1985,
+        2013
+      ],
+      "dev_years": [
+        2014,
+        2015
+      ],
+      "cal_years": [
+        2016,
+        2018
+      ],
+      "test_years": [
+        2019,
+        2023
+      ],
+      "loso_states": [
+        "Illinois",
+        "Indiana",
+        "Iowa",
+        "Minnesota",
+        "Missouri",
+        "Ohio"
+      ],
+      "excluded_states": [
+        "Nebraska"
+      ],
+      "rule": "TEST years and held-out LOSO states inform no choice of any kind."
+    },
+    "target": {
+      "column": "Corn_Yield_tha",
+      "detrending": "linear, fitted on FIT rows only; trend added back before every metric",
+      "detrend_enabled": true,
+      "loso_detrending": "fitted on each fold's own FIT partition only"
+    },
+    "model": {
+      "backbone_decision_rule": "lower DEV RMSE decides; TEST never consulted (spec D1/D4)",
+      "neural": {
+        "hidden_dims": [
+          64,
+          32
+        ],
+        "dropout": 0.2,
+        "learning_rate": 3e-05,
+        "weight_decay": 0.001,
+        "batch_size": 128,
+        "max_epochs": 200,
+        "early_stopping": {
+          "mode": "rmse",
+          "patience": 60,
+          "selection_set": "DEV"
+        },
+        "loss_weights": {
+          "pinball": 1.0,
+          "huber": 1.0,
+          "crossing": 10.0,
+          "width": 0.005
+        }
+      },
+      "neural_loso": {
+        "hidden_dims": [
+          256,
+          128,
+          64,
+          32
+        ],
+        "dropout": 0.25,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "batch_size": 64,
+        "max_epochs": 200,
+        "early_stopping_patience": 20,
+        "early_stopping_mode": "pinball",
+        "PENDING": "re-derive on each fold's own DEV rows (C7); the values above descend from rounds selected on LOSO R2"
+      },
+      "lightgbm": {
+        "n_estimators": 1000,
+        "learning_rate": 0.05,
+        "max_depth": 7,
+        "num_leaves": 63,
+        "min_child_samples": 20,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "reg_alpha": 0.1,
+        "reg_lambda": 1.0,
+        "random_state": 42,
+        "n_jobs": -1,
+        "verbose": -1
+      },
+      "f0_flags": {
+        "STANDARDIZE_TARGET": false,
+        "HUBER_DELTA": 1.0,
+        "HUBER_DELTA_SIGMA": 1.345,
+        "USE_EMA_WEIGHTS": false,
+        "LR_ETA_MIN": 1e-05,
+        "LR_SCHEDULE_MATCH_DEV": false,
+        "NEURAL_MONOTONE_HEADS": false
+      }
+    },
+    "calibration": {
+      "nominal_coverage": 0.9,
+      "headline_adaptive_method": "standard_aci",
+      "methods": [
+        "static_conformal",
+        "rolling_static_cp",
+        "group_conditional_cp",
+        "standard_aci",
+        "severity_aware_aci",
+        "weighted_conformal",
+        "locally_adaptive",
+        "phenology_stratified_cqr"
+      ],
+      "sa_aci": {
+        "severity_weighting": true,
+        "severity_lambda": 0.05,
+        "direction": "severity widens; scores normalised by the same weight",
+        "note": "the published version divided the threshold, narrowing intervals under stress (C5)"
+      },
+      "alpha_selection": "CAL only; never tuned on TEST"
+    },
+    "regime_groups": {
+      "definition": "CDHW exposure class from CDHW_Event_Count",
+      "thresholds": {
+        "Normal": "0 events",
+        "Moderate": ">= 1 events",
+        "Extreme": ">= 3 events"
+      },
+      "pre_specified": true,
+      "used_by": "group_conditional_cp and every conditional-coverage table"
+    },
+    "evaluation": {
+      "primary_split": "temporal TEST 2019-2023 (locked)",
+      "spatial": "six-state leave-one-state-out",
+      "replication": "rolling origin, test years 2008-2023 (C2)",
+      "metrics": [
+        "rmse",
+        "mae",
+        "r2",
+        "bias",
+        "picp",
+        "ace",
+        "mpiw",
+        "winkler"
+      ],
+      "conditional_axes": [
+        "CDHW exposure class",
+        "year",
+        "state"
+      ]
+    },
+    "inference": {
+      "unit_of_independence": "year",
+      "tests": [
+        "paired t on year-level means",
+        "year-block cluster bootstrap",
+        "Friedman on year blocks"
+      ],
+      "multiple_comparison": "Holm-Bonferroni and Benjamini-Hochberg on year-level p-values",
+      "row_level_tests": "diagnostic only; anti-conservative under panel dependence (C3)"
+    },
+    "seeds": {
+      "primary": 42,
+      "robustness": [
+        42,
+        7,
+        123
+      ],
+      "loso_robustness": [
+        42,
+        7
+      ]
+    }
+  }
+}

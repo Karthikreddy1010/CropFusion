@@ -95,7 +95,12 @@
         "lambda_pinball": 1.0,
         "lambda_huber": 1.0,
         "lambda_crossing": 10.0,
-        "lambda_width": 0.005
+        "lambda_width": 0.005,
+        "huber_delta": 1.0,
+        "standardized_target": false,
+        "monotone_heads": false,
+        "ema_weights_used": false,
+        "schedule_t_max": 200
       },
       "epochs_trained": 200,
       "best_epoch": 187,

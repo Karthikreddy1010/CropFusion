@@ -1872,11 +1872,11 @@
     },
     {
       "feature": "Fourier_cos_P1_0",
-      "importance": 0.0
+      "importance": -0.0
     },
     {
       "feature": "Fourier_sin_P1_0",
-      "importance": 0.0
+      "importance": -0.0
     }
   ],
   "protected_features": [

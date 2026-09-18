@@ -3,34 +3,34 @@
     "Normal": {
       "count": 1717,
       "picp": 0.9429,
-      "mpiw": 3.2992,
-      "winkler_score": 3.7721
+      "mpiw": 3.2656,
+      "winkler_score": 3.7526
     },
     "Moderate": {
       "count": 426,
-      "picp": 0.8779,
-      "mpiw": 3.3123,
-      "winkler_score": 4.2626
+      "picp": 0.8897,
+      "mpiw": 3.3794,
+      "winkler_score": 4.2267
     },
     "Extreme": {
       "count": 202,
-      "picp": 0.8069,
-      "mpiw": 3.4859,
-      "winkler_score": 6.2553
+      "picp": 0.8366,
+      "mpiw": 3.6606,
+      "winkler_score": 6.0849
     }
   },
   "stratified_by_enso_phase": {
     "El Nino": {
       "count": 942,
       "picp": 0.9597,
-      "mpiw": 3.4392,
-      "winkler_score": 3.913
+      "mpiw": 3.4143,
+      "winkler_score": 3.8962
     },
     "La Nina": {
       "count": 1403,
-      "picp": 0.8924,
-      "mpiw": 3.2361,
-      "winkler_score": 4.184
+      "picp": 0.9002,
+      "mpiw": 3.2572,
+      "winkler_score": 4.1359
     }
   }
 }

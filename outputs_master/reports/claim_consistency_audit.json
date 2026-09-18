@@ -1,5 +1,5 @@
 {
-  "files_scanned": 121,
+  "files_scanned": 122,
   "scan_root": "/content/outputs_master",
   "claim_types_checked": [
     "full_compliance",
@@ -12,8 +12,8 @@
   ],
   "support_evaluation": {
     "compliance": {
-      "supported": false,
-      "evidence": "validator status=NON_COMPLIANT, FAIL=2, WARNING=0"
+      "supported": true,
+      "evidence": "validator status=COMPLIANT, FAIL=0, WARNING=0"
     },
     "leakage": {
       "supported": true,
@@ -33,60 +33,27 @@
     },
     "o5_strong": {
       "supported": false,
-      "evidence": "O5 magnitude=weak, R2=0.027592, detectable=False"
+      "evidence": "O5 magnitude=weak, R2=0.075887, detectable=False"
     },
     "o6_superior": {
       "supported": false,
       "evidence": "O6 ranking_status=descriptive ranking only, claims_superiority=False"
     }
   },
-  "n_matches": 12,
-  "n_unsupported": 6,
-  "unsupported_by_type": {
-    "full_compliance": 5,
-    "statistically_superior": 1
-  },
-  "status": "FAIL",
+  "n_matches": 7,
+  "n_unsupported": 0,
+  "unsupported_by_type": {},
+  "status": "PASS",
   "findings": [
     {
       "file": "pipeline.log",
-      "line": 396,
+      "line": 401,
       "claim_type": "joint_improves",
-      "matched_text": "[2026-09-16 14:04:38] INFO     paper3 :: Objective O4 exported \u2014 verdict: Partially supported \u2014 joint training improves interval quality only",
+      "matched_text": "[2026-09-18 19:19:55] INFO     paper3 :: Objective O4 exported \u2014 verdict: Partially supported \u2014 joint training improves interval quality only",
       "requires": "objective_O4_report.json shows a supported improvement",
       "supported_by_results": true,
       "evidence": "O4 verdict=Partially supported \u2014 joint training improves interval quality only",
       "status": "OK"
-    },
-    {
-      "file": "pipeline.log",
-      "line": 892,
-      "claim_type": "full_compliance",
-      "matched_text": "[2026-09-16 14:42:14] INFO     paper3 :: Artifact integrity validation completed (100% complete -> FULL_METHODOLOGY_COMPLIANCE_100%)",
-      "requires": "methodology_validation_report.json shows zero FAIL and zero WARNING",
-      "supported_by_results": false,
-      "evidence": "validator status=NON_COMPLIANT, FAIL=2, WARNING=0",
-      "status": "UNSUPPORTED"
-    },
-    {
-      "file": "reports/artifact_integrity_report.json",
-      "line": 3,
-      "claim_type": "full_compliance",
-      "matched_text": "\"compliance_status\": \"FULL_METHODOLOGY_COMPLIANCE_100%\",",
-      "requires": "methodology_validation_report.json shows zero FAIL and zero WARNING",
-      "supported_by_results": false,
-      "evidence": "validator status=NON_COMPLIANT, FAIL=2, WARNING=0",
-      "status": "UNSUPPORTED"
-    },
-    {
-      "file": "reports/artifact_integrity_report.md",
-      "line": 3,
-      "claim_type": "full_compliance",
-      "matched_text": "## Audit Status: `FULL_METHODOLOGY_COMPLIANCE_100%`",
-      "requires": "methodology_validation_report.json shows zero FAIL and zero WARNING",
-      "supported_by_results": false,
-      "evidence": "validator status=NON_COMPLIANT, FAIL=2, WARNING=0",
-      "status": "UNSUPPORTED"
     },
     {
       "file": "reports/methodology_validation_report.md",
@@ -94,13 +61,13 @@
       "claim_type": "full_compliance",
       "matched_text": "`\"Status\": \"Pass\"` typed into every row and reported \"100% compliance, 15/15\"",
       "requires": "methodology_validation_report.json shows zero FAIL and zero WARNING",
-      "supported_by_results": false,
-      "evidence": "validator status=NON_COMPLIANT, FAIL=2, WARNING=0",
-      "status": "UNSUPPORTED"
+      "supported_by_results": true,
+      "evidence": "validator status=COMPLIANT, FAIL=0, WARNING=0",
+      "status": "OK"
     },
     {
       "file": "reports/objective_O4_report.json",
-      "line": 559,
+      "line": 564,
       "claim_type": "joint_improves",
       "matched_text": "\"verdict\": \"Partially supported \\u2014 joint training improves interval quality only\"",
       "requires": "objective_O4_report.json shows a supported improvement",
@@ -117,16 +84,6 @@
       "supported_by_results": true,
       "evidence": "O4 verdict=Partially supported \u2014 joint training improves interval quality only",
       "status": "OK"
-    },
-    {
-      "file": "reports/objective_O6_report.md",
-      "line": 23,
-      "claim_type": "statistically_superior",
-      "matched_text": "- **Conclusion**: the omnibus test does **not** reject at \u03b1 = 0.05 (p = `0.52164`). No post-hoc comparison is performed and no method is claimed to be statistically superior. The ordering above is descriptive.",
-      "requires": "objective_O6_report.json claims_statistical_superiority is true",
-      "supported_by_results": false,
-      "evidence": "O6 ranking_status=descriptive ranking only, claims_superiority=False",
-      "status": "UNSUPPORTED"
     },
     {
       "file": "reports/old_vs_new_comparison.csv",
@@ -157,16 +114,6 @@
       "supported_by_results": true,
       "evidence": "O4 verdict=Partially supported \u2014 joint training improves interval quality only",
       "status": "OK"
-    },
-    {
-      "file": "reports/pipeline_summary.json",
-      "line": 30,
-      "claim_type": "full_compliance",
-      "matched_text": "\"compliance_status\": \"FULL_METHODOLOGY_COMPLIANCE_100%\",",
-      "requires": "methodology_validation_report.json shows zero FAIL and zero WARNING",
-      "supported_by_results": false,
-      "evidence": "validator status=NON_COMPLIANT, FAIL=2, WARNING=0",
-      "status": "UNSUPPORTED"
     }
   ]
 }
