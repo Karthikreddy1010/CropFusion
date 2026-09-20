@@ -28,7 +28,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -1212,6 +1212,22 @@ def main() -> None:
     summary["leakage_experiments_audited"] = leakage_payload["n_experiments"]
     save_report(summary, "pipeline_summary.json")
 
+    # RO1-RO5, the objectives this study answers, computed from the artefacts
+    # produced above. They supersede O1/O4/O5/O6, which are still written (M11
+    # reads O4) but stamped as retired by _stamp_retired_objectives below.
+    # Objectives needing rolling-origin artefacts report their status instead of
+    # failing when those have not been produced.
+    try:
+        from objectives_ro import write_report as _write_ro_report
+        _ro = _write_ro_report()
+        _avail = [k for k in ("RO1", "RO2", "RO3", "RO4", "RO5")
+                  if "status" not in _ro.get(k, {})]
+        logger.info("Objectives RO1-RO5 written (%d computed: %s)", len(_avail), ", ".join(_avail))
+    except Exception as _ro_exc:
+        logger.warning("Could not write the RO objectives report: %s", _ro_exc)
+
+    _stamp_retired_objectives()
+
     # Genuine property-based methodology audit. Runs last so every artefact it
     # inspects already exists.
     from methodology_validator import run_methodology_validation
@@ -1241,6 +1257,55 @@ def main() -> None:
         generate_final_audit()
     except Exception as _e_final:
         logger.error("Final methodology audit generation failed: %s", _e_final, exc_info=True)
+
+
+RETIRED_OBJECTIVES = {
+    "objective_O1_report.json": (
+        "Superseded by cdhw_contribution.py. Two CDHW tests in this pipeline disagreed on "
+        "the sign (+0.0116 here vs -0.0079 in the ablation), both single-seed on NeuralCQR, "
+        "and neither carried dependence-aware inference. Across five model families and three "
+        "seeds the mean dR2 ranges from -0.0057 to +0.0017 with no year-level test significant; "
+        "within LightGBM alone the per-seed dR2 spans -0.0095 to +0.0114. The CDHW block is "
+        "used as a pre-specified stratification variable, not as a predictor."),
+    "objective_O4_report.json": (
+        "Retired with the architecture claim. The study no longer proposes joint training as a "
+        "contribution, and the arms were not equal-compute: post-hoc trained 348 epochs against "
+        "joint's 200 under a 'shared configuration' of 200. Kept because methodology check M11 "
+        "reads its raw artefact."),
+    "objective_o5_report.json": (
+        "Folded into RO3 as supporting evidence. Its own conclusion -- width shows a weak, "
+        "statistically undetectable association with severity (n_effective = 35 of 2345 rows) -- "
+        "is the same finding RO3 states as coverage tracking bias rather than width."),
+    "objective_O6_report.json": (
+        "Folded into RO1/RO2 and superseded by 16 rolling origins. Its Nemenyi critical "
+        "difference (3.3722) exceeded the entire observed rank range (1.8 to 4.4), so the design "
+        "could not have detected a difference between any pair."),
+}
+
+
+def _stamp_retired_objectives() -> None:
+    """Mark the superseded objective reports so no reader mistakes them for current claims.
+
+    They are stamped rather than deleted: M11 reads objective_O4_experiment_raw.json,
+    and the history is worth keeping.
+    """
+    import json as _json
+    logger = logging.getLogger("paper3")   # main.py has no module-level logger
+    for name, reason in RETIRED_OBJECTIVES.items():
+        path = Path(cfg.REPORT_DIR) / name
+        if not path.exists():
+            continue
+        try:
+            payload = _json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(payload, dict):
+                continue
+            payload["status"] = "RETIRED"
+            payload["superseded_by"] = "objectives_RO_report.json (RO1-RO5)"
+            payload["retired_reason"] = reason
+            path.write_text(_json.dumps(payload, indent=2, default=str), encoding="utf-8")
+        except Exception as exc:
+            logger.warning("Could not stamp %s as retired: %s", name, exc)
+    logger.info("Stamped %d superseded objective report(s) as RETIRED", len(RETIRED_OBJECTIVES))
 
 
 def _export_evaluation_csv_md(eval_report: Dict[str, Any]) -> None:
@@ -1664,13 +1729,39 @@ def _run_loso_cv(
         COLLECTOR.add(audit_record)
 
         try:
+            # C7: prefer hyperparameters re-derived on this fold's own DEV rows
+            # (code/loso_dev_tuning.py) over the config defaults, which descend
+            # from rounds selected by watching held-out R2. Off unless the flag
+            # is set AND the selection file exists, so behaviour is unchanged
+            # until the tuning run has actually been done.
+            _hp = {"hidden_dims": cfg.LOSO_HIDDEN_DIMS, "lr": cfg.LOSO_LEARNING_RATE,
+                   "dropout": cfg.LOSO_DROPOUT, "weight_decay": cfg.LOSO_WEIGHT_DECAY,
+                   "batch_size": cfg.LOSO_BATCH_SIZE}
+            _hp_source = "config defaults (C7 caveat applies)"
+            if bool(getattr(cfg, "LOSO_USE_DEV_SELECTED_HP", False)):
+                _sel_path = Path(cfg.REPORT_DIR) / "loso_dev_selected_hyperparams.json"
+                if _sel_path.exists():
+                    _sel = json.loads(_sel_path.read_text(encoding="utf-8"))
+                    _fold_hp = _sel.get("per_state_selection", {}).get(state)
+                    if _fold_hp:
+                        _hp.update({k: _fold_hp[k] for k in _hp if k in _fold_hp})
+                        _hp["hidden_dims"] = tuple(_hp["hidden_dims"])
+                        _hp_source = f"DEV-selected ({_sel_path.name})"
+                    else:
+                        logger.warning("  %s: no DEV-selected hyperparameters in %s; "
+                                       "falling back to config defaults", state, _sel_path.name)
+                else:
+                    logger.warning("  LOSO_USE_DEV_SELECTED_HP is on but %s is missing; "
+                                   "run code/loso_dev_tuning.py first", _sel_path.name)
+            logger.info("  %s -> hyperparameters: %s | %s", state, _hp_source, _hp)
+
             # 6. MODEL FITTING — fit partition only.
             models = train_neural_cqr(
                 X_tr_fit, y_tr_fit, X_es_val, y_es_val, loso_feature_cols,
-                epochs=cfg.LOSO_MAX_EPOCHS, batch_size=cfg.LOSO_BATCH_SIZE, lr=cfg.LOSO_LEARNING_RATE,
-                weight_decay=cfg.LOSO_WEIGHT_DECAY, early_stopping_mode=cfg.LOSO_EARLY_STOPPING_MODE,
+                epochs=cfg.LOSO_MAX_EPOCHS, batch_size=_hp["batch_size"], lr=_hp["lr"],
+                weight_decay=_hp["weight_decay"], early_stopping_mode=cfg.LOSO_EARLY_STOPPING_MODE,
                 patience=cfg.LOSO_EARLY_STOPPING_PATIENCE, joint_training=True, scaler=fold_scaler,
-                hidden_dims=cfg.LOSO_HIDDEN_DIMS, dropout_rate=cfg.LOSO_DROPOUT,
+                hidden_dims=_hp["hidden_dims"], dropout_rate=_hp["dropout"],
             )
             # Predictions are produced on the modelling scale (the detrended
             # anomaly) and converted straight back to raw yield, so every
@@ -1804,6 +1895,7 @@ def _run_loso_cv(
                 "n_dev": len(X_dev),
                 "n_cal": len(X_cal),
                 "n_test": n_test,
+                "hyperparameter_source": _hp_source,
                 "neuralcqr_ensemble_weight": frozen_w,
                 "lightgbm_ensemble_weight": round(1.0 - frozen_w, 2),
                 "dev_r2_neural_alone": round(float(val_r2_neural), 4),

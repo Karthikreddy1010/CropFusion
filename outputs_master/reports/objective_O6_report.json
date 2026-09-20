@@ -185,5 +185,8 @@
     "picp_max": 0.9493,
     "mpiw_relative_spread_pct": 10.23
   },
-  "claims_statistical_superiority": false
+  "claims_statistical_superiority": false,
+  "status": "RETIRED",
+  "superseded_by": "objectives_RO_report.json (RO1-RO5)",
+  "retired_reason": "Folded into RO1/RO2 and superseded by 16 rolling origins. Its Nemenyi critical difference (3.3722) exceeded the entire observed rank range (1.8 to 4.4), so the design could not have detected a difference between any pair."
 }

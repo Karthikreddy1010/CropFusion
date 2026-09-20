@@ -1,5 +1,5 @@
 {
-  "files_scanned": 122,
+  "files_scanned": 123,
   "scan_root": "/content/outputs_master",
   "claim_types_checked": [
     "full_compliance",
@@ -49,7 +49,7 @@
       "file": "pipeline.log",
       "line": 401,
       "claim_type": "joint_improves",
-      "matched_text": "[2026-09-18 19:19:55] INFO     paper3 :: Objective O4 exported \u2014 verdict: Partially supported \u2014 joint training improves interval quality only",
+      "matched_text": "[2026-09-19 23:02:34] INFO     paper3 :: Objective O4 exported \u2014 verdict: Partially supported \u2014 joint training improves interval quality only",
       "requires": "objective_O4_report.json shows a supported improvement",
       "supported_by_results": true,
       "evidence": "O4 verdict=Partially supported \u2014 joint training improves interval quality only",
@@ -69,7 +69,7 @@
       "file": "reports/objective_O4_report.json",
       "line": 564,
       "claim_type": "joint_improves",
-      "matched_text": "\"verdict\": \"Partially supported \\u2014 joint training improves interval quality only\"",
+      "matched_text": "\"verdict\": \"Partially supported \\u2014 joint training improves interval quality only\",",
       "requires": "objective_O4_report.json shows a supported improvement",
       "supported_by_results": true,
       "evidence": "O4 verdict=Partially supported \u2014 joint training improves interval quality only",

@@ -218,5 +218,8 @@
   "statistically_detectable": false,
   "variance_explained_fraction": 0.075887,
   "effect_magnitude_label": "weak",
-  "interpretation": "Prediction interval width shows a positive association with CDHW severity that is not statistically distinguishable from zero once dependence is accounted for (cluster-robust slope = 0.0245, 95% CI [-0.001738, 0.050655], p = 0.060539). The association is weak in magnitude: CDHW severity explains R\u00b2 = 0.0759 (7.6%) of the variation in interval width, so severity alone accounts for only a small fraction of the observed variation. Statistical detectability and effect magnitude are distinct conclusions and are reported separately here."
+  "interpretation": "Prediction interval width shows a positive association with CDHW severity that is not statistically distinguishable from zero once dependence is accounted for (cluster-robust slope = 0.0245, 95% CI [-0.001738, 0.050655], p = 0.060539). The association is weak in magnitude: CDHW severity explains R\u00b2 = 0.0759 (7.6%) of the variation in interval width, so severity alone accounts for only a small fraction of the observed variation. Statistical detectability and effect magnitude are distinct conclusions and are reported separately here.",
+  "status": "RETIRED",
+  "superseded_by": "objectives_RO_report.json (RO1-RO5)",
+  "retired_reason": "Folded into RO3 as supporting evidence. Its own conclusion -- width shows a weak, statistically undetectable association with severity (n_effective = 35 of 2345 rows) -- is the same finding RO3 states as coverage tracking bias rather than width."
 }

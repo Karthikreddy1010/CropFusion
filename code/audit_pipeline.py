@@ -951,6 +951,9 @@ OPTUNA HAS NOT BEEN RUN.
 
 Pipeline status: READY for the 50-trial Stage 1 + 35-trial Stage 2 controlled NeuralCQR fine-tuning experiment.
 """
+    # audits_dir was never defined in this scope -- running this script hit a
+    # NameError here. It writes to the run's own audits folder.
+    audits_dir = cfg.AUDITS_DIR
     with open(audits_dir / "tuning_readiness_audit.md", "w", encoding="utf-8") as f:
         f.write(readiness_md)
 

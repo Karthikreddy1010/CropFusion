@@ -1,6 +1,6 @@
 # Output Claim Consistency Audit
 
-Scanned **122** generated files under `/content/outputs_master` for phrases that assert a
+Scanned **123** generated files under `/content/outputs_master` for phrases that assert a
 conclusion, and checked each against the artefact that would have to support it.
 
 **Status: `PASS`** — 0 unsupported claim(s) out of

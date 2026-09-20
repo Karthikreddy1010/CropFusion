@@ -1,16 +1,24 @@
 {
-  "protocol_version": "1.0.0-2026-09-18",
-  "protocol_hash": "dde12630b692d07d",
+  "protocol_version": "1.2.0-2026-09-18",
+  "protocol_hash": "7965ad087183d133",
   "config_matches_protocol": true,
   "mismatches": [],
   "changelog": [
+    {
+      "version": "1.2.0-2026-09-18",
+      "change": "Declare LOSO_USE_DEV_SELECTED_HP (audit C7). When on, each LOSO fold reads hyperparameters re-derived on its own DEV rows by code/loso_dev_tuning.py instead of the config defaults, which were selected on held-out R2. Off by default; results unchanged until the tuning run exists."
+    },
+    {
+      "version": "1.1.0-2026-09-18",
+      "change": "Declare LGBM_DEV_EARLY_STOPPING. train_lgbm_quantile accepted a validation set and ignored it; the flag makes the behaviour explicit and defaults to the ignoring behaviour, so results are unchanged. Hash moves from dde12630b692d07d."
+    },
     {
       "version": "1.0.0-2026-09-18",
       "change": "First frozen protocol. Captures the state after the audit fixes C3, C5 and C8. LOSO hyperparameters are marked as pending re-derivation on DEV; until that lands the LOSO numbers carry the C7 caveat."
     }
   ],
   "protocol": {
-    "version": "1.0.0-2026-09-18",
+    "version": "1.2.0-2026-09-18",
     "partitions": {
       "fit_years": [
         1985,
@@ -101,6 +109,8 @@
         "n_jobs": -1,
         "verbose": -1
       },
+      "lightgbm_dev_early_stopping": false,
+      "loso_use_dev_selected_hp": false,
       "f0_flags": {
         "STANDARDIZE_TARGET": false,
         "HUBER_DELTA": 1.0,

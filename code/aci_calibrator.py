@@ -384,7 +384,8 @@ def severity_aware_adaptive_conformal(
     logger.info("  gamma0=%.4f, default_window=%d, nominal_alpha=%.2f, severity_weighting=%s (lambda=%.3f)",
                 gamma, window, alpha, _sev_on, _sev_lambda)
 
-    scores_cal = np.maximum(q_lo_cal - y_cal, y_cal - q_hi_cal)
+    # (no pooled calibration scores here: SA-ACI scores each sliding window
+    # separately below, so a pooled vector would be dead weight.)
     unique_years = np.sort(np.unique(years_test))
     cal_q_lo = np.zeros_like(q_lo_test)
     cal_q_hi = np.zeros_like(q_hi_test)

@@ -1015,9 +1015,33 @@ def train_lgbm_quantile(
     X_val: Optional[np.ndarray] = None, y_val: Optional[np.ndarray] = None,
     feature_cols: Optional[List[str]] = None,
 ) -> QuantileModelSet:
-    """Train LightGBM Quantile Regressors with frozen hyperparameters."""
+    """Train LightGBM Quantile Regressors with frozen hyperparameters.
+
+    ``X_val``/``y_val`` were accepted and silently ignored: every call built the
+    full ``cfg.LGBM_PARAMS["n_estimators"]`` trees regardless, while callers --
+    `_run_loso_cv` among them -- passed a validation set and could reasonably
+    believe it early-stopped. The set is now used only when
+    ``cfg.LGBM_DEV_EARLY_STOPPING`` is on (default off, so the locked results are
+    unchanged), and when it is off the unused argument is logged rather than
+    swallowed.
+    """
     import lightgbm as lgb
-    p_model = lgb.LGBMRegressor(**cfg.LGBM_PARAMS).fit(X_train, y_train)
+
+    use_es = bool(getattr(cfg, "LGBM_DEV_EARLY_STOPPING", False)) and X_val is not None and y_val is not None
+    params = dict(cfg.LGBM_PARAMS)
+    fit_kw: Dict[str, Any] = {}
+    if use_es:
+        fit_kw = dict(eval_set=[(X_val, y_val)], eval_metric="l2",
+                      callbacks=[lgb.early_stopping(100, verbose=False), lgb.log_evaluation(0)])
+    elif X_val is not None:
+        logger.debug("train_lgbm_quantile: validation set supplied but unused "
+                     "(cfg.LGBM_DEV_EARLY_STOPPING is off); fitting %s trees",
+                     params.get("n_estimators"))
+
+    p_model = lgb.LGBMRegressor(**params).fit(X_train, y_train, **fit_kw)
+    if use_es:
+        logger.info("LightGBM early stopping on the supplied validation set: %s trees kept",
+                    getattr(p_model, "best_iteration_", params.get("n_estimators")))
     lo_model = lgb.LGBMRegressor(objective="quantile", alpha=0.05, n_estimators=500, random_state=cfg.RANDOM_SEED, verbose=-1).fit(X_train, y_train)
     hi_model = lgb.LGBMRegressor(objective="quantile", alpha=0.95, n_estimators=500, random_state=cfg.RANDOM_SEED, verbose=-1).fit(X_train, y_train)
 

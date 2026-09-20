@@ -16,7 +16,7 @@ Neither reads TEST years or a held-out state for any choice.
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Tuple
 
 import numpy as np
 import pandas as pd

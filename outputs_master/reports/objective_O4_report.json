@@ -561,5 +561,8 @@
   },
   "point_prediction_improvement_supported": false,
   "interval_quality_improvement_supported": true,
-  "verdict": "Partially supported \u2014 joint training improves interval quality only"
+  "verdict": "Partially supported \u2014 joint training improves interval quality only",
+  "status": "RETIRED",
+  "superseded_by": "objectives_RO_report.json (RO1-RO5)",
+  "retired_reason": "Retired with the architecture claim. The study no longer proposes joint training as a contribution, and the arms were not equal-compute: post-hoc trained 348 epochs against joint's 200 under a 'shared configuration' of 200. Kept because methodology check M11 reads its raw artefact."
 }

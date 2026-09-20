@@ -1,0 +1,48 @@
+{
+  "generated": "2026-09-19 22:28:48",
+  "replaces": [
+    "objective_O1_report",
+    "objective_O4_report",
+    "objective_o5_report",
+    "objective_O6_report"
+  ],
+  "note": "computed from artefacts; nothing refitted, no choice made on any result",
+  "RO3": {
+    "objective": "RO3",
+    "sources": [
+      "loso_predictions.csv",
+      "rolling_origin_raw.csv"
+    ],
+    "loso_state_years": 234,
+    "corr_abs_bias_vs_coverage": -0.7686,
+    "corr_width_vs_coverage": 0.0045,
+    "case_2012": {
+      "model_bias_t_ha": -0.9874,
+      "extreme_rows": 448,
+      "picp_by_method": {
+        "rolling_static_cp": 0.5982,
+        "group_conditional_cp": 0.6451,
+        "standard_aci": 0.5982,
+        "sa_aci": 0.6138
+      },
+      "note": "every calibrator fails together; width adjustment cannot repair a level error"
+    },
+    "headline": "coverage tracks |bias| (r = -0.7686) and not width (r = 0.0045)"
+  },
+  "RO1": {
+    "objective": "RO1",
+    "status": "requires rolling_origin_rows.csv (run code/rolling_origin.py)"
+  },
+  "RO2": {
+    "objective": "RO2",
+    "status": "requires rolling_origin_rows.csv (run code/rolling_origin.py)"
+  },
+  "RO4": {
+    "objective": "RO4",
+    "status": "requires rolling_origin_rows.csv (run code/rolling_origin.py)"
+  },
+  "RO5": {
+    "objective": "RO5",
+    "status": "requires rolling_origin_rows.csv (run code/rolling_origin.py)"
+  }
+}

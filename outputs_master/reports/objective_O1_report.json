@@ -12,5 +12,8 @@
   "delta_rmse": 0.0172,
   "delta_mae": 0.0227,
   "delta_r2": 0.0116,
-  "hypothesis_supported": true
+  "hypothesis_supported": true,
+  "status": "RETIRED",
+  "superseded_by": "objectives_RO_report.json (RO1-RO5)",
+  "retired_reason": "Superseded by cdhw_contribution.py. Two CDHW tests in this pipeline disagreed on the sign (+0.0116 here vs -0.0079 in the ablation), both single-seed on NeuralCQR, and neither carried dependence-aware inference. Across five model families and three seeds the mean dR2 ranges from -0.0057 to +0.0017 with no year-level test significant; within LightGBM alone the per-seed dR2 spans -0.0095 to +0.0114. The CDHW block is used as a pre-specified stratification variable, not as a predictor."
 }
