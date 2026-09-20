@@ -233,6 +233,20 @@ LR_SCHEDULE_MATCH_DEV: bool = False   # True -> refit reuses the DEV run's T_max
 #   becomes impossible by construction instead of being penalised.
 NEURAL_MONOTONE_HEADS: bool = False
 
+# LightGBM validation handling.
+#   train_lgbm_quantile accepted X_val/y_val and ignored them, so every caller
+#   that passed a validation set got the full tree budget anyway. Default False
+#   keeps that behaviour (and the locked results); True actually early-stops on
+#   the supplied set, which is a protocol change and must be declared.
+LGBM_DEV_EARLY_STOPPING: bool = False
+
+# C7 — use LOSO hyperparameters re-derived on each fold's own DEV rows.
+#   Produce the selection file first:  python code/loso_dev_tuning.py
+#   Then set this True and rerun. Off by default so results do not change
+#   until the tuning run exists. The LOSO macro R2 is expected to FALL: the
+#   incumbent settings were chosen by watching held-out performance.
+LOSO_USE_DEV_SELECTED_HP: bool = False
+
 # C5 — SA-ACI severity weighting (audit blocker).
 #   The published implementation DIVIDED the conformal threshold by the
 #   severity weight, so intervals got NARROWER exactly where the compound
@@ -318,6 +332,14 @@ LOSO_STATES: List[str] = [
 # Target variables
 # ──────────────────────────────────────────────────────────────
 PRIMARY_TARGET: str = "Corn_Yield_tha" if _CROP_TARGET == "corn" else "Soy_Yield_tha"
+
+# SECONDARY_TARGET is a leftover from the two-crop era. The PRISM-NLDAS master
+# dataset carries CORN ONLY -- there is no Soy_Yield_tha column in
+# Paper3_Processed.csv -- so under the master data source this constant resolves
+# to a column that does not exist. It is kept because eda.py and
+# visualization.py iterate over both targets, and both already skip a missing
+# column. Nothing in the paper is computed on soybean; adding it would mean
+# re-extracting USDA NASS and rebuilding the master dataset.
 SECONDARY_TARGET: str = "Soy_Yield_tha" if _CROP_TARGET == "corn" else "Corn_Yield_tha"
 TARGET_COLS: List[str] = [
     "Corn_Yield_tha", "Corn_Yield_buacre",

@@ -51,6 +51,14 @@ import config as cfg  # noqa: E402
 
 def coverage_metrics(y: np.ndarray, lo: np.ndarray, hi: np.ndarray,
                      alpha: float) -> Dict[str, float]:
+    """Coverage, plus the one-sided consequence of getting it wrong.
+
+    Two-sided coverage hides the direction that matters for risk. An observation
+    ABOVE the upper bound is a pleasant surprise; one BELOW the lower bound means
+    the loss was worse than the interval admitted. For a two-sided interval at
+    1-alpha the calibrated downward failure rate is alpha/2, so `unsafe_miss_rate`
+    is directly comparable against that target.
+    """
     covered = (y >= lo) & (y <= hi)
     width = hi - lo
     nominal = 1.0 - alpha
@@ -58,12 +66,19 @@ def coverage_metrics(y: np.ndarray, lo: np.ndarray, hi: np.ndarray,
     below, above = y < lo, y > hi
     winkler[below] += (2.0 / alpha) * (lo[below] - y[below])
     winkler[above] += (2.0 / alpha) * (y[above] - hi[above])
+    shortfall = np.maximum(lo - y, 0.0)
     return {
         "n": int(len(y)),
         "picp": float(covered.mean()) if len(y) else float("nan"),
         "ace": float(covered.mean() - nominal) if len(y) else float("nan"),
         "mpiw": float(width.mean()) if len(y) else float("nan"),
         "winkler": float(winkler.mean()) if len(y) else float("nan"),
+        "unsafe_miss_rate": float(below.mean()) if len(y) else float("nan"),
+        "unsafe_target": alpha / 2.0,
+        "n_unsafe": int(below.sum()),
+        "mean_shortfall_t_ha": float(shortfall[below].mean()) if below.any() else 0.0,
+        "worst_shortfall_t_ha": float(shortfall.max()) if len(y) else float("nan"),
+        "expected_shortfall_t_ha": float(shortfall.mean()) if len(y) else float("nan"),
     }
 
 
@@ -95,6 +110,69 @@ def exposure_class(frame: pd.DataFrame) -> np.ndarray:
     return np.full(len(frame), "Unknown", dtype=object)
 
 
+def summarise_group(g: pd.DataFrame) -> pd.Series:
+    """Pool one (method, stratum) across origins.
+
+    Row-weighted first. The unweighted per-origin mean is kept because it says
+    something different, but it must not be read as the pooled coverage: extreme
+    stratum sizes run from 1 to 448 rows per origin, and the two figures differ
+    by about eight coverage points.
+    """
+    w = g["n"].values.astype(float)
+    def wavg(col: str) -> float:
+        return float(np.average(g[col].values, weights=w)) if w.sum() else float("nan")
+
+    biggest = g.loc[g["n"].idxmax()]
+    return pd.Series({
+        "n_origins": int(g["test_year"].nunique()),
+        "rows": int(g["n"].sum()),
+        "picp_weighted": wavg("picp"),
+        "unsafe_weighted": wavg("unsafe_miss_rate"),
+        "mpiw_weighted": wavg("mpiw"),
+        "winkler_weighted": wavg("winkler"),
+        "expected_shortfall_weighted": wavg("expected_shortfall_t_ha"),
+        "n_unsafe_total": int(g["n_unsafe"].sum()),
+        "picp_mean_unweighted": float(g["picp"].mean()),
+        "picp_sd_unweighted": float(g["picp"].std()),
+        "n_origins_under_20_rows": int((g["n"] < 20).sum()),
+        "largest_origin": int(biggest["test_year"]),
+        "largest_origin_share": float(biggest["n"] / g["n"].sum()),
+    })
+
+
+def loo_sensitivity(real: pd.DataFrame) -> pd.DataFrame:
+    """Leave-one-origin-out: how much does a single year move the pooled figure?
+
+    The 2012 drought supplies 40% of all extreme-exposure rows, and dropping it
+    moves pooled extreme coverage from 0.758 to 0.863. A pooled number quoted
+    without this is an over-claim by aggregation, so the harness computes it
+    rather than leaving it to be noticed by hand.
+    """
+    out = []
+    for (method, stratum), g in real.groupby(["method", "stratum"]):
+        w = g["n"].values.astype(float)
+        full = float(np.average(g["picp"].values, weights=w)) if w.sum() else float("nan")
+        drops = []
+        for yr in g["test_year"].unique():
+            h = g[g["test_year"] != yr]
+            if not len(h) or h["n"].sum() == 0:
+                continue
+            drops.append((yr, float(np.average(h["picp"].values,
+                                               weights=h["n"].values.astype(float)))))
+        if not drops:
+            continue
+        worst = max(drops, key=lambda t: abs(t[1] - full))
+        out.append({
+            "method": method, "stratum": stratum,
+            "picp_loo_min": min(v for _, v in drops),
+            "picp_loo_max": max(v for _, v in drops),
+            "most_influential_origin": int(worst[0]),
+            "picp_without_that_origin": worst[1],
+            "picp_shift_if_dropped": worst[1] - full,
+        })
+    return pd.DataFrame(out)
+
+
 class YearWindow:
     """Temporarily set the four-way split boundaries for one origin."""
 
@@ -123,7 +201,8 @@ class YearWindow:
 # ─────────────────────────────────────────────────────────────
 
 def run_origin(test_year: int, args: argparse.Namespace,
-               df_all: pd.DataFrame | None = None) -> List[Dict[str, Any]]:
+               df_all: pd.DataFrame | None = None,
+               row_sink: List[pd.DataFrame] | None = None) -> List[Dict[str, Any]]:
     """Build one origin, fit, calibrate, and return its metric rows.
 
     ``df_all`` is the engineered frame, built once by the caller. It is trimmed
@@ -240,6 +319,19 @@ def run_origin(test_year: int, args: argparse.Namespace,
                 rows.append({**common, "stratum": str(g),
                              **coverage_metrics(y_test[m], lo_m_[m], hi_m_[m], alpha)})
 
+        # Row-level output. Aggregates alone cannot answer questions raised later
+        # -- the yield-quintile confound test needed y, lo and hi per row, and
+        # without this it could only be run on the locked window.
+        if row_sink is not None:
+            for method, (lo_m_, hi_m_) in variants.items():
+                row_sink.append(pd.DataFrame({
+                    "test_year": test_year, "method": method,
+                    "GEOID": frames["test"]["GEOID"].values,
+                    "State": frames["test"]["State"].values,
+                    "stratum": grp_test,
+                    "y": y_test, "pred": pred["test"], "lo": lo_m_, "hi": hi_m_,
+                }))
+
         rows.append({"test_year": test_year, "model": args.model, "method": "_group_cp_meta",
                      "stratum": "ALL", "n": int(len(y_test)),
                      "group_thresholds": json.dumps({k: v["threshold"] for k, v in gmeta["groups"].items()}),
@@ -278,10 +370,11 @@ def main() -> int:
           f"in {time.time() - t_eng:.0f}s", flush=True)
 
     all_rows: List[Dict[str, Any]] = []
+    row_sink: List[pd.DataFrame] = []
     for year in range(args.first, args.last + 1):
         print(f"\n=== origin: test year {year} ===", flush=True)
         try:
-            rows = run_origin(year, args, df_all)
+            rows = run_origin(year, args, df_all, row_sink)
         except Exception as exc:  # one bad origin must not lose the rest
             print(f"  FAILED: {type(exc).__name__}: {exc}", flush=True)
             rows = [{"test_year": year, "model": args.model, "method": "_error",
@@ -297,21 +390,40 @@ def main() -> int:
     df = pd.DataFrame(all_rows)
     df.to_csv(part_path, index=False)
 
+    if row_sink:
+        rows_df = pd.concat(row_sink, ignore_index=True)
+        rows_df.to_csv(out_dir / f"{args.tag}_rows.csv", index=False)
+        print(f"row-level output: {len(rows_df)} rows -> {args.tag}_rows.csv", flush=True)
+
     real = df[~df.method.isin(["_group_cp_meta", "_error"])].copy()
     if len(real):
         summary = (real.groupby(["method", "stratum"])
-                   .agg(n_origins=("test_year", "nunique"), rows=("n", "sum"),
-                        picp_mean=("picp", "mean"), picp_sd=("picp", "std"),
-                        mpiw_mean=("mpiw", "mean"), winkler_mean=("winkler", "mean"))
+                   .apply(summarise_group, include_groups=False)
                    .reset_index())
+        loo = loo_sensitivity(real)
+        loo.to_csv(out_dir / f"{args.tag}_loo_sensitivity.csv", index=False)
+        summary = summary.merge(loo, on=["method", "stratum"], how="left")
         summary.to_csv(out_dir / f"{args.tag}_summary.csv", index=False)
-        print("\n" + "=" * 96)
-        print(f"{'method':<22}{'stratum':<10}{'origins':>8}{'rows':>8}{'PICP':>9}{'sd':>8}{'MPIW':>9}{'Winkler':>10}")
+        print("\n" + "=" * 112)
+        print("ROW-WEIGHTED POOLED RESULTS (the per-origin mean is in the CSV and is NOT the pooled value)")
+        print(f"{'method':<22}{'stratum':<10}{'rows':>7}{'PICP':>8}{'unsafe':>8}{'MPIW':>8}"
+              f"{'E[short]':>10}{'unwtd':>8}{'LOO min':>9}{'LOO max':>9}")
         for _, r in summary.iterrows():
-            print(f"{r['method']:<22}{r['stratum']:<10}{r['n_origins']:>8}{int(r['rows']):>8}"
-                  f"{r['picp_mean']:>9.3f}{(r['picp_sd'] or 0):>8.3f}{r['mpiw_mean']:>9.3f}"
-                  f"{r['winkler_mean']:>10.3f}")
-        print("=" * 96)
+            print(f"{r['method']:<22}{r['stratum']:<10}{int(r['rows']):>7}"
+                  f"{r['picp_weighted']:>8.3f}{r['unsafe_weighted']:>8.3f}{r['mpiw_weighted']:>8.2f}"
+                  f"{r['expected_shortfall_weighted']:>10.3f}{r['picp_mean_unweighted']:>8.3f}"
+                  f"{r.get('picp_loo_min', float('nan')):>9.3f}{r.get('picp_loo_max', float('nan')):>9.3f}")
+        print("=" * 112)
+
+        # Surface single-origin dominance rather than leaving it to be found later.
+        for _, r in summary.iterrows():
+            if r["largest_origin_share"] > 0.33:
+                print(f"NOTE  {r['method']}/{r['stratum']}: origin {int(r['largest_origin'])} supplies "
+                      f"{r['largest_origin_share']:.0%} of rows; dropping it moves PICP by "
+                      f"{r.get('picp_shift_if_dropped', float('nan')):+.3f}")
+            if r["n_origins_under_20_rows"]:
+                print(f"NOTE  {r['method']}/{r['stratum']}: {int(r['n_origins_under_20_rows'])} origin(s) "
+                      f"have fewer than 20 rows; their per-origin rates are unstable")
         print(f"written: {out_dir / (args.tag + '_summary.csv')}")
     return 0
 

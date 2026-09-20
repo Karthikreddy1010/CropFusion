@@ -28,9 +28,20 @@ import config as cfg
 logger = logging.getLogger("paper3")
 
 # Bump when any value below changes, and say why in the changelog.
-PROTOCOL_VERSION = "1.0.0-2026-09-18"
+PROTOCOL_VERSION = "1.2.0-2026-09-18"
 
 CHANGELOG: List[Dict[str, str]] = [
+    {"version": "1.2.0-2026-09-18",
+     "change": "Declare LOSO_USE_DEV_SELECTED_HP (audit C7). When on, each LOSO "
+               "fold reads hyperparameters re-derived on its own DEV rows by "
+               "code/loso_dev_tuning.py instead of the config defaults, which were "
+               "selected on held-out R2. Off by default; results unchanged until the "
+               "tuning run exists."},
+    {"version": "1.1.0-2026-09-18",
+     "change": "Declare LGBM_DEV_EARLY_STOPPING. train_lgbm_quantile accepted a "
+               "validation set and ignored it; the flag makes the behaviour "
+               "explicit and defaults to the ignoring behaviour, so results are "
+               "unchanged. Hash moves from dde12630b692d07d."},
     {"version": "1.0.0-2026-09-18",
      "change": "First frozen protocol. Captures the state after the audit fixes "
                "C3, C5 and C8. LOSO hyperparameters are marked as pending "
@@ -86,6 +97,8 @@ PROTOCOL: Dict[str, Any] = {
                        "descend from rounds selected on LOSO R2",
         },
         "lightgbm": dict(cfg.LGBM_PARAMS),
+        "lightgbm_dev_early_stopping": cfg.LGBM_DEV_EARLY_STOPPING,
+        "loso_use_dev_selected_hp": cfg.LOSO_USE_DEV_SELECTED_HP,
         "f0_flags": {
             "STANDARDIZE_TARGET": cfg.STANDARDIZE_TARGET,
             "HUBER_DELTA": cfg.HUBER_DELTA,
@@ -170,6 +183,10 @@ def verify_against_config() -> List[str]:
     ]
     for flag, declared in PROTOCOL["model"]["f0_flags"].items():
         checks.append((flag, getattr(cfg, flag), declared))
+    checks.append(("LGBM_DEV_EARLY_STOPPING", cfg.LGBM_DEV_EARLY_STOPPING,
+                   PROTOCOL["model"]["lightgbm_dev_early_stopping"]))
+    checks.append(("LOSO_USE_DEV_SELECTED_HP", cfg.LOSO_USE_DEV_SELECTED_HP,
+                   PROTOCOL["model"]["loso_use_dev_selected_hp"]))
 
     return [f"{name}: config={live!r} protocol={declared!r}"
             for name, live, declared in checks if live != declared]
