@@ -1,0 +1,408 @@
+{
+  "generated": "2026-09-19 23:25:36",
+  "n_features_with": 94,
+  "n_features_without": 88,
+  "cdhw_block": [
+    "CDHW_Flag",
+    "CDHW_Event_Count",
+    "CDHW_Severity_Score",
+    "CDHW_Veg_Severity",
+    "CDHW_Silking_Severity",
+    "CDHW_GrainFill_Severity"
+  ],
+  "reporting_rule": "every model and seed run is reported, whatever the sign",
+  "scope": "point-accuracy contribution only; the exposure class is used by the paper as a pre-specified stratification variable, which this does not test",
+  "per_seed": [
+    {
+      "model": "LightGBM",
+      "seed": 42,
+      "r2_with": 0.7237700026352529,
+      "r2_without": 0.7123769259384911,
+      "delta_r2": 0.011393076696761817,
+      "rmse_with": 0.8909049178443931,
+      "rmse_without": 0.9090919214030867,
+      "delta_rmse": 0.018187003558693626
+    },
+    {
+      "model": "RandomForest",
+      "seed": 42,
+      "r2_with": 0.672808390447736,
+      "r2_without": 0.6728179254485567,
+      "delta_r2": -9.535000820681816e-06,
+      "rmse_with": 0.9696098432862789,
+      "rmse_without": 0.9695957150236054,
+      "delta_rmse": -1.4128262673440695e-05
+    },
+    {
+      "model": "Ridge",
+      "seed": 42,
+      "r2_with": 0.6820584078262388,
+      "r2_without": 0.6803195306164059,
+      "delta_r2": 0.0017388772098329008,
+      "rmse_with": 0.955805684315255,
+      "rmse_without": 0.9584158530935654,
+      "delta_rmse": 0.002610168778310329
+    },
+    {
+      "model": "CatBoost",
+      "seed": 42,
+      "r2_with": 0.7250783550309721,
+      "r2_without": 0.7269438418362167,
+      "delta_r2": -0.001865486805244676,
+      "rmse_with": 0.8887925457296998,
+      "rmse_without": 0.8857719523509502,
+      "delta_rmse": -0.003020593378749603
+    },
+    {
+      "model": "XGBoost",
+      "seed": 42,
+      "r2_with": 0.7177376364165056,
+      "r2_without": 0.7234604706717987,
+      "delta_r2": -0.0057228342552931855,
+      "rmse_with": 0.9005802604649222,
+      "rmse_without": 0.89140393377683,
+      "delta_rmse": -0.009176326688092207
+    },
+    {
+      "model": "LightGBM",
+      "seed": 7,
+      "r2_with": 0.7195879521980938,
+      "r2_without": 0.7187847081907682,
+      "delta_r2": 0.0008032440073255653,
+      "rmse_with": 0.8976236180952345,
+      "rmse_without": 0.8989083260806647,
+      "delta_rmse": 0.0012847079854302335
+    },
+    {
+      "model": "RandomForest",
+      "seed": 7,
+      "r2_with": 0.6747194590178689,
+      "r2_without": 0.6741257139764185,
+      "delta_r2": 0.0005937450414503775,
+      "rmse_with": 0.9667740361905913,
+      "rmse_without": 0.9676559757990811,
+      "delta_rmse": 0.0008819396084898123
+    },
+    {
+      "model": "Ridge",
+      "seed": 7,
+      "r2_with": 0.6820584078262388,
+      "r2_without": 0.6803195306164059,
+      "delta_r2": 0.0017388772098329008,
+      "rmse_with": 0.955805684315255,
+      "rmse_without": 0.9584158530935654,
+      "delta_rmse": 0.002610168778310329
+    },
+    {
+      "model": "CatBoost",
+      "seed": 7,
+      "r2_with": 0.7165275426111892,
+      "r2_without": 0.7198547414341636,
+      "delta_r2": -0.0033271988229743865,
+      "rmse_with": 0.9025086455761375,
+      "rmse_without": 0.8971965085810463,
+      "delta_rmse": -0.0053121369950912545
+    },
+    {
+      "model": "XGBoost",
+      "seed": 7,
+      "r2_with": 0.7177376364165056,
+      "r2_without": 0.7234604706717987,
+      "delta_r2": -0.0057228342552931855,
+      "rmse_with": 0.9005802604649222,
+      "rmse_without": 0.89140393377683,
+      "delta_rmse": -0.009176326688092207
+    },
+    {
+      "model": "LightGBM",
+      "seed": 123,
+      "r2_with": 0.7108284702037333,
+      "r2_without": 0.7202914286798388,
+      "delta_r2": -0.009462958476105454,
+      "rmse_with": 0.9115357431800915,
+      "rmse_without": 0.8964969660037457,
+      "delta_rmse": -0.015038777176345719
+    },
+    {
+      "model": "RandomForest",
+      "seed": 123,
+      "r2_with": 0.6696370469519168,
+      "r2_without": 0.6698573335547353,
+      "delta_r2": -0.00022028660281847579,
+      "rmse_with": 0.9742975408856246,
+      "rmse_without": 0.9739726550541462,
+      "delta_rmse": -0.0003248858314783831
+    },
+    {
+      "model": "Ridge",
+      "seed": 123,
+      "r2_with": 0.6820584078262388,
+      "r2_without": 0.6803195306164059,
+      "delta_r2": 0.0017388772098329008,
+      "rmse_with": 0.955805684315255,
+      "rmse_without": 0.9584158530935654,
+      "delta_rmse": 0.002610168778310329
+    },
+    {
+      "model": "CatBoost",
+      "seed": 123,
+      "r2_with": 0.7179537301577947,
+      "r2_without": 0.7223498505901319,
+      "delta_r2": -0.004396120432337169,
+      "rmse_with": 0.9002354624252081,
+      "rmse_without": 0.8931921394243154,
+      "delta_rmse": -0.0070433230008927206
+    },
+    {
+      "model": "XGBoost",
+      "seed": 123,
+      "r2_with": 0.7177376364165056,
+      "r2_without": 0.7234604706717987,
+      "delta_r2": -0.0057228342552931855,
+      "rmse_with": 0.9005802604649222,
+      "rmse_without": 0.89140393377683,
+      "delta_rmse": -0.009176326688092207
+    }
+  ],
+  "summary": [
+    {
+      "model": "CatBoost",
+      "n_seeds": 3,
+      "delta_r2_mean": -0.0031962686868520773,
+      "delta_r2_sd": 0.0012703872102833773,
+      "delta_r2_min": -0.004396120432337169,
+      "delta_r2_max": -0.001865486805244676,
+      "r2_with_mean": 0.719853209266652,
+      "straddles_zero": false,
+      "year_level_p": 0.199359
+    },
+    {
+      "model": "LightGBM",
+      "n_seeds": 3,
+      "delta_r2_mean": 0.0009111207426606427,
+      "delta_r2_sd": 0.010428436068053978,
+      "delta_r2_min": -0.009462958476105454,
+      "delta_r2_max": 0.011393076696761817,
+      "r2_with_mean": 0.7180621416790266,
+      "straddles_zero": true,
+      "year_level_p": 0.716169
+    },
+    {
+      "model": "RandomForest",
+      "n_seeds": 3,
+      "delta_r2_mean": 0.00012130781260373998,
+      "delta_r2_sd": 0.00042249468734692605,
+      "delta_r2_min": -0.00022028660281847579,
+      "delta_r2_max": 0.0005937450414503775,
+      "r2_with_mean": 0.6723882988058406,
+      "straddles_zero": true,
+      "year_level_p": 0.761386
+    },
+    {
+      "model": "Ridge",
+      "n_seeds": 3,
+      "delta_r2_mean": 0.0017388772098329008,
+      "delta_r2_sd": 0.0,
+      "delta_r2_min": 0.0017388772098329008,
+      "delta_r2_max": 0.0017388772098329008,
+      "r2_with_mean": 0.6820584078262387,
+      "straddles_zero": false,
+      "year_level_p": 0.504748
+    },
+    {
+      "model": "XGBoost",
+      "n_seeds": 3,
+      "delta_r2_mean": -0.0057228342552931855,
+      "delta_r2_sd": 0.0,
+      "delta_r2_min": -0.0057228342552931855,
+      "delta_r2_max": -0.0057228342552931855,
+      "r2_with_mean": 0.7177376364165055,
+      "straddles_zero": false,
+      "year_level_p": 0.202498
+    }
+  ],
+  "year_level_inference": {
+    "CatBoost": {
+      "comparison": "with_cdhw - without_cdhw",
+      "unit_of_independence": "year",
+      "n_years": 5,
+      "per_year_mean_a": {
+        "2019": 0.645234,
+        "2020": 0.799742,
+        "2021": 0.92768,
+        "2022": 0.963428,
+        "2023": 0.664799
+      },
+      "per_year_mean_b": {
+        "2019": 0.644808,
+        "2020": 0.770311,
+        "2021": 0.917696,
+        "2022": 0.962945,
+        "2023": 0.66269
+      },
+      "mean_difference": 0.008487,
+      "method": "paired comparison on year-level means",
+      "paired_t_statistic": 1.5359,
+      "paired_t_p_value": 0.199359,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_p_value": 0.0625,
+      "cohens_dz": 0.6869,
+      "ci_95_mean_difference": [
+        -0.006854,
+        0.023828
+      ],
+      "inference_supported": true,
+      "significant_at_0.05": false,
+      "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+    },
+    "LightGBM": {
+      "comparison": "with_cdhw - without_cdhw",
+      "unit_of_independence": "year",
+      "n_years": 5,
+      "per_year_mean_a": {
+        "2019": 0.6502,
+        "2020": 0.795501,
+        "2021": 0.982051,
+        "2022": 0.899292,
+        "2023": 0.706602
+      },
+      "per_year_mean_b": {
+        "2019": 0.643283,
+        "2020": 0.78555,
+        "2021": 0.98382,
+        "2022": 0.925533,
+        "2023": 0.707875
+      },
+      "mean_difference": -0.002483,
+      "method": "paired comparison on year-level means",
+      "paired_t_statistic": -0.3904,
+      "paired_t_p_value": 0.716169,
+      "wilcoxon_statistic": 7.0,
+      "wilcoxon_p_value": 1.0,
+      "cohens_dz": -0.1746,
+      "ci_95_mean_difference": [
+        -0.020145,
+        0.015179
+      ],
+      "inference_supported": true,
+      "significant_at_0.05": false,
+      "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+    },
+    "RandomForest": {
+      "comparison": "with_cdhw - without_cdhw",
+      "unit_of_independence": "year",
+      "n_years": 5,
+      "per_year_mean_a": {
+        "2019": 0.78971,
+        "2020": 0.740063,
+        "2021": 1.124975,
+        "2022": 1.146201,
+        "2023": 0.911144
+      },
+      "per_year_mean_b": {
+        "2019": 0.790632,
+        "2020": 0.740722,
+        "2021": 1.12242,
+        "2022": 1.145028,
+        "2023": 0.915073
+      },
+      "mean_difference": -0.000356,
+      "method": "paired comparison on year-level means",
+      "paired_t_statistic": -0.3251,
+      "paired_t_p_value": 0.761386,
+      "wilcoxon_statistic": 7.0,
+      "wilcoxon_p_value": 1.0,
+      "cohens_dz": -0.1454,
+      "ci_95_mean_difference": [
+        -0.003397,
+        0.002685
+      ],
+      "inference_supported": true,
+      "significant_at_0.05": false,
+      "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+    },
+    "Ridge": {
+      "comparison": "with_cdhw - without_cdhw",
+      "unit_of_independence": "year",
+      "n_years": 5,
+      "per_year_mean_a": {
+        "2019": 0.846256,
+        "2020": 0.809372,
+        "2021": 1.178319,
+        "2022": 0.975055,
+        "2023": 0.770049
+      },
+      "per_year_mean_b": {
+        "2019": 0.840535,
+        "2020": 0.812556,
+        "2021": 1.206896,
+        "2022": 0.983033,
+        "2023": 0.760506
+      },
+      "mean_difference": -0.004895,
+      "method": "paired comparison on year-level means",
+      "paired_t_statistic": -0.732,
+      "paired_t_p_value": 0.504748,
+      "wilcoxon_statistic": 6.0,
+      "wilcoxon_p_value": 0.8125,
+      "cohens_dz": -0.3274,
+      "ci_95_mean_difference": [
+        -0.023462,
+        0.013672
+      ],
+      "inference_supported": true,
+      "significant_at_0.05": false,
+      "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+    },
+    "XGBoost": {
+      "comparison": "with_cdhw - without_cdhw",
+      "unit_of_independence": "year",
+      "n_years": 5,
+      "per_year_mean_a": {
+        "2019": 0.693301,
+        "2020": 0.788235,
+        "2021": 0.937227,
+        "2022": 0.874779,
+        "2023": 0.751162
+      },
+      "per_year_mean_b": {
+        "2019": 0.652078,
+        "2020": 0.770064,
+        "2021": 0.961434,
+        "2022": 0.849676,
+        "2023": 0.728306
+      },
+      "mean_difference": 0.016629,
+      "method": "paired comparison on year-level means",
+      "paired_t_statistic": 1.5227,
+      "paired_t_p_value": 0.202498,
+      "wilcoxon_statistic": 3.0,
+      "wilcoxon_p_value": 0.3125,
+      "cohens_dz": 0.681,
+      "ci_95_mean_difference": [
+        -0.013692,
+        0.046951
+      ],
+      "inference_supported": true,
+      "significant_at_0.05": false,
+      "power_caveat": "n = 5 years. Non-significance here is weak evidence of no effect, not evidence of equivalence."
+    }
+  },
+  "construct_check_yield_by_exposure_class": {
+    "Extreme": {
+      "n": 202,
+      "mean_yield": 10.02,
+      "sd": 2.293
+    },
+    "Moderate": {
+      "n": 426,
+      "mean_yield": 11.394,
+      "sd": 1.721
+    },
+    "Normal": {
+      "n": 1717,
+      "mean_yield": 11.408,
+      "sd": 1.54
+    }
+  }
+}

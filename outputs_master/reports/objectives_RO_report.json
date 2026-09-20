@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-19 22:28:48",
+  "generated": "2026-09-19 23:25:41",
   "replaces": [
     "objective_O1_report",
     "objective_O4_report",
@@ -31,18 +31,229 @@
   },
   "RO1": {
     "objective": "RO1",
-    "status": "requires rolling_origin_rows.csv (run code/rolling_origin.py)"
+    "nominal_coverage": 0.9,
+    "sources": [
+      "rolling_origin_rows.csv",
+      "loso_fold_metrics.csv"
+    ],
+    "rolling_origin_by_class": {
+      "Extreme": {
+        "rows": 1134,
+        "picp": 0.7584
+      },
+      "Moderate": {
+        "rows": 933,
+        "picp": 0.9143
+      },
+      "Normal": {
+        "rows": 5777,
+        "picp": 0.9057
+      }
+    },
+    "n_origins": 16,
+    "loso": {
+      "macro_r2": 0.6976,
+      "macro_picp": 0.916,
+      "per_state_picp": {
+        "Illinois": 0.8862,
+        "Indiana": 0.9781,
+        "Iowa": 0.913,
+        "Minnesota": 0.8453,
+        "Missouri": 0.9269,
+        "Ohio": 0.9467
+      },
+      "caveat": "config defaults (C7 caveat applies)"
+    },
+    "headline": "coverage falls from 0.9057 in the Normal class to 0.7584 in the Extreme class at nominal 0.90, across 16 origins"
   },
   "RO2": {
     "objective": "RO2",
-    "status": "requires rolling_origin_rows.csv (run code/rolling_origin.py)"
+    "sources": [
+      "rolling_origin_rows.csv",
+      "rolling_origin_raw.csv"
+    ],
+    "rolling_static_cp": {
+      "rows": 1134,
+      "picp": 0.7584,
+      "unsafe_rate": 0.231
+    },
+    "group_conditional_cp": {
+      "rows": 1134,
+      "picp": 0.8228,
+      "unsafe_rate": 0.1702
+    },
+    "per_origin_sign_test": {
+      "origins_where_methods_differ": 7,
+      "group_cp_better": 7,
+      "p_value": 0.0156,
+      "mean_coverage_gain": 0.0513
+    },
+    "extreme_group_fell_back_to_pooled": {
+      "origins": 4,
+      "of": 16,
+      "why": "too few extreme rows in the two-year calibration window"
+    },
+    "sensitivity_clean_origins_only": {
+      "reason": "SPEI reference period 1985-2013 overlaps the test year for origins 2008-2013",
+      "origins": [
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "rolling_static_cp": {
+        "extreme_picp": 0.8123
+      },
+      "group_conditional_cp": {
+        "extreme_picp": 0.9061
+      }
+    }
   },
   "RO4": {
     "objective": "RO4",
-    "status": "requires rolling_origin_rows.csv (run code/rolling_origin.py)"
+    "unsafe_target": 0.04999999999999999,
+    "sources": [
+      "rolling_origin_rows.csv",
+      "decision_impact_by_stratum.csv"
+    ],
+    "rolling_origin_by_class": {
+      "Extreme": {
+        "rows": 1134,
+        "unsafe_rate": 0.231,
+        "n_unsafe": 262,
+        "mean_shortfall_t_ha": 1.1134,
+        "expected_shortfall_t_ha": 0.2572
+      },
+      "Moderate": {
+        "rows": 933,
+        "unsafe_rate": 0.0364,
+        "n_unsafe": 34,
+        "mean_shortfall_t_ha": 0.6897,
+        "expected_shortfall_t_ha": 0.0251
+      },
+      "Normal": {
+        "rows": 5777,
+        "unsafe_rate": 0.0386,
+        "n_unsafe": 223,
+        "mean_shortfall_t_ha": 0.6966,
+        "expected_shortfall_t_ha": 0.0269
+      }
+    },
+    "locked_window_by_class": [
+      {
+        "Year_Type": "Extreme",
+        "n": 202,
+        "unsafe_miss_rate": 0.1138613861386138,
+        "mean_shortfall_t_ha": 0.7574217391304346,
+        "worst_shortfall_t_ha": 1.7740999999999998
+      },
+      {
+        "Year_Type": "Moderate",
+        "n": 426,
+        "unsafe_miss_rate": 0.0399061032863849,
+        "mean_shortfall_t_ha": 0.5615470588235292,
+        "worst_shortfall_t_ha": 2.009499999999999
+      },
+      {
+        "Year_Type": "Normal",
+        "n": 1717,
+        "unsafe_miss_rate": 0.0133954571927781,
+        "mean_shortfall_t_ha": 0.6767173913043479,
+        "worst_shortfall_t_ha": 2.2270000000000003
+      }
+    ],
+    "headline": "in the Extreme class the lower bound was breached for 0.231 of county-years against a target of 0.05, understating the shortfall by 1.1134 t/ha on average"
   },
   "RO5": {
     "objective": "RO5",
-    "status": "requires rolling_origin_rows.csv (run code/rolling_origin.py)"
+    "sources": [
+      "rolling_origin_rows.csv"
+    ],
+    "within_yield_quintile": {
+      "Q1_low": {
+        "Extreme": 0.3847,
+        "Moderate": 0.28,
+        "Normal": 0.1854
+      },
+      "Q2": {
+        "Extreme": 0.0132,
+        "Moderate": 0.0197,
+        "Normal": 0.0487
+      },
+      "Q3": {
+        "Extreme": 0.0084,
+        "Moderate": 0.0093,
+        "Normal": 0.0065
+      },
+      "Q4": {
+        "Extreme": 0.0139,
+        "Moderate": 0.0043,
+        "Normal": 0.004
+      },
+      "Q5_high": {
+        "Extreme": 0.0,
+        "Moderate": 0.0,
+        "Normal": 0.0016
+      }
+    },
+    "within_state": {
+      "Illinois": {
+        "extreme_unsafe": 0.2196,
+        "n_extreme": 255,
+        "normal_unsafe": 0.022,
+        "n_normal": 1046,
+        "ratio": 9.99
+      },
+      "Indiana": {
+        "extreme_unsafe": 0.3699,
+        "n_extreme": 146,
+        "normal_unsafe": 0.0573,
+        "n_normal": 1012,
+        "ratio": 6.45
+      },
+      "Iowa": {
+        "extreme_unsafe": 0.0433,
+        "n_extreme": 231,
+        "normal_unsafe": 0.0329,
+        "n_normal": 1033,
+        "ratio": 1.32
+      },
+      "Minnesota": {
+        "extreme_unsafe": 0.0588,
+        "n_extreme": 51,
+        "normal_unsafe": 0.0152,
+        "n_normal": 922,
+        "ratio": 3.87
+      },
+      "Missouri": {
+        "extreme_unsafe": 0.3333,
+        "n_extreme": 366,
+        "normal_unsafe": 0.0696,
+        "n_normal": 661,
+        "ratio": 4.79
+      },
+      "Ohio": {
+        "extreme_unsafe": 0.2,
+        "n_extreme": 85,
+        "normal_unsafe": 0.0435,
+        "n_normal": 1103,
+        "ratio": 4.6
+      }
+    },
+    "states_showing_effect": 5,
+    "states_tested": 6,
+    "leave_one_origin_out": {
+      "most_influential_origin": 2012,
+      "share_of_extreme_rows": 0.395,
+      "extreme_picp_all": 0.7584,
+      "extreme_picp_without": 0.863,
+      "normal_picp_without": 0.9054
+    }
   }
 }

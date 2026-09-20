@@ -2,30 +2,30 @@
 
 ## Method Consensus Summary
 - **Total Candidate Features Evaluated**: `117`
-- **Consensus Selected Features**: `97`
-- **Features Dropped**: `20`
+- **Consensus Selected Features**: `100`
+- **Features Dropped**: `17`
 - **Methodology Protected Features Preserved**: `43`
 
 ## Top 20 Selected Features by Consensus Rank
 | feature                      |   votes | selected   | protected   |   avg_rank |   rank_mi |   rank_lgbm |   rank_rf |   rank_perm |
 |:-----------------------------|--------:|:-----------|:------------|-----------:|----------:|------------:|----------:|------------:|
-| Yield_lag1                   |       4 | True       | True        |       0    |         1 |           1 |         1 |           1 |
-| Yield_lag2                   |       4 | True       | True        |       1.25 |         2 |           2 |         3 |           2 |
-| nldas_vpd_mean_veg           |       4 | True       | False       |       8    |        15 |           9 |         6 |           6 |
+| Yield_lag2                   |       4 | True       | True        |       0.5  |         2 |           2 |         1 |           1 |
+| Yield_lag1                   |       4 | True       | True        |       1.25 |         3 |           1 |         3 |           2 |
+| spei30_prism_nldas_mean_silk |       4 | True       | False       |       9.25 |        24 |           5 |         7 |           5 |
 | prism_tmax_mean_silk         |       4 | True       | False       |      13.5  |         4 |          49 |         2 |           3 |
-| spei30_prism_nldas_mean_silk |       4 | True       | False       |      14.75 |        39 |           6 |         8 |          10 |
-| nldas_et0_total_silk         |       4 | True       | False       |      17.25 |        32 |          18 |        12 |          11 |
-| Fourier_sin_P19_0            |       4 | True       | True        |      18    |         3 |          63 |         5 |           5 |
-| nlcd_pasture_hay_frac        |       4 | True       | True        |      19.25 |        33 |          13 |        21 |          14 |
-| soil_bulk_density            |       4 | True       | True        |      20    |        52 |          17 |         7 |           8 |
-| nldas_rs_mean_gs             |       4 | True       | False       |      20.25 |        46 |          10 |        14 |          15 |
-| nlcd_cropland_frac           |       4 | True       | True        |      21    |        12 |          28 |        26 |          22 |
-| Fourier_sin_P11_0            |       4 | True       | True        |      22    |         5 |          71 |         9 |           7 |
-| spi1_prism_min_silk          |       4 | True       | False       |      22    |        55 |           5 |        16 |          16 |
-| prism_ppt_total_silk         |       4 | True       | False       |      26.25 |        69 |           3 |        19 |          18 |
-| prism_kdd30_gs               |       4 | True       | False       |      27.25 |         8 |          45 |        33 |          27 |
-| spi3_prism_min_gs            |       4 | True       | False       |      28.25 |        66 |          21 |        18 |          12 |
-| Fourier_cos_P19_0            |       4 | True       | True        |      30.5  |         6 |          76 |        25 |          19 |
-| prism_tmax_days_gt35_silk    |       3 | True       | False       |      31    |         9 |          91 |        11 |          17 |
-| nldas_et0_total_gs           |       4 | True       | False       |      31.75 |        50 |          51 |        17 |          13 |
-| Inter_CDHW_GDD               |       3 | True       | False       |      32    |        27 |          97 |         4 |           4 |
+| soil_bulk_density            |       4 | True       | True        |      14.25 |        38 |          13 |         6 |           4 |
+| nlcd_cropland_frac           |       4 | True       | True        |      14.75 |         6 |          29 |        14 |          14 |
+| prism_kdd30_gs               |       4 | True       | False       |      16.25 |         7 |          45 |         8 |           9 |
+| nlcd_pasture_hay_frac        |       4 | True       | True        |      19    |        16 |          15 |        25 |          24 |
+| nldas_vpd_mean_veg           |       4 | True       | False       |      20    |        51 |          10 |        12 |          11 |
+| nldas_et0_total_silk         |       4 | True       | False       |      23.25 |        62 |           7 |        16 |          12 |
+| spi1_prism_min_silk          |       4 | True       | False       |      23.5  |        57 |           8 |        17 |          16 |
+| Fourier_cos_P19_0            |       3 | True       | True        |      25.75 |         9 |          83 |         9 |           6 |
+| Fourier_sin_P19_0            |       4 | True       | True        |      26    |         1 |          69 |        21 |          17 |
+| Anom_GDD_Accumulated         |       3 | True       | False       |      26.5  |        78 |           6 |        13 |          13 |
+| Fourier_sin_P11_0            |       3 | True       | True        |      27    |         5 |          77 |        15 |          15 |
+| prism_tmax_days_gt35_silk    |       3 | True       | False       |      27.25 |        11 |          89 |         5 |           8 |
+| nldas_rs_mean_gs             |       4 | True       | False       |      28.5  |        49 |          20 |        22 |          27 |
+| Inter_CDHW_GDD               |       3 | True       | False       |      31.25 |        21 |          97 |         4 |           7 |
+| spi3_prism_min_gs            |       4 | True       | False       |      31.5  |        69 |          21 |        19 |          21 |
+| prism_ppt_total_silk         |       3 | True       | False       |      33    |        84 |           4 |        23 |          25 |

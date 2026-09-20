@@ -65,7 +65,73 @@ def load_rows() -> pd.DataFrame | None:
     return r
 
 
+def load_aggregate() -> pd.DataFrame | None:
+    """Per origin x method x stratum aggregates, or None.
+
+    RO1 and RO2 need only each cell's coverage and row count, both of which are
+    in the aggregate file. Requiring the row-level file for them made the module
+    report two objectives as unavailable when their evidence was on disk.
+    """
+    p = DIAG / "rolling_origin_raw.csv"
+    if not p.exists():
+        return None
+    raw = pd.read_csv(p)
+    return raw[~raw.method.isin(["_group_cp_meta", "_error"])].copy()
+
+
 # ─────────────────────────────────────────────────────────────
+
+def ro1_from_aggregate(agg: pd.DataFrame) -> Dict[str, Any]:
+    """RO1 from per-cell coverage weighted by row count."""
+    out: Dict[str, Any] = {"objective": "RO1", "nominal_coverage": NOMINAL,
+                           "sources": ["rolling_origin_raw.csv (aggregate)",
+                                       "loso_fold_metrics.csv"],
+                           "basis": "row-weighted over origins"}
+    s = agg[agg.method == "rolling_static_cp"]
+    out["rolling_origin_by_class"] = {
+        str(k): {"rows": int(g.n.sum()), "picp": round(_wavg(g, "picp"), 4)}
+        for k, g in s.groupby("stratum") if k != "ALL"}
+    out["n_origins"] = int(s.test_year.nunique())
+    fm = pd.read_csv(MASTER / "loso_fold_metrics.csv")
+    out["loso"] = {"macro_r2": round(float(fm.r_squared.mean()), 4),
+                   "macro_picp": round(float(fm.picp.mean()), 4),
+                   "per_state_picp": {r.state: round(float(r.picp), 4) for r in fm.itertuples()},
+                   "caveat": str(fm.get("hyperparameter_source", pd.Series(["unknown"])).iloc[0])}
+    normal = out["rolling_origin_by_class"].get("Normal", {}).get("picp")
+    extreme = out["rolling_origin_by_class"].get("Extreme", {}).get("picp")
+    out["headline"] = (f"coverage falls from {normal} in the Normal class to {extreme} in the "
+                       f"Extreme class at nominal {NOMINAL:.2f}, across {out['n_origins']} origins")
+    return out
+
+
+def ro2_from_aggregate(agg: pd.DataFrame) -> Dict[str, Any]:
+    """RO2 from per-cell coverage; the sign test needs only per-origin means."""
+    from scipy import stats
+    out: Dict[str, Any] = {"objective": "RO2", "sources": ["rolling_origin_raw.csv (aggregate)"],
+                           "basis": "row-weighted over origins"}
+    ex = agg[agg.stratum == "Extreme"]
+    for m in ("rolling_static_cp", "group_conditional_cp"):
+        g = ex[ex.method == m]
+        if len(g):
+            out[m] = {"rows": int(g.n.sum()), "picp": round(_wavg(g, "picp"), 4)}
+    per = ex.pivot_table(index="test_year", columns="method", values="picp")
+    if {"group_conditional_cp", "rolling_static_cp"}.issubset(per.columns):
+        d = (per["group_conditional_cp"] - per["rolling_static_cp"]).dropna()
+        wins, n = int((d > 0).sum()), int((d != 0).sum())
+        out["per_origin_sign_test"] = {
+            "origins_where_methods_differ": n, "group_cp_better": wins,
+            "p_value": round(float(stats.binomtest(wins, n, 0.5).pvalue), 4) if n else None,
+            "mean_coverage_gain": round(float(d.mean()), 4)}
+    clean = ex[ex.test_year >= 2014]
+    out["sensitivity_clean_origins_only"] = {
+        "reason": "SPEI reference period 1985-2013 overlaps the test year for origins 2008-2013",
+        **{m: {"extreme_picp": round(_wavg(clean[clean.method == m], "picp"), 4)}
+           for m in ("rolling_static_cp", "group_conditional_cp")
+           if len(clean[clean.method == m])}}
+    out["note"] = ("computed from aggregates; the per-origin fallback counts and the unsafe-miss "
+                   "rates require rolling_origin_rows.csv")
+    return out
+
 
 def ro1(rows: pd.DataFrame) -> Dict[str, Any]:
     """Regime-conditional coverage under temporal and spatial shift."""
@@ -233,6 +299,8 @@ def build_report() -> Dict[str, Any]:
                      "objective_o5_report", "objective_O6_report"],
         "note": "computed from artefacts; nothing refitted, no choice made on any result",
     }
+    agg = load_aggregate()
+    fallbacks = {"RO1": ro1_from_aggregate, "RO2": ro2_from_aggregate}
     needs_rolling = {"RO1": ro1, "RO2": ro2, "RO4": ro4, "RO5": ro5}
     try:
         report["RO3"] = ro3(rows)
@@ -240,6 +308,13 @@ def build_report() -> Dict[str, Any]:
         report["RO3"] = {"objective": "RO3", "status": f"unavailable: {exc}"}
     for key, fn in needs_rolling.items():
         if rows is None:
+            if key in fallbacks and agg is not None:
+                try:
+                    report[key] = fallbacks[key](agg)
+                    continue
+                except Exception as exc:
+                    report[key] = {"objective": key, "status": f"aggregate fallback failed: {exc}"}
+                    continue
             report[key] = {"objective": key, "status": "requires rolling_origin_rows.csv "
                                                        "(run code/rolling_origin.py)"}
             continue
