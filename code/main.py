@@ -1587,6 +1587,16 @@ def ensure_loso_dev_hyperparameters(enabled: Optional[bool] = None,
     logger.info("LOSO hyperparameters: no DEV selection on disk; running the C7 tuning now "
                 "(%d states x 4 configurations -- GPU strongly preferred)",
                 len(cfg.LOSO_STATES))
+    # The tuner reaches build_loso_fold through code/diagnostics_loso/_fold_lab.py,
+    # which repoints every cfg *_DIR to outputs_diagnostics at import time and never
+    # puts them back. That is right for a standalone diagnostic and wrong here: the
+    # first run of this wiring let the redirect escape, and every phase after LOSO
+    # wrote to the diagnostics tree, leaving outputs_master 43 files short. Snapshot
+    # and restore, so nothing the tuner does to cfg survives the call.
+    _dirs = {n: getattr(cfg, n) for n in dir(cfg)
+             if n.endswith("_DIR") and isinstance(getattr(cfg, n), Path)}
+    _dirs["OUTPUT_DIR"] = cfg.OUTPUT_DIR
+
     if runner is None:
         from loso_dev_tuning import main as runner
     try:
@@ -1597,7 +1607,26 @@ def ensure_loso_dev_hyperparameters(enabled: Optional[bool] = None,
         logger.error("LOSO DEV tuning failed (%s: %s); falling back to config defaults, "
                      "which carry the C7 caveat", type(exc).__name__, exc)
         return f"config defaults (C7 caveat applies; tuning failed: {type(exc).__name__})"
+    finally:
+        for _name, _val in _dirs.items():
+            if getattr(cfg, _name, None) != _val:
+                logger.warning("restoring cfg.%s, which the tuning run repointed to %s",
+                               _name, getattr(cfg, _name, None))
+                setattr(cfg, _name, _val)
+
+    # Resolved again rather than reused: the tuner writes to cfg.REPORT_DIR as it
+    # stands during ITS execution, which is how the first run wrote the selection
+    # to one tree while this function looked for it in another.
     if not path.exists():
+        strays = [p for p in {Path(cfg.PROJECT_ROOT) / "outputs_diagnostics" / "reports" / path.name}
+                  if p.exists()]
+        if strays:
+            import shutil
+            path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(strays[0], path)
+            logger.warning("the tuning wrote its selection to %s; copied it to %s",
+                           strays[0], path)
+            return f"DEV-selected ({path.name}, recovered from the diagnostics tree)"
         logger.error("LOSO DEV tuning finished but wrote no selection to %s; "
                      "falling back to config defaults", path)
         return "config defaults (C7 caveat applies; tuning produced no selection file)"

@@ -112,7 +112,31 @@ def main() -> int:
         checks.append(("the state that IS covered is not listed as missing",
                        states[0] not in src_partial.split("missing:")[-1]))
 
-        # 6 - tuning failure must not take the pipeline down
+        # 6 - the tuner imports _fold_lab, which repoints every cfg *_DIR to
+        # outputs_diagnostics at import time and never restores it. Run inside
+        # main.py that hijacks the output directory for the REST of the pipeline:
+        # a real run wrote 43 files to the wrong tree and left outputs_master
+        # incomplete. Whatever the tuner does to cfg must not survive the call.
+        sel_dirs = Path(tmp) / "dirs.json"
+
+        class HijackingTuner(SpyTuner):
+            def __call__(self) -> int:
+                cfg.OUTPUT_DIR = Path(tmp) / "hijacked"
+                cfg.REPORT_DIR = Path(tmp) / "hijacked" / "reports"
+                cfg.FIGURE_DIR = Path(tmp) / "hijacked" / "figures"
+                return super().__call__()
+
+        before = {n: getattr(cfg, n) for n in dir(cfg)
+                  if n.endswith("_DIR") and isinstance(getattr(cfg, n), Path)}
+        before["OUTPUT_DIR"] = cfg.OUTPUT_DIR
+        pipeline.ensure_loso_dev_hyperparameters(enabled=True, path=sel_dirs,
+                                                 runner=HijackingTuner(sel_dirs, states))
+        moved = [n for n, v in before.items() if getattr(cfg, n) != v]
+        print(f"cfg directories changed by the tuning call: {moved or 'none'}")
+        checks.append(("the tuner cannot repoint the pipeline's output directories",
+                       not moved))
+
+        # 7 - tuning failure must not take the pipeline down
         sel_fail = Path(tmp) / "fails.json"
         spy_fail = SpyTuner(sel_fail, states, fail=True)
         try:
