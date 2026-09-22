@@ -122,11 +122,29 @@ def summarise_group(g: pd.DataFrame) -> pd.Series:
     def wavg(col: str) -> float:
         return float(np.average(g[col].values, weights=w)) if w.sum() else float("nan")
 
+    # An interval around the pooled figure, resampling whole origins. Without it the
+    # summary invites a row-level reading of numbers that have 16 independent units
+    # behind them, not 7844.
+    def cell_wavg(col: str):
+        def stat(f: pd.DataFrame) -> float:
+            ww = f["n"].values.astype(float)
+            return float(np.average(f[col].values, weights=ww)) if ww.sum() else float("nan")
+        return stat
+
+    from dependence_aware_stats import cluster_bootstrap_statistic
+    ci = {c: cluster_bootstrap_statistic(g, cell_wavg(c), cluster_col="test_year",
+                                         n_boot=2000, seed=0, cluster_unit="rolling origin")["ci_95"]
+          for c in ("picp", "unsafe_miss_rate")}
+
     biggest = g.loc[g["n"].idxmax()]
     return pd.Series({
         "n_origins": int(g["test_year"].nunique()),
         "rows": int(g["n"].sum()),
         "picp_weighted": wavg("picp"),
+        "picp_ci_lo": ci["picp"][0] if ci["picp"] else float("nan"),
+        "picp_ci_hi": ci["picp"][1] if ci["picp"] else float("nan"),
+        "unsafe_ci_lo": ci["unsafe_miss_rate"][0] if ci["unsafe_miss_rate"] else float("nan"),
+        "unsafe_ci_hi": ci["unsafe_miss_rate"][1] if ci["unsafe_miss_rate"] else float("nan"),
         "unsafe_weighted": wavg("unsafe_miss_rate"),
         "mpiw_weighted": wavg("mpiw"),
         "winkler_weighted": wavg("winkler"),
