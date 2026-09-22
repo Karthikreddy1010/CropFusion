@@ -1,6 +1,6 @@
 {
-  "files_scanned": 123,
-  "scan_root": "/content/outputs_master",
+  "files_scanned": 124,
+  "scan_root": "C:\\Users\\dukar\\OneDrive\\Desktop\\Paper3\\outputs_master",
   "claim_types_checked": [
     "full_compliance",
     "zero_leakage",
@@ -40,11 +40,21 @@
       "evidence": "O6 ranking_status=descriptive ranking only, claims_superiority=False"
     }
   },
-  "n_matches": 7,
+  "n_matches": 8,
   "n_unsupported": 0,
   "unsupported_by_type": {},
   "status": "PASS",
   "findings": [
+    {
+      "file": "FINAL_METHODOLOGY_AUDIT.md",
+      "line": 80,
+      "claim_type": "joint_improves",
+      "matched_text": "**Verdict**: Partially supported \u2014 joint training improves interval quality only",
+      "requires": "objective_O4_report.json shows a supported improvement",
+      "supported_by_results": true,
+      "evidence": "O4 verdict=Partially supported \u2014 joint training improves interval quality only",
+      "status": "OK"
+    },
     {
       "file": "pipeline.log",
       "line": 401,
@@ -56,7 +66,7 @@
       "status": "OK"
     },
     {
-      "file": "reports/methodology_validation_report.md",
+      "file": "reports\\methodology_validation_report.md",
       "line": 15,
       "claim_type": "full_compliance",
       "matched_text": "`\"Status\": \"Pass\"` typed into every row and reported \"100% compliance, 15/15\"",
@@ -66,7 +76,7 @@
       "status": "OK"
     },
     {
-      "file": "reports/objective_O4_report.json",
+      "file": "reports\\objective_O4_report.json",
       "line": 564,
       "claim_type": "joint_improves",
       "matched_text": "\"verdict\": \"Partially supported \\u2014 joint training improves interval quality only\",",
@@ -76,7 +86,7 @@
       "status": "OK"
     },
     {
-      "file": "reports/objective_O4_report.md",
+      "file": "reports\\objective_O4_report.md",
       "line": 63,
       "claim_type": "joint_improves",
       "matched_text": "**Partially supported \u2014 joint training improves interval quality only**",
@@ -86,7 +96,7 @@
       "status": "OK"
     },
     {
-      "file": "reports/old_vs_new_comparison.csv",
+      "file": "reports\\old_vs_new_comparison.csv",
       "line": 2,
       "claim_type": "zero_leakage",
       "matched_text": "NeuralCQR Alone,0.5024,1.1958,0.9424,0.684,0.9529,0.7328,\"Clean 4-way split, zero leakage\"",
@@ -96,7 +106,7 @@
       "status": "OK"
     },
     {
-      "file": "reports/old_vs_new_comparison.csv",
+      "file": "reports\\old_vs_new_comparison.csv",
       "line": 3,
       "claim_type": "zero_leakage",
       "matched_text": "LightGBM Alone,0.4885,1.2124,0.9685,0.7313,0.8788,0.6732,\"Clean 4-way split, zero leakage\"",
@@ -106,7 +116,7 @@
       "status": "OK"
     },
     {
-      "file": "reports/paper3_final_summary.md",
+      "file": "reports\\paper3_final_summary.md",
       "line": 31,
       "claim_type": "joint_improves",
       "matched_text": "- **O4 (Joint vs post-hoc)**: **Partially supported \u2014 joint training improves interval quality only** \u2014 RMSE 0.9629 (post-hoc) vs 0.963 (joint), relative \u0394 0.01%; MPIW 4.7056 vs 3.7938 (-19.38%). Point improvement suppor",

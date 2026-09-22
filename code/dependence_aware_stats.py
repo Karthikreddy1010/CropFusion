@@ -17,7 +17,7 @@ rather than returning a p-value.
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -87,6 +87,90 @@ def cluster_bootstrap_mean(
         "method": "cluster_bootstrap_percentile",
         "inference_supported": True,
     }
+
+
+def cluster_bootstrap_statistic(
+    frame: pd.DataFrame,
+    statistic,
+    cluster_col: str = "test_year",
+    n_boot: int = 2000,
+    seed: int = 42,
+    alpha: float = 0.05,
+    null_value: float = 0.0,
+    min_valid_fraction: float = 0.8,
+    cluster_unit: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Cluster bootstrap for an arbitrary statistic of a data frame.
+
+    ``cluster_bootstrap_mean`` covers a mean of one column. The objectives need
+    contrasts instead -- coverage in one stratum minus another, one method minus
+    another within a stratum, a miss rate against a fixed target -- so the
+    statistic is supplied as a callable and whole clusters are resampled beneath
+    it.
+
+    Two guards keep this from inventing precision it does not have. A statistic
+    can be undefined in a resample (a stratum concentrated in a few origins may
+    not be drawn at all); those resamples are discarded and counted rather than
+    coerced to zero. If too few survive, the estimate is returned without an
+    interval, because a percentile of a biased subset of resamples is not one.
+
+    ``null_value`` is the value the interval is tested against: zero for a
+    contrast, alpha/2 for a miss rate compared with its safety target.
+    """
+    point_raw = statistic(frame)
+    point = float(point_raw) if point_raw is not None and np.isfinite(point_raw) else float("nan")
+    uniq = pd.unique(frame[cluster_col])
+    n_clusters = len(uniq)
+    base: Dict[str, Any] = {
+        "estimate": round(point, 6) if np.isfinite(point) else None,
+        "n_clusters": int(n_clusters),
+        "n_observations": int(len(frame)),
+        "cluster_unit": cluster_unit or cluster_col,
+        "null_value": null_value,
+        "method": "cluster_bootstrap_percentile",
+    }
+    if n_clusters < MIN_CLUSTERS_FOR_INFERENCE:
+        return {**base, "ci_95": None, "p_value": None, "n_boot": 0, "n_boot_valid": 0,
+                "significant_at_0.05": None, "inference_supported": False,
+                "reason": (f"only {n_clusters} independent clusters "
+                           f"(minimum {MIN_CLUSTERS_FOR_INFERENCE} required); "
+                           "reporting the point estimate without inferential claims")}
+
+    positions = {c: np.where(frame[cluster_col].values == c)[0] for c in uniq}
+    rng = np.random.RandomState(seed)
+    boots: List[float] = []
+    for _ in range(n_boot):
+        drawn = rng.choice(n_clusters, size=n_clusters, replace=True)
+        idx = np.concatenate([positions[uniq[d]] for d in drawn])
+        try:
+            v = statistic(frame.take(idx))
+        except Exception:                      # a resample the statistic cannot score
+            continue
+        if v is not None and np.isfinite(v):
+            boots.append(float(v))
+
+    n_valid = len(boots)
+    if n_valid < max(MIN_CLUSTERS_FOR_INFERENCE, int(min_valid_fraction * n_boot)):
+        return {**base, "ci_95": None, "p_value": None, "n_boot": n_boot,
+                "n_boot_valid": n_valid, "significant_at_0.05": None,
+                "inference_supported": False,
+                "reason": (f"the statistic was undefined in {n_boot - n_valid} of {n_boot} "
+                           "resamples, so the surviving ones are not a fair sample of them; "
+                           "reporting the point estimate without an interval")}
+
+    arr = np.asarray(boots, dtype=float)
+    lo = float(np.percentile(arr, 100 * alpha / 2))
+    hi = float(np.percentile(arr, 100 * (1 - alpha / 2)))
+    p = 2.0 * min(float(np.mean(arr <= null_value)), float(np.mean(arr >= null_value)))
+    p = min(1.0, max(p, 1.0 / n_valid))
+    return {**base,
+            "ci_95": [round(lo, 6), round(hi, 6)],
+            "bootstrap_se": round(float(np.std(arr, ddof=1)), 6),
+            "p_value": round(p, 6),
+            "n_boot": n_boot,
+            "n_boot_valid": n_valid,
+            "significant_at_0.05": bool(lo > null_value or hi < null_value),
+            "inference_supported": True}
 
 
 def cluster_bootstrap_paired_difference(

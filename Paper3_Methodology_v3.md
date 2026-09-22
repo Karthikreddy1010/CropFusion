@@ -196,6 +196,31 @@ With five test years in the locked window, non-significance is weak evidence of 
 difference rather than evidence of equivalence. This is the reason the rolling-origin
 replication exists.
 
+**Intervals on every pooled objective figure.** A rolling-origin figure such as
+"extreme-class coverage is 0.758" is an average over 16 origins, not over 1 134
+independent observations, so each objective number in `objectives_RO_report.json`
+carries a 95% interval that resamples whole origins
+(`dependence_aware_stats.cluster_bootstrap_statistic`, 2 000 resamples, verified in
+`code/diagnostics_loso/verify_cluster_bootstrap.py`: the interval is ~12× a
+row-level one under block dependence and attains 0.947 empirical coverage on data
+satisfying its assumptions). Contrasts are tested against zero; miss rates are
+tested against their α/2 safety target rather than against zero. Resamples in which
+a statistic is undefined — a stratum concentrated in a few origins may not be drawn
+— are discarded and counted, and if too few survive the point estimate is reported
+with no interval rather than a percentile of a biased subset.
+
+Two consequences are load-bearing and are stated in the results rather than buried:
+
+- The **Normal-minus-Extreme coverage contrast** (0.147) has a 95% interval of
+  [−0.010, 0.257] and does not exclude zero, because 2012 supplies about 40% of all
+  extreme-exposure rows and dominates the resampling distribution. RO1 is therefore
+  reported as the descriptive stratification, not as a test.
+- The claim that survives is one-sided and decision-relevant: the **unsafe miss
+  rate** in the extreme class, 0.231 [0.073, 0.340] against a 0.05 target (RO4), and
+  the **group-conditional remedy**, +0.064 [0.031, 0.105], which retains its sign
+  and significance with 2012 removed ([0.013, 0.115]) and on the clean origins
+  ([0.012, 0.141]) (RO2).
+
 ## 11. Leakage controls, corrections and known limitations
 
 **Fit-only discipline**, verified for: RobustScaler, feature selection,
@@ -225,6 +250,15 @@ quantity involved is a per-county distributional constant that carries no yield
 information, and re-referencing drought indices per origin is not standard practice
 either — but the locked temporal analysis is unaffected (its FIT period *is* the
 reference period) and the rolling-origin results should be read with this in mind.
+
+**The group-conditional remedy reallocates width; it does not create it.** Mondrian
+calibration raises extreme-class coverage by +0.064 [0.031, 0.105] and widens those
+intervals from 3.54 to 5.10 t/ha, but it pays for that out of the normal class,
+whose coverage falls by 0.019 [−0.042, −0.003] to 0.887 — below nominal — as its
+intervals narrow from 3.54 to 3.16 t/ha. The interval on that cost excludes zero, so
+it is a measured trade-off rather than a free improvement, and it is reported as
+one. The extreme group also fell back to the pooled threshold in 4 of 16 origins
+because the two-year calibration window held too few extreme rows.
 
 **Other limitations.** Single seed for the reported run; LightGBM only in the
 rolling-origin analysis; one test year per origin, so ACI's adaptivity is not

@@ -1,10 +1,10 @@
 # Output Claim Consistency Audit
 
-Scanned **123** generated files under `/content/outputs_master` for phrases that assert a
+Scanned **124** generated files under `C:\Users\dukar\OneDrive\Desktop\Paper3\outputs_master` for phrases that assert a
 conclusion, and checked each against the artefact that would have to support it.
 
 **Status: `PASS`** — 0 unsupported claim(s) out of
-7 phrase match(es).
+8 phrase match(es).
 
 ## Support evaluation
 | Claim type | Currently supported | Evidence |

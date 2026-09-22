@@ -1,6 +1,6 @@
 {
   "scaler": "robust",
-  "features_scaled_count": 88,
+  "features_scaled_count": 94,
   "columns": [
     "prism_tmax_mean_gs",
     "prism_tmax_max_gs",
@@ -24,7 +24,9 @@
     "spei30_prism_nldas_drought_days_gs",
     "spei90_prism_nldas_mean_gs",
     "spei90_prism_nldas_min_gs",
+    "CDHW_Event_Count",
     "cdhw_max_severity_gs",
+    "CDHW_Severity_Score",
     "prism_tmax_mean_veg",
     "prism_ppt_total_veg",
     "nldas_et0_total_veg",
@@ -64,6 +66,10 @@
     "nlcd_grass_shrub_frac",
     "nlcd_developed_frac",
     "nlcd_water_wetland_frac",
+    "CDHW_Flag",
+    "CDHW_Veg_Severity",
+    "CDHW_Silking_Severity",
+    "CDHW_GrainFill_Severity",
     "Fourier_sin_P1_0",
     "Fourier_cos_P1_0",
     "Fourier_sin_P3_0",
@@ -95,12 +101,12 @@
   "n_train_samples": 15751,
   "leakage_verification": "PASSED: Scaler fit statistics derived exclusively from 1985-2015 training set",
   "center_stats_summary": {
-    "mean": 90.43447273569633,
+    "mean": 84.66205958235403,
     "min": -56.6616,
     "max": 1836.9760910560344
   },
   "scale_stats_summary": {
-    "mean": 28.513846763742187,
+    "mean": 26.75458718003486,
     "min": 0.0036853481104904,
     "max": 330.46321474272645
   }

@@ -43,9 +43,52 @@ MASTER = REPO / "outputs_master" / "reports"
 NOMINAL = cfg.NOMINAL_COVERAGE
 ALPHA = 1.0 - NOMINAL
 
+# Every pooled figure below is an average over 16 rolling origins, and rows inside
+# an origin move together -- a drought year shifts the whole panel at once. The
+# origin is therefore the unit of independence, and each headline carries an
+# interval that resamples whole origins. 2000 resamples; the function is verified
+# in code/diagnostics_loso/verify_cluster_bootstrap.py.
+N_BOOT = 2000
+CLUSTER = "test_year"
+
 
 def _wavg(g: pd.DataFrame, col: str, w: str = "n") -> float:
     return float(np.average(g[col].values, weights=g[w].values.astype(float)))
+
+
+def _ci(frame: pd.DataFrame, statistic, null_value: float = 0.0, seed: int = 0) -> Dict[str, Any]:
+    """Year-clustered interval for one statistic, trimmed to what the report quotes."""
+    from dependence_aware_stats import cluster_bootstrap_statistic
+    r = cluster_bootstrap_statistic(frame, statistic, cluster_col=CLUSTER, n_boot=N_BOOT,
+                                    seed=seed, null_value=null_value, cluster_unit="rolling origin")
+    out = {"estimate": r["estimate"], "ci_95": r["ci_95"], "null_value": null_value,
+           "excludes_null": r["significant_at_0.05"], "p_value": r.get("p_value"),
+           "n_origins": r["n_clusters"], "inference_supported": r["inference_supported"]}
+    if not r["inference_supported"]:
+        out["reason"] = r.get("reason")
+    return out
+
+
+def _mean_of(col: str):
+    return lambda f: float(f[col].mean())
+
+
+def _contrast(col: str, group_col: str, a: str, b: str):
+    """Mean of `col` in group a minus group b -- NaN when a resample lacks either."""
+    def stat(f: pd.DataFrame) -> float:
+        ga, gb = f[f[group_col] == a], f[f[group_col] == b]
+        if not len(ga) or not len(gb):
+            return float("nan")
+        return float(ga[col].mean() - gb[col].mean())
+    return stat
+
+
+def _cell_wavg(col: str):
+    """Row-weighted average of a per-origin cell statistic (aggregate-file path)."""
+    def stat(f: pd.DataFrame) -> float:
+        w = f["n"].values.astype(float)
+        return float(np.average(f[col].values, weights=w)) if w.sum() else float("nan")
+    return stat
 
 
 def load_rows() -> pd.DataFrame | None:
@@ -89,18 +132,20 @@ def ro1_from_aggregate(agg: pd.DataFrame) -> Dict[str, Any]:
                            "basis": "row-weighted over origins"}
     s = agg[agg.method == "rolling_static_cp"]
     out["rolling_origin_by_class"] = {
-        str(k): {"rows": int(g.n.sum()), "picp": round(_wavg(g, "picp"), 4)}
+        str(k): {"rows": int(g.n.sum()), "picp": round(_wavg(g, "picp"), 4),
+                 "ci_95": _ci(g, _cell_wavg("picp"), null_value=NOMINAL)["ci_95"]}
         for k, g in s.groupby("stratum") if k != "ALL"}
     out["n_origins"] = int(s.test_year.nunique())
+    out["inference"] = "year-clustered bootstrap over rolling origins (aggregate cells)"
     fm = pd.read_csv(MASTER / "loso_fold_metrics.csv")
     out["loso"] = {"macro_r2": round(float(fm.r_squared.mean()), 4),
                    "macro_picp": round(float(fm.picp.mean()), 4),
                    "per_state_picp": {r.state: round(float(r.picp), 4) for r in fm.itertuples()},
                    "caveat": str(fm.get("hyperparameter_source", pd.Series(["unknown"])).iloc[0])}
-    normal = out["rolling_origin_by_class"].get("Normal", {}).get("picp")
-    extreme = out["rolling_origin_by_class"].get("Extreme", {}).get("picp")
-    out["headline"] = (f"coverage falls from {normal} in the Normal class to {extreme} in the "
-                       f"Extreme class at nominal {NOMINAL:.2f}, across {out['n_origins']} origins")
+    ex = out["rolling_origin_by_class"].get("Extreme", {})
+    out["headline"] = (f"in the Extreme exposure class coverage is {ex.get('picp')} against a "
+                       f"nominal {NOMINAL:.2f} (95% CI {ex.get('ci_95')}), across "
+                       f"{out['n_origins']} origins")
     return out
 
 
@@ -122,6 +167,15 @@ def ro2_from_aggregate(agg: pd.DataFrame) -> Dict[str, Any]:
             "origins_where_methods_differ": n, "group_cp_better": wins,
             "p_value": round(float(stats.binomtest(wins, n, 0.5).pvalue), 4) if n else None,
             "mean_coverage_gain": round(float(d.mean()), 4)}
+
+    def cell_gain(f: pd.DataFrame) -> float:
+        a, b = f[f.method == "group_conditional_cp"], f[f.method == "rolling_static_cp"]
+        if not len(a) or not len(b):
+            return float("nan")
+        return _cell_wavg("picp")(a) - _cell_wavg("picp")(b)
+
+    out["group_cp_coverage_gain"] = _ci(ex, cell_gain)
+    out["inference"] = "year-clustered bootstrap over rolling origins (aggregate cells)"
     clean = ex[ex.test_year >= 2014]
     out["sensitivity_clean_origins_only"] = {
         "reason": "SPEI reference period 1985-2013 overlaps the test year for origins 2008-2013",
@@ -134,24 +188,51 @@ def ro2_from_aggregate(agg: pd.DataFrame) -> Dict[str, Any]:
 
 
 def ro1(rows: pd.DataFrame) -> Dict[str, Any]:
-    """Regime-conditional coverage under temporal and spatial shift."""
+    """Regime-conditional coverage under temporal and spatial shift.
+
+    Stated against the nominal level, not against the Normal class. Both contrasts
+    are reported, but they are not equally well supported: the shortfall of the
+    Extreme class below nominal survives year-clustered resampling, while the
+    Normal-minus-Extreme difference does not, because one origin (2012) supplies
+    about 40% of the extreme rows and dominates the resampling distribution. A
+    claim phrased as "Normal vs Extreme" would be the one a referee can overturn.
+    """
     out: Dict[str, Any] = {"objective": "RO1", "nominal_coverage": NOMINAL,
-                           "sources": ["rolling_origin_rows.csv", "loso_fold_metrics.csv"]}
+                           "sources": ["rolling_origin_rows.csv", "loso_fold_metrics.csv"],
+                           "inference": "year-clustered bootstrap over rolling origins"}
     s = rows[rows.method == "rolling_static_cp"]
-    out["rolling_origin_by_class"] = {
-        str(k): {"rows": int(len(g)), "picp": round(float(g.covered.mean()), 4)}
-        for k, g in s.groupby("stratum")}
+    by = {}
+    for k, g in s.groupby("stratum"):
+        ci = _ci(g, _mean_of("covered"), null_value=NOMINAL)
+        by[str(k)] = {"rows": int(len(g)), "picp": round(float(g.covered.mean()), 4),
+                      "ci_95": ci["ci_95"], "differs_from_nominal": ci["excludes_null"]}
+    out["rolling_origin_by_class"] = by
     out["n_origins"] = int(s.test_year.nunique())
+    out["normal_minus_extreme_gap"] = _ci(s, _contrast("covered", "stratum", "Normal", "Extreme"))
 
     fm = pd.read_csv(MASTER / "loso_fold_metrics.csv")
     out["loso"] = {"macro_r2": round(float(fm.r_squared.mean()), 4),
                    "macro_picp": round(float(fm.picp.mean()), 4),
                    "per_state_picp": {r.state: round(float(r.picp), 4) for r in fm.itertuples()},
                    "caveat": str(fm.get("hyperparameter_source", pd.Series(["unknown"])).iloc[0])}
-    normal = out["rolling_origin_by_class"].get("Normal", {}).get("picp")
-    extreme = out["rolling_origin_by_class"].get("Extreme", {}).get("picp")
-    out["headline"] = (f"coverage falls from {normal} in the Normal class to {extreme} in the "
-                       f"Extreme class at nominal {NOMINAL:.2f}, across {out['n_origins']} origins")
+
+    ex = by.get("Extreme", {})
+    gap = out["normal_minus_extreme_gap"]
+    out["headline"] = (
+        f"extreme-class coverage is {ex.get('picp')} against a nominal {NOMINAL:.2f} "
+        f"(95% CI {ex.get('ci_95')}, {out['n_origins']} origins), an interval that "
+        f"{'excludes' if ex.get('differs_from_nominal') else 'includes'} the nominal level; the "
+        f"Normal-minus-Extreme contrast is {gap['estimate']} (95% CI {gap['ci_95']}), which "
+        f"{'excludes' if gap['excludes_null'] else 'includes'} zero")
+    out["interpretation"] = (
+        f"two-sided coverage in the extreme class "
+        f"{'separates from' if ex.get('differs_from_nominal') else 'does not separate from'} the "
+        f"nominal level under origin-level resampling, and the between-class contrast "
+        f"{'excludes' if gap['excludes_null'] else 'includes'} zero. Two-sided coverage spends "
+        "half its power on the upper tail, where an observation above the interval is a good "
+        "harvest; the deficit that does survive is the one-sided one, tested against its "
+        "alpha/2 target in RO4. RO1 should be read as the descriptive stratification and RO4 "
+        "as the test.")
     return out
 
 
@@ -175,6 +256,23 @@ def ro2(rows: pd.DataFrame) -> Dict[str, Any]:
             "p_value": round(float(stats.binomtest(wins, n, 0.5).pvalue), 4) if n else None,
             "mean_coverage_gain": round(float(d.mean()), 4)}
 
+    # The remedy is the claim this objective rests on, so it carries the interval
+    # rather than the sign test alone: the sign test discards magnitude and drops
+    # the origins where the two methods happen to tie.
+    gain = _contrast("covered", "method", "group_conditional_cp", "rolling_static_cp")
+    drop = _contrast("unsafe", "method", "rolling_static_cp", "group_conditional_cp")
+    out["group_cp_coverage_gain"] = _ci(ex, gain)
+    out["group_cp_unsafe_reduction"] = _ci(ex, drop)
+    # Mondrian calibration buys extreme coverage by moving width, not making it.
+    nrm = rows[rows.stratum == "Normal"]
+    out["cost_to_normal_class"] = {
+        "coverage_change": _ci(nrm, gain),
+        "mpiw_extreme_static": round(float(ex[ex.method == "rolling_static_cp"].width.mean()), 4),
+        "mpiw_extreme_group": round(float(ex[ex.method == "group_conditional_cp"].width.mean()), 4),
+        "mpiw_normal_static": round(float(nrm[nrm.method == "rolling_static_cp"].width.mean()), 4),
+        "mpiw_normal_group": round(float(nrm[nrm.method == "group_conditional_cp"].width.mean()), 4),
+        "note": "width is reallocated from the normal class to the extreme class, not added"}
+
     raw = pd.read_csv(DIAG / "rolling_origin_raw.csv")
     meta = raw[raw.method == "_group_cp_meta"]
     fb = [json.loads(x) for x in meta.group_fallbacks.dropna()] if "group_fallbacks" in meta else []
@@ -183,12 +281,35 @@ def ro2(rows: pd.DataFrame) -> Dict[str, Any]:
         "why": "too few extreme rows in the two-year calibration window"}
 
     clean = rows[rows.test_year >= 2014]
+    clean_ex = clean[clean.stratum == "Extreme"]
     out["sensitivity_clean_origins_only"] = {
         "reason": "SPEI reference period 1985-2013 overlaps the test year for origins 2008-2013",
         "origins": sorted(clean.test_year.unique().tolist()),
-        **{m: {"extreme_picp": round(float(clean[(clean.method == m) &
-                                                 (clean.stratum == "Extreme")].covered.mean()), 4)}
-           for m in ("rolling_static_cp", "group_conditional_cp")}}
+        **{m: {"extreme_picp": round(float(clean_ex[clean_ex.method == m].covered.mean()), 4)}
+           for m in ("rolling_static_cp", "group_conditional_cp")},
+        "group_cp_coverage_gain": _ci(clean_ex, gain)}
+    # and with the one origin that dominates the extreme stratum removed entirely
+    no_dom = ex[ex.test_year != 2012]
+    out["sensitivity_excluding_2012"] = {
+        "reason": "2012 supplies about 40% of all extreme-exposure rows",
+        "rolling_static_cp": {"extreme_picp": round(
+            float(no_dom[no_dom.method == "rolling_static_cp"].covered.mean()), 4)},
+        "group_conditional_cp": {"extreme_picp": round(
+            float(no_dom[no_dom.method == "group_conditional_cp"].covered.mean()), 4)},
+        "group_cp_coverage_gain": _ci(no_dom, gain)}
+    g0 = out["group_cp_coverage_gain"]
+    # Stated from the flags, not asserted in prose: a rerun that weakened a
+    # sensitivity would otherwise leave the headline claiming it still held.
+    sens = [("with the dominant origin removed",
+             out["sensitivity_excluding_2012"]["group_cp_coverage_gain"]),
+            ("on the clean origins",
+             out["sensitivity_clean_origins_only"]["group_cp_coverage_gain"])]
+    parts = [f"{lab} {r['estimate']} (95% CI {r['ci_95']}, "
+             f"{'excludes' if r['excludes_null'] else 'includes'} zero)" for lab, r in sens]
+    out["headline"] = (
+        f"group-conditional calibration raises extreme-class coverage by {g0['estimate']} "
+        f"(95% CI {g0['ci_95']}, {'excludes' if g0['excludes_null'] else 'includes'} zero); "
+        + "; ".join(parts))
     return out
 
 
@@ -233,15 +354,24 @@ def ro4(rows: pd.DataFrame) -> Dict[str, Any]:
     """Interval failure expressed as decision-relevant loss."""
     out: Dict[str, Any] = {"objective": "RO4", "unsafe_target": ALPHA / 2,
                            "sources": ["rolling_origin_rows.csv", "decision_impact_by_stratum.csv"]}
+    out["inference"] = "year-clustered bootstrap over rolling origins"
     s = rows[rows.method == "rolling_static_cp"]
     by = {}
     for k, g in s.groupby("stratum"):
         short = np.maximum(g.lo - g.y, 0.0)
+        # tested against the calibrated one-sided failure rate, alpha/2, not zero
+        ci = _ci(g, _mean_of("unsafe"), null_value=ALPHA / 2)
         by[str(k)] = {"rows": int(len(g)), "unsafe_rate": round(float(g.unsafe.mean()), 4),
+                      "ci_95": ci["ci_95"], "exceeds_target": ci["excludes_null"],
                       "n_unsafe": int(g.unsafe.sum()),
                       "mean_shortfall_t_ha": round(float(short[g.unsafe].mean()), 4) if g.unsafe.any() else 0.0,
                       "expected_shortfall_t_ha": round(float(short.mean()), 4)}
     out["rolling_origin_by_class"] = by
+    ex_only = s[s.stratum == "Extreme"]
+    out["extreme_excluding_2012"] = _ci(ex_only[ex_only.test_year != 2012],
+                                        _mean_of("unsafe"), null_value=ALPHA / 2)
+    out["extreme_clean_origins"] = _ci(ex_only[ex_only.test_year >= 2014],
+                                       _mean_of("unsafe"), null_value=ALPHA / 2)
 
     di = DIAG / "decision_impact_by_stratum.csv"
     if di.exists():
@@ -250,9 +380,25 @@ def ro4(rows: pd.DataFrame) -> Dict[str, Any]:
             ["Year_Type", "n", "unsafe_miss_rate", "mean_shortfall_t_ha",
              "worst_shortfall_t_ha"]].to_dict("records")
     ex = by.get("Extreme", {})
+
+    def _verdict(key: str, label: str) -> str:
+        r = out[key]
+        return (f"{label} {r['estimate']} (95% CI {r['ci_95']}, "
+                f"{'excludes' if r['excludes_null'] else 'includes'} the target)")
+
     out["headline"] = (f"in the Extreme class the lower bound was breached for "
-                       f"{ex.get('unsafe_rate')} of county-years against a target of {ALPHA/2:.2f}, "
-                       f"understating the shortfall by {ex.get('mean_shortfall_t_ha')} t/ha on average")
+                       f"{ex.get('unsafe_rate')} of county-years (95% CI {ex.get('ci_95')}, "
+                       f"{'excludes' if ex.get('exceeds_target') else 'includes'} the target) "
+                       f"against a target of {ALPHA/2:.2f}, understating the shortfall by "
+                       f"{ex.get('mean_shortfall_t_ha')} t/ha on average; "
+                       + _verdict("extreme_clean_origins", "on the clean origins") + "; "
+                       + _verdict("extreme_excluding_2012", "with 2012 removed"))
+    out["interpretation"] = (
+        "the excess over the safety target is established on the full pool and on the clean "
+        "origins; with 2012 excluded the point estimate stays above twice the target but the "
+        "interval reaches it, so the strength of the claim depends on whether the single most "
+        "severe year in the record is admitted as evidence. It should be, and the sensitivity "
+        "is reported either way.")
     return out
 
 
@@ -267,6 +413,21 @@ def ro5(rows: pd.DataFrame) -> Dict[str, Any]:
                  g.groupby("stratum").unsafe.mean().items()}
         for q, g in s.groupby("yield_q", observed=True)}
 
+    # Quintiles cut across the whole pool, so a bad year lands in the low bins by
+    # construction and the yield control is partly a year control. Ranking within
+    # each origin separates the two. Both are reported; the within-origin version
+    # is the weaker and the more honest of the pair.
+    s["yield_q_within_origin"] = s.groupby("test_year").y.transform(
+        lambda v: pd.qcut(v.rank(method="first"), 5, labels=["Q1_low", "Q2", "Q3", "Q4", "Q5_high"]))
+    out["within_origin_yield_quintile"] = {
+        str(q): {str(k): round(float(v), 4) for k, v in
+                 g.groupby("stratum").unsafe.mean().items()}
+        for q, g in s.groupby("yield_q_within_origin", observed=True)}
+    q1 = s[s.yield_q_within_origin == "Q1_low"]
+    out["q1_extreme_minus_normal_unsafe"] = {
+        **_ci(q1, _contrast("unsafe", "stratum", "Extreme", "Normal")),
+        "reads": "exposure effect on the miss rate among the lowest-yielding fifth of each origin"}
+
     within_state = {}
     for st, g in s.groupby("State"):
         e, n = g[g.stratum == "Extreme"], g[g.stratum == "Normal"]
@@ -277,6 +438,9 @@ def ro5(rows: pd.DataFrame) -> Dict[str, Any]:
     out["within_state"] = within_state
     out["states_showing_effect"] = sum(1 for v in within_state.values() if v["ratio"] > 1.5)
     out["states_tested"] = len(within_state)
+    out["within_state_note"] = ("descriptive: each state has at most 16 origins and as few as 51 "
+                                "extreme rows, too thin for a per-state interval; the ratio is "
+                                "reported to show the direction is not carried by one state")
 
     ex = s[s.stratum == "Extreme"]
     share = ex.groupby("test_year").size() / len(ex)

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-19 23:25:41",
+  "generated": "2026-09-22 14:08:05",
   "replaces": [
     "objective_O1_report",
     "objective_O4_report",
@@ -36,21 +36,49 @@
       "rolling_origin_rows.csv",
       "loso_fold_metrics.csv"
     ],
+    "inference": "year-clustered bootstrap over rolling origins",
     "rolling_origin_by_class": {
       "Extreme": {
         "rows": 1134,
-        "picp": 0.7584
+        "picp": 0.7584,
+        "ci_95": [
+          0.651482,
+          0.911507
+        ],
+        "differs_from_nominal": false
       },
       "Moderate": {
         "rows": 933,
-        "picp": 0.9143
+        "picp": 0.9143,
+        "ci_95": [
+          0.832406,
+          0.975002
+        ],
+        "differs_from_nominal": false
       },
       "Normal": {
         "rows": 5777,
-        "picp": 0.9057
+        "picp": 0.9057,
+        "ci_95": [
+          0.86738,
+          0.943982
+        ],
+        "differs_from_nominal": false
       }
     },
     "n_origins": 16,
+    "normal_minus_extreme_gap": {
+      "estimate": 0.147283,
+      "ci_95": [
+        -0.00988,
+        0.256939
+      ],
+      "null_value": 0.0,
+      "excludes_null": false,
+      "p_value": 0.087,
+      "n_origins": 16,
+      "inference_supported": true
+    },
     "loso": {
       "macro_r2": 0.6976,
       "macro_picp": 0.916,
@@ -64,7 +92,8 @@
       },
       "caveat": "config defaults (C7 caveat applies)"
     },
-    "headline": "coverage falls from 0.9057 in the Normal class to 0.7584 in the Extreme class at nominal 0.90, across 16 origins"
+    "headline": "extreme-class coverage is 0.7584 against a nominal 0.90 (95% CI [0.651482, 0.911507], 16 origins), an interval that includes the nominal level; the Normal-minus-Extreme contrast is 0.147283 (95% CI [-0.00988, 0.256939]), which includes zero",
+    "interpretation": "two-sided coverage in the extreme class does not separate from the nominal level under origin-level resampling, and the between-class contrast includes zero. Two-sided coverage spends half its power on the upper tail, where an observation above the interval is a good harvest; the deficit that does survive is the one-sided one, tested against its alpha/2 target in RO4. RO1 should be read as the descriptive stratification and RO4 as the test."
   },
   "RO2": {
     "objective": "RO2",
@@ -87,6 +116,49 @@
       "group_cp_better": 7,
       "p_value": 0.0156,
       "mean_coverage_gain": 0.0513
+    },
+    "group_cp_coverage_gain": {
+      "estimate": 0.064374,
+      "ci_95": [
+        0.031442,
+        0.105272
+      ],
+      "null_value": 0.0,
+      "excludes_null": true,
+      "p_value": 0.0005,
+      "n_origins": 13,
+      "inference_supported": true
+    },
+    "group_cp_unsafe_reduction": {
+      "estimate": 0.060847,
+      "ci_95": [
+        0.029373,
+        0.097428
+      ],
+      "null_value": 0.0,
+      "excludes_null": true,
+      "p_value": 0.001,
+      "n_origins": 13,
+      "inference_supported": true
+    },
+    "cost_to_normal_class": {
+      "coverage_change": {
+        "estimate": -0.019041,
+        "ci_95": [
+          -0.042011,
+          -0.003159
+        ],
+        "null_value": 0.0,
+        "excludes_null": true,
+        "p_value": 0.002,
+        "n_origins": 16,
+        "inference_supported": true
+      },
+      "mpiw_extreme_static": 4.066,
+      "mpiw_extreme_group": 5.1022,
+      "mpiw_normal_static": 3.5433,
+      "mpiw_normal_group": 3.1577,
+      "note": "width is reallocated from the normal class to the extreme class, not added"
     },
     "extreme_group_fell_back_to_pooled": {
       "origins": 4,
@@ -112,8 +184,42 @@
       },
       "group_conditional_cp": {
         "extreme_picp": 0.9061
+      },
+      "group_cp_coverage_gain": {
+        "estimate": 0.093863,
+        "ci_95": [
+          0.012046,
+          0.140847
+        ],
+        "null_value": 0.0,
+        "excludes_null": true,
+        "p_value": 0.006,
+        "n_origins": 8,
+        "inference_supported": true
       }
-    }
+    },
+    "sensitivity_excluding_2012": {
+      "reason": "2012 supplies about 40% of all extreme-exposure rows",
+      "rolling_static_cp": {
+        "extreme_picp": 0.863
+      },
+      "group_conditional_cp": {
+        "extreme_picp": 0.9388
+      },
+      "group_cp_coverage_gain": {
+        "estimate": 0.075802,
+        "ci_95": [
+          0.013421,
+          0.115457
+        ],
+        "null_value": 0.0,
+        "excludes_null": true,
+        "p_value": 0.0005,
+        "n_origins": 12,
+        "inference_supported": true
+      }
+    },
+    "headline": "group-conditional calibration raises extreme-class coverage by 0.064374 (95% CI [0.031442, 0.105272], excludes zero); with the dominant origin removed 0.075802 (95% CI [0.013421, 0.115457], excludes zero); on the clean origins 0.093863 (95% CI [0.012046, 0.140847], excludes zero)"
   },
   "RO4": {
     "objective": "RO4",
@@ -122,10 +228,16 @@
       "rolling_origin_rows.csv",
       "decision_impact_by_stratum.csv"
     ],
+    "inference": "year-clustered bootstrap over rolling origins",
     "rolling_origin_by_class": {
       "Extreme": {
         "rows": 1134,
         "unsafe_rate": 0.231,
+        "ci_95": [
+          0.07272,
+          0.340079
+        ],
+        "exceeds_target": true,
         "n_unsafe": 262,
         "mean_shortfall_t_ha": 1.1134,
         "expected_shortfall_t_ha": 0.2572
@@ -133,6 +245,11 @@
       "Moderate": {
         "rows": 933,
         "unsafe_rate": 0.0364,
+        "ci_95": [
+          0.010176,
+          0.071432
+        ],
+        "exceeds_target": false,
         "n_unsafe": 34,
         "mean_shortfall_t_ha": 0.6897,
         "expected_shortfall_t_ha": 0.0251
@@ -140,10 +257,39 @@
       "Normal": {
         "rows": 5777,
         "unsafe_rate": 0.0386,
+        "ci_95": [
+          0.013566,
+          0.072063
+        ],
+        "exceeds_target": false,
         "n_unsafe": 223,
         "mean_shortfall_t_ha": 0.6966,
         "expected_shortfall_t_ha": 0.0269
       }
+    },
+    "extreme_excluding_2012": {
+      "estimate": 0.122449,
+      "ci_95": [
+        0.048947,
+        0.185759
+      ],
+      "null_value": 0.04999999999999999,
+      "excludes_null": false,
+      "p_value": 0.053,
+      "n_origins": 12,
+      "inference_supported": true
+    },
+    "extreme_clean_origins": {
+      "estimate": 0.155235,
+      "ci_95": [
+        0.0652,
+        0.225457
+      ],
+      "null_value": 0.04999999999999999,
+      "excludes_null": true,
+      "p_value": 0.021,
+      "n_origins": 8,
+      "inference_supported": true
     },
     "locked_window_by_class": [
       {
@@ -168,7 +314,8 @@
         "worst_shortfall_t_ha": 2.2270000000000003
       }
     ],
-    "headline": "in the Extreme class the lower bound was breached for 0.231 of county-years against a target of 0.05, understating the shortfall by 1.1134 t/ha on average"
+    "headline": "in the Extreme class the lower bound was breached for 0.231 of county-years (95% CI [0.07272, 0.340079], excludes the target) against a target of 0.05, understating the shortfall by 1.1134 t/ha on average; on the clean origins 0.155235 (95% CI [0.0652, 0.225457], excludes the target); with 2012 removed 0.122449 (95% CI [0.048947, 0.185759], includes the target)",
+    "interpretation": "the excess over the safety target is established on the full pool and on the clean origins; with 2012 excluded the point estimate stays above twice the target but the interval reaches it, so the strength of the claim depends on whether the single most severe year in the record is admitted as evidence. It should be, and the sensitivity is reported either way."
   },
   "RO5": {
     "objective": "RO5",
@@ -201,6 +348,46 @@
         "Moderate": 0.0,
         "Normal": 0.0016
       }
+    },
+    "within_origin_yield_quintile": {
+      "Q1_low": {
+        "Extreme": 0.4635,
+        "Moderate": 0.2053,
+        "Normal": 0.153
+      },
+      "Q2": {
+        "Extreme": 0.2657,
+        "Moderate": 0.0175,
+        "Normal": 0.0462
+      },
+      "Q3": {
+        "Extreme": 0.0594,
+        "Moderate": 0.0,
+        "Normal": 0.0093
+      },
+      "Q4": {
+        "Extreme": 0.0,
+        "Moderate": 0.0,
+        "Normal": 0.0008
+      },
+      "Q5_high": {
+        "Extreme": 0.0,
+        "Moderate": 0.0,
+        "Normal": 0.0
+      }
+    },
+    "q1_extreme_minus_normal_unsafe": {
+      "estimate": 0.31051,
+      "ci_95": [
+        -0.005551,
+        0.603239
+      ],
+      "null_value": 0.0,
+      "excludes_null": false,
+      "p_value": 0.059,
+      "n_origins": 16,
+      "inference_supported": true,
+      "reads": "exposure effect on the miss rate among the lowest-yielding fifth of each origin"
     },
     "within_state": {
       "Illinois": {
@@ -248,6 +435,7 @@
     },
     "states_showing_effect": 5,
     "states_tested": 6,
+    "within_state_note": "descriptive: each state has at most 16 origins and as few as 51 extreme rows, too thin for a per-state interval; the ratio is reported to show the direction is not carried by one state",
     "leave_one_origin_out": {
       "most_influential_origin": 2012,
       "share_of_extreme_rows": 0.395,
