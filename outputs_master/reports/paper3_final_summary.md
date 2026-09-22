@@ -7,7 +7,7 @@
 - **LOSO-CV**: 6 state folds (Illinois, Indiana, Iowa, Minnesota, Missouri, Ohio)
 - **Backbones Trained**: NeuralCQR, LightGBM, CatBoost, XGBoost
 - **Conformal Calibration Methods**: static_conformal, standard_aci, sa_aci, phenology_stratified_cqr, weighted_conformal, locally_adaptive
-- **Pipeline Runtime**: 3574.2 seconds
+- **Pipeline Runtime**: 3360.8 seconds
 - **Methodology validation**: `COMPLIANT` (PASS=18, FAIL=0, WARNING=0, N/A=0) — see `methodology_validation_report.md`
 - **Leakage audit**: zero train/dev/cal/test observation overlap across 7 experiments (row-identity check)
 

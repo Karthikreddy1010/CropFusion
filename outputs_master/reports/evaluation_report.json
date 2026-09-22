@@ -17280,51 +17280,51 @@
     "per_batch_results": [
       {
         "batch_size": 1,
-        "model_inference_latency_ms": 0.4114,
-        "model_inference_per_sample_ms": 0.411392,
-        "model_inference_throughput_samples_per_sec": 2430.8,
-        "end_to_end_latency_ms": 0.8541,
-        "end_to_end_throughput_samples_per_sec": 1170.8,
-        "preprocessing_and_transfer_overhead_ms": 0.4427
+        "model_inference_latency_ms": 0.3938,
+        "model_inference_per_sample_ms": 0.393771,
+        "model_inference_throughput_samples_per_sec": 2539.5,
+        "end_to_end_latency_ms": 0.7808,
+        "end_to_end_throughput_samples_per_sec": 1280.8,
+        "preprocessing_and_transfer_overhead_ms": 0.387
       },
       {
         "batch_size": 32,
-        "model_inference_latency_ms": 0.6444,
-        "model_inference_per_sample_ms": 0.020137,
-        "model_inference_throughput_samples_per_sec": 49659.8,
-        "end_to_end_latency_ms": 1.0297,
-        "end_to_end_throughput_samples_per_sec": 31077.0,
-        "preprocessing_and_transfer_overhead_ms": 0.3853
+        "model_inference_latency_ms": 0.5567,
+        "model_inference_per_sample_ms": 0.017398,
+        "model_inference_throughput_samples_per_sec": 57478.2,
+        "end_to_end_latency_ms": 1.2591,
+        "end_to_end_throughput_samples_per_sec": 25415.5,
+        "preprocessing_and_transfer_overhead_ms": 0.7023
       },
       {
         "batch_size": 256,
-        "model_inference_latency_ms": 0.5839,
-        "model_inference_per_sample_ms": 0.002281,
-        "model_inference_throughput_samples_per_sec": 438403.4,
-        "end_to_end_latency_ms": 1.1127,
-        "end_to_end_throughput_samples_per_sec": 230063.4,
-        "preprocessing_and_transfer_overhead_ms": 0.5288
+        "model_inference_latency_ms": 0.6113,
+        "model_inference_per_sample_ms": 0.002388,
+        "model_inference_throughput_samples_per_sec": 418751.4,
+        "end_to_end_latency_ms": 1.092,
+        "end_to_end_throughput_samples_per_sec": 234431.4,
+        "preprocessing_and_transfer_overhead_ms": 0.4807
       },
       {
         "batch_size": 2345,
-        "model_inference_latency_ms": 0.5926,
-        "model_inference_per_sample_ms": 0.000253,
-        "model_inference_throughput_samples_per_sec": 3957004.6,
-        "end_to_end_latency_ms": 2.0886,
-        "end_to_end_throughput_samples_per_sec": 1122787.1,
-        "preprocessing_and_transfer_overhead_ms": 1.4959
+        "model_inference_latency_ms": 0.5673,
+        "model_inference_per_sample_ms": 0.000242,
+        "model_inference_throughput_samples_per_sec": 4133340.8,
+        "end_to_end_latency_ms": 2.0494,
+        "end_to_end_throughput_samples_per_sec": 1144249.1,
+        "preprocessing_and_transfer_overhead_ms": 1.482
       }
     ],
-    "single_sample_latency_ms": 0.4114,
-    "single_sample_end_to_end_latency_ms": 0.8541,
-    "batch_latency_ms": 0.5926,
+    "single_sample_latency_ms": 0.3938,
+    "single_sample_end_to_end_latency_ms": 0.7808,
+    "batch_latency_ms": 0.5673,
     "batch_size_for_batch_latency": 2345,
-    "throughput_samples_per_sec": 3957004.6,
-    "throughput_measurement_note": "model-inference throughput at batch size 2345 on cuda; this is NOT full-pipeline throughput -- see end_to_end_throughput_samples_per_sec (1122787.1/s) for that",
+    "throughput_samples_per_sec": 4133340.8,
+    "throughput_measurement_note": "model-inference throughput at batch size 2345 on cuda; this is NOT full-pipeline throughput -- see end_to_end_throughput_samples_per_sec (1144249.1/s) for that",
     "peak_gpu_memory_mb": 20.46,
     "gpu_memory_method": "torch.cuda.max_memory_allocated",
-    "cpu_memory_rss_before_mb": 2276.91,
-    "cpu_memory_rss_after_mb": 2276.91,
+    "cpu_memory_rss_before_mb": 2254.95,
+    "cpu_memory_rss_after_mb": 2254.95,
     "cpu_memory_method": "psutil process RSS before/after the benchmark",
     "n_test_samples": 2345
   }

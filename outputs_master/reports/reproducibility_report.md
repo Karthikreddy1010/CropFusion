@@ -21,4 +21,4 @@
 - **Dataset File**: `Paper3_MasterDataset_PRISM_NLDAS_NOAA_USDA_FULL_1985_2023.parquet` (MD5 Checksum: `86f02b734d8719ebce41af03ccc7a736fd0396db2c667def450851f9dfce2f5f`)
 - **Temporal Splits**: Train (1985, 2015), Val (2016, 2018), Test (2019, 2023)
 - **Target Quantiles**: (0.05, 0.95)
-- **Total Pipeline Execution Time**: `3574.2` seconds
+- **Total Pipeline Execution Time**: `3360.8` seconds
