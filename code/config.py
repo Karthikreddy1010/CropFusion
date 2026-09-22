@@ -245,7 +245,10 @@ LGBM_DEV_EARLY_STOPPING: bool = False
 #   Then set this True and rerun. Off by default so results do not change
 #   until the tuning run exists. The LOSO macro R2 is expected to FALL: the
 #   incumbent settings were chosen by watching held-out performance.
-LOSO_USE_DEV_SELECTED_HP: bool = False
+#   main.ensure_loso_dev_hyperparameters() runs the tuning automatically when no
+#   selection file exists and reuses it afterwards, so a single pipeline run is
+#   enough and reruns stay deterministic.
+LOSO_USE_DEV_SELECTED_HP: bool = True
 
 # C5 — SA-ACI severity weighting (audit blocker).
 #   The published implementation DIVIDED the conformal threshold by the

@@ -28,9 +28,19 @@ import config as cfg
 logger = logging.getLogger("paper3")
 
 # Bump when any value below changes, and say why in the changelog.
-PROTOCOL_VERSION = "1.2.0-2026-09-18"
+PROTOCOL_VERSION = "1.3.0-2026-09-22"
 
 CHANGELOG: List[Dict[str, str]] = [
+    {"version": "1.3.0-2026-09-22",
+     "change": "Turn LOSO_USE_DEV_SELECTED_HP ON, resolving audit C7. Each LOSO "
+               "fold now uses hyperparameters re-derived on its own DEV rows; "
+               "main.ensure_loso_dev_hyperparameters() runs code/loso_dev_tuning.py "
+               "when no selection file exists and caches it, so the selection is "
+               "fixed across reruns rather than re-searched. This CHANGES the LOSO "
+               "results: the previous macro R2 of 0.6976 was produced with settings "
+               "chosen by watching held-out state performance, and removing that "
+               "advantage is expected to lower it. A fall is the correct outcome. "
+               "Wiring verified in code/diagnostics_loso/verify_c7_wiring.py."},
     {"version": "1.2.0-2026-09-18",
      "change": "Declare LOSO_USE_DEV_SELECTED_HP (audit C7). When on, each LOSO "
                "fold reads hyperparameters re-derived on its own DEV rows by "

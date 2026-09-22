@@ -1136,6 +1136,10 @@ def main() -> None:
     logger.info("PHASE 4: LEAVE-ONE-STATE-OUT CROSS-VALIDATION (§5.2)")
     logger.info("═" * 70)
 
+    # Audit C7: derive each fold's hyperparameters on its own DEV rows before the
+    # folds run. Cached after the first time, so this costs nothing on a rerun.
+    logger.info("LOSO hyperparameter provenance: %s", ensure_loso_dev_hyperparameters())
+
     loso_metrics, loso_preds_df = _run_loso_cv(df, feature_cols)
     save_report({"folds": loso_metrics}, "loso_cv_report.json")
     plot_loso_cv_results(loso_metrics, loso_preds_df)
@@ -1520,6 +1524,86 @@ def run_backbone_robustness_check(
     return summary
 
 
+def ensure_loso_dev_hyperparameters(enabled: Optional[bool] = None,
+                                    path: Optional[Path] = None,
+                                    runner=None) -> str:
+    """Guarantee each LOSO fold can read hyperparameters derived on its own DEV rows.
+
+    Audit C7: the values in config.py descend from six rounds selected by watching
+    leave-one-state-out R2 rise, i.e. chosen with held-out information.
+    code/loso_dev_tuning.py re-derives them on each fold's own DEV partition, and
+    this makes the pipeline do that for itself instead of relying on someone having
+    remembered to run it first.
+
+    The search is the expensive half -- 24 neural fits against the LOSO phase's 6 --
+    so it runs once and is cached as an artefact. Later runs read the file. That is
+    not only a speed decision: a tuner that reran every time could select a
+    different configuration on each invocation, and the frozen protocol would then
+    be describing a moving target. The selection is a file so its provenance can be
+    cited and frozen.
+
+    Returns the provenance string recorded on every fold's metrics.
+    """
+    logger = logging.getLogger("paper3")
+    if enabled is None:
+        enabled = bool(getattr(cfg, "LOSO_USE_DEV_SELECTED_HP", False))
+    path = (Path(cfg.REPORT_DIR) / "loso_dev_selected_hyperparams.json"
+            if path is None else Path(path))
+
+    def _uncovered(p: Path) -> List[str]:
+        """States the selection does not cover, so a partial file cannot pass as whole.
+
+        loso_dev_tuning.py has a smoke mode (--states Minnesota --grid 2). If that
+        output ever lands at the cache path, the caching above would reuse it and
+        leave the other five folds on the held-out-informed defaults without
+        anything in the run saying so.
+        """
+        import json as _json
+        try:
+            sel = _json.loads(p.read_text(encoding="utf-8")).get("per_state_selection", {})
+        except (OSError, ValueError) as exc:
+            # Only an unreadable or malformed file counts as "covers nothing". A
+            # broader catch here once turned a NameError into a plausible-looking
+            # "0 of 6 states" report, which is the kind of lie that survives review.
+            logger.warning("could not read %s (%s); treating it as no selection", p.name, exc)
+            return list(cfg.LOSO_STATES)
+        return [s for s in cfg.LOSO_STATES if s not in sel]
+
+    if not enabled:
+        return "config defaults (C7 caveat applies)"
+    if path.exists():
+        gaps = _uncovered(path)
+        if gaps:
+            logger.warning("LOSO hyperparameters: %s covers only %d of %d states; %s will use "
+                           "config defaults and keep the C7 caveat. Delete the file and rerun "
+                           "code/loso_dev_tuning.py for a complete selection.",
+                           path.name, len(cfg.LOSO_STATES) - len(gaps), len(cfg.LOSO_STATES),
+                           ", ".join(gaps))
+            return (f"DEV-selected but PARTIAL ({path.name}; {len(gaps)} of "
+                    f"{len(cfg.LOSO_STATES)} states missing: {', '.join(gaps)})")
+        logger.info("LOSO hyperparameters: reusing the cached DEV selection (%s)", path.name)
+        return f"DEV-selected ({path.name}, cached)"
+
+    logger.info("LOSO hyperparameters: no DEV selection on disk; running the C7 tuning now "
+                "(%d states x 4 configurations -- GPU strongly preferred)",
+                len(cfg.LOSO_STATES))
+    if runner is None:
+        from loso_dev_tuning import main as runner
+    try:
+        runner()
+    except Exception as exc:                                  # noqa: BLE001
+        # Losing the tuning 40 minutes into a pipeline run should cost the C7
+        # correction, not the run. The caveat travels with the fold metrics.
+        logger.error("LOSO DEV tuning failed (%s: %s); falling back to config defaults, "
+                     "which carry the C7 caveat", type(exc).__name__, exc)
+        return f"config defaults (C7 caveat applies; tuning failed: {type(exc).__name__})"
+    if not path.exists():
+        logger.error("LOSO DEV tuning finished but wrote no selection to %s; "
+                     "falling back to config defaults", path)
+        return "config defaults (C7 caveat applies; tuning produced no selection file)"
+    return f"DEV-selected ({path.name}, freshly tuned)"
+
+
 def _run_loso_cv(
     df: pd.DataFrame,
     feature_cols: List[str],
@@ -1741,7 +1825,8 @@ def _run_loso_cv(
             if bool(getattr(cfg, "LOSO_USE_DEV_SELECTED_HP", False)):
                 _sel_path = Path(cfg.REPORT_DIR) / "loso_dev_selected_hyperparams.json"
                 if _sel_path.exists():
-                    _sel = json.loads(_sel_path.read_text(encoding="utf-8"))
+                    import json as _json_sel
+                    _sel = _json_sel.loads(_sel_path.read_text(encoding="utf-8"))
                     _fold_hp = _sel.get("per_state_selection", {}).get(state)
                     if _fold_hp:
                         _hp.update({k: _fold_hp[k] for k in _hp if k in _fold_hp})
