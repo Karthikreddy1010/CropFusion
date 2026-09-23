@@ -313,12 +313,19 @@ silking dates.
 
 ## 12. Reproducibility
 
-Frozen protocol `1.1.0-2026-09-18`, hash `d07d31512391047c`, written to
+Frozen protocol `1.4.0-2026-09-23`, hash `9ea6b15d86c6ebef`, written to
 `outputs_master/reports/frozen_protocol.json` with a check that the live
 configuration matches it. Seed 42. Model weights, scalers, per-fold metrics,
-predictions and every report are written into the run's output folder. 53
-protocol-compliance and pipeline tests accompany the code.
+predictions and every report are written into the run's output folder.
 
-**Outstanding before submission:** [C9] static-layer provenance; the DEV-only
-re-derivation of LOSO hyperparameters; a fixed-effects degree-day panel baseline;
-and DtACI/AgACI comparators.
+The pipeline has been executed independently on two platforms and three times in
+total. Every point metric, coverage figure and interval reproduced exactly, with
+differences confined to inference latency and wall-clock runtime (5138.4 s and
+5386.0 s on the two most recent runs). The rolling-origin evaluation was
+additionally repeated at five seeds: all interval metrics are bit-identical
+across them for the structural reason given in §11, and the point metrics are
+reported with their seed dispersion.
+
+**Outstanding before submission:** [C9] static-layer provenance; a fixed-effects
+degree-day panel baseline; and DtACI/AgACI comparators. The DEV-only
+re-derivation of LOSO hyperparameters (C7) is complete — see §11.
