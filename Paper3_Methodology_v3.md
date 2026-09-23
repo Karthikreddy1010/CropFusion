@@ -292,7 +292,19 @@ it is a measured trade-off rather than a free improvement, and it is reported as
 one. The extreme group also fell back to the pooled threshold in 4 of 16 origins
 because the two-year calibration window held too few extreme rows.
 
-**Other limitations.** Single seed for the reported run; LightGBM only in the
+**Seed dependence is asymmetric, and the asymmetry is structural.** The
+rolling-origin quantile learners set no `subsample` and no `colsample_bytree`,
+and LightGBM disables bagging without `subsample_freq`, so they are deterministic
+given their training data: every interval, PICP, unsafe miss rate, MPIW and
+Winkler figure is seed-invariant, verified by refitting origin 2012 at two seeds
+(max |Δ| = 0.0) and guarded by
+`code/diagnostics_loso/verify_seed_sensitivity.py`. The point learner does
+subsample features and does move with the seed (R² by 0.024 at that origin), so
+point-accuracy claims carry seed uncertainty and coverage claims do not. Note
+what this does not buy: intervals that cannot vary with the seed also cannot be
+stabilised by averaging over it.
+
+**Other limitations.** LightGBM only in the
 rolling-origin analysis; one test year per origin, so ACI's adaptivity is not
 exercised there and the static-family methods coincide; irrigated share is not
 controlled; phenology windows use fixed GDD thresholds rather than observed

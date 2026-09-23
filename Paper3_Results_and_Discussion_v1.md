@@ -405,12 +405,32 @@ inclusion correct — it is the event the method is supposed to survive — but 
 reader who disagrees can read every sensitivity in the report.
 
 *Design and scope.* One test year per origin, so ACI adaptivity is untested;
-LightGBM only and a single seed in the rolling-origin analysis; irrigated share
-is not controlled; phenology windows use fixed GDD thresholds rather than
-observed silking dates; SPI/SPEI standardisation is fixed to 1985–2013, which
-overlaps the test year for origins 2008–2013, so the clean-origin sensitivity is
-reported throughout. Six Corn Belt states and one crop; the exposure thresholds
-are not claimed to transfer unchanged.
+LightGBM only in the rolling-origin analysis; irrigated share is not controlled;
+phenology windows use fixed GDD thresholds rather than observed silking dates;
+SPI/SPEI standardisation is fixed to 1985–2013, which overlaps the test year for
+origins 2008–2013, so the clean-origin sensitivity is reported throughout. Six
+Corn Belt states and one crop; the exposure thresholds are not claimed to
+transfer unchanged.
+
+*Seed dependence — not a limitation for the interval results, and not a virtue
+either.* The rolling-origin intervals are reported from one seed, and averaging
+over more would change nothing: the quantile learners that generate them specify
+no `subsample` and no `colsample_bytree`, and LightGBM disables bagging without
+`subsample_freq`, so they are deterministic functions of their training data.
+Refitting origin 2012 at seeds 42 and 7 reproduces PICP, unsafe miss rate, MPIW
+and Winkler to every printed digit (max |Δ| = 0.0 across all four calibrators);
+the property is asserted as a regression test in
+`code/diagnostics_loso/verify_seed_sensitivity.py`, which also fails if a
+stochastic parameter is ever added to that learner. The single-seed objection
+therefore does not apply to RO1, RO2, RO4 or RO5.
+
+The same fact denies us a remedy. Seed averaging cannot stabilise these
+intervals, so if the calibration is wrong it is reproducibly wrong, and
+reproducibility here is not evidence of correctness. The point predictions are a
+separate matter: they use the 80%-feature-subsampling configuration and do move
+with the seed (R² by 0.024 and bias by 0.099 t/ha at origin 2012), so the
+point-accuracy statements in §1.3 carry seed uncertainty that the coverage
+statements do not.
 
 *The CDHW predictor null is a null.* Three seeds and five model families cannot
 establish the absence of a small effect, only bound it as smaller than seed

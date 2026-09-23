@@ -27,6 +27,11 @@ multi-year window; those windows overlap, so treat them as a secondary analysis.
 
 Run:  python code/rolling_origin.py --first 2008 --last 2023
       python code/rolling_origin.py --first 2008 --last 2023 --model neural
+
+**Seeds.** --seed changes the point learner and leaves every interval untouched,
+because the quantile learners carry no stochastic parameters; see
+code/diagnostics_loso/verify_seed_sensitivity.py. For a seed sweep over the point
+metrics use code/run_rolling_seeds.sh, which runs each seed under its own --tag.
 """
 from __future__ import annotations
 
@@ -252,12 +257,22 @@ def run_origin(test_year: int, args: argparse.Namespace,
             return [{"test_year": test_year, "status": "empty partition", **win}]
 
         # ── model ────────────────────────────────────────────────────
+        seed = int(getattr(args, "seed", cfg.RANDOM_SEED))
         if args.model == "lgbm":
             import lightgbm as lgb
-            point = lgb.LGBMRegressor(**cfg.LGBM_PARAMS).fit(X["fit"], y_det["fit"])
+            point = lgb.LGBMRegressor(**{**cfg.LGBM_PARAMS, "random_state": seed}).fit(
+                X["fit"], y_det["fit"])
+            # NOTE on what the seed can and cannot move here. The point model draws
+            # 80% of features per tree, so its predictions vary with the seed. These
+            # quantile models specify no subsample or colsample, and LightGBM's
+            # bagging is off without subsample_freq, so they are deterministic
+            # functions of the data: changing the seed leaves qlo/qhi bit-identical.
+            # rolling_static_cp and group_conditional_cp are built from qlo/qhi
+            # alone and are therefore seed-invariant by construction, not by luck.
+            # Verified in code/diagnostics_loso/verify_seed_sensitivity.py.
             qp = dict(objective="quantile", n_estimators=500,
                       learning_rate=cfg.LGBM_PARAMS["learning_rate"],
-                      random_state=cfg.RANDOM_SEED, verbose=-1)
+                      random_state=seed, verbose=-1)
             lo_m = lgb.LGBMRegressor(alpha=alpha / 2, **qp).fit(X["fit"], y_det["fit"])
             hi_m = lgb.LGBMRegressor(alpha=1 - alpha / 2, **qp).fit(X["fit"], y_det["fit"])
             pred = {k: point.predict(X[k]) for k in ("cal", "test")}
@@ -271,7 +286,7 @@ def run_origin(test_year: int, args: argparse.Namespace,
                 batch_size=cfg.BATCH_SIZE, lr=cfg.LEARNING_RATE,
                 hidden_dims=cfg.NEURAL_CQR_HIDDEN_DIMS,
                 early_stopping_mode=cfg.EARLY_STOPPING_MODE,
-                patience=cfg.EARLY_STOPPING_PATIENCE, seed=cfg.RANDOM_SEED,
+                patience=cfg.EARLY_STOPPING_PATIENCE, seed=seed,
             )
             pred, qlo, qhi = {}, {}, {}
             for k in ("cal", "test"):
@@ -365,6 +380,7 @@ def main() -> int:
     ap.add_argument("--test-window", type=int, default=1,
                     help="test years per origin; >1 gives ACI room to adapt but overlaps")
     ap.add_argument("--model", choices=("lgbm", "neural"), default="lgbm")
+    ap.add_argument("--seed", type=int, default=cfg.RANDOM_SEED)
     ap.add_argument("--tag", type=str, default="rolling_origin")
     ap.add_argument("--out-dir", type=str, default=None)
     args = ap.parse_args()
@@ -420,7 +436,11 @@ def main() -> int:
                    .reset_index())
         loo = loo_sensitivity(real)
         loo.to_csv(out_dir / f"{args.tag}_loo_sensitivity.csv", index=False)
-        summary = summary.merge(loo, on=["method", "stratum"], how="left")
+        # Leave-one-origin-out needs at least two origins to say anything, so a
+        # single-origin run (--first Y --last Y, used for seed and smoke tests)
+        # returns an empty frame with no columns to merge on.
+        if not loo.empty:
+            summary = summary.merge(loo, on=["method", "stratum"], how="left")
         summary.to_csv(out_dir / f"{args.tag}_summary.csv", index=False)
         print("\n" + "=" * 112)
         print("ROW-WEIGHTED POOLED RESULTS (the per-origin mean is in the CSV and is NOT the pooled value)")
