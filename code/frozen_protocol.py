@@ -28,9 +28,18 @@ import config as cfg
 logger = logging.getLogger("paper3")
 
 # Bump when any value below changes, and say why in the changelog.
-PROTOCOL_VERSION = "1.3.0-2026-09-22"
+PROTOCOL_VERSION = "1.4.0-2026-09-23"
 
 CHANGELOG: List[Dict[str, str]] = [
+    {"version": "1.4.0-2026-09-23",
+     "change": "Documentation only; no evaluation behaviour changes and no result "
+               "moves. The protocol still carried a PENDING key declaring the LOSO "
+               "hyperparameters awaiting re-derivation, which 1.3.0 had already "
+               "delivered -- so the provenance artefact contradicted the run that "
+               "wrote it. Replaced with role_of_the_values_above, which states that "
+               "the config values are fallbacks used only when the DEV selection is "
+               "missing or incomplete. The hash moves from d7089a2e7e1db551 because "
+               "the protocol text is part of it; metrics are unchanged."},
     {"version": "1.3.0-2026-09-22",
      "change": "Turn LOSO_USE_DEV_SELECTED_HP ON, resolving audit C7. Each LOSO "
                "fold now uses hyperparameters re-derived on its own DEV rows; "
@@ -103,8 +112,13 @@ PROTOCOL: Dict[str, Any] = {
             "max_epochs": cfg.LOSO_MAX_EPOCHS,
             "early_stopping_patience": cfg.LOSO_EARLY_STOPPING_PATIENCE,
             "early_stopping_mode": cfg.LOSO_EARLY_STOPPING_MODE,
-            "PENDING": "re-derive on each fold's own DEV rows (C7); the values above "
-                       "descend from rounds selected on LOSO R2",
+            "role_of_the_values_above": (
+                "FALLBACK ONLY, as of protocol 1.4.0. C7 is resolved: each fold's "
+                "operative hyperparameters are re-derived on its own DEV rows and "
+                "read from loso_dev_selected_hyperparams.json. These config values "
+                "descend from rounds selected on held-out LOSO R2 and are used only "
+                "when that file is absent or does not cover a state, in which case "
+                "the fold's hyperparameter_source records the C7 caveat."),
         },
         "lightgbm": dict(cfg.LGBM_PARAMS),
         "lightgbm_dev_early_stopping": cfg.LGBM_DEV_EARLY_STOPPING,
