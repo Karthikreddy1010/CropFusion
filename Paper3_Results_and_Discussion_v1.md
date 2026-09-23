@@ -223,18 +223,28 @@ consequence:
 | Locally adaptive | 0.0488 | 0.8960 | **0.0941** (best) | **0.712** |
 | Phenology-stratified CQR | 0.0493 (worst) | 0.8762 | 0.1139 | 0.757 |
 
-Spearman ρ between marginal ACE and extreme-class unsafe rate is **−0.868
-(p = 0.025)**: the better a method's marginal calibration, the worse it fails in
-the stratum where failure is expensive. Selecting on marginal ACE would pick
-SA-ACI, which has the highest miss rate and the largest shortfall of the six.
+The ordering is monotone: ranked by marginal ACE, the extreme-class unsafe rate
+falls from 0.134 to 0.094 in almost the reverse order. Spearman ρ = −0.868
+(p = 0.025). Selecting on marginal ACE would pick SA-ACI, which has the highest
+miss rate and the largest shortfall of the six.
 
-This is a ranking over six methods, two of which are near-duplicates
-(phenology-stratified and static agree to four decimals), on a 202-row extreme
-stratum from a five-year window. It is not six independent samples, and we do
-not present ρ as a population estimate. It is reported because the direction is
-unambiguous and because every one of the six methods exceeds the safety target
-in the extreme class — 0.094 to 0.134 against 0.05 — while all six meet it
-marginally.
+**We do not rest the claim on that p-value, and neither should a reader.** The
+extreme stratum holds 202 rows, so one county-year is worth 0.005 in the miss
+rate — about the distance between adjacent methods in the table. Flipping a
+single row per method, chosen adversarially across all 64 sign combinations,
+moves ρ to −0.431 (p = 0.393). The rank correlation is therefore a description
+of this table, not an inference about methods in general: six methods, two of
+them near-duplicates (phenology-stratified and static agree to four decimals),
+and not six independent samples.
+
+What does not depend on any of that arithmetic is the finding underneath it:
+**every one of the six methods meets the nominal target marginally and breaches
+the 0.05 safety target in the extreme class**, by factors of 1.9 to 2.7. That
+statement needs no rank correlation, survives any single-row perturbation, and
+replicates in the rolling-origin design over 1 134 extreme-class rows (§1.5,
+§1.8 above), where the interval on the excess excludes the target. The direction
+of the ranking is a further observation, offered as a hypothesis worth testing on
+a larger extreme stratum rather than as an established relationship.
 
 ### 1.9 RO5 — is it exposure, or something exposure stands for?
 
@@ -317,7 +327,7 @@ remedy a practitioner can apply today with no change to the underlying model.
 
 ### 2.2 The marginal-calibration trap
 
-The inversion in §1.8 is the result with the clearest implication for practice.
+The pattern in §1.8 is the result with the clearest implication for practice.
 If a method is chosen by marginal ACE — the standard reported quantity — the
 selection lands on SA-ACI, which has the best marginal calibration (0.0241) and
 the worst extreme-class miss rate (0.134) and largest shortfall (0.816 t/ha) of
@@ -325,6 +335,14 @@ the six. The mechanism is not mysterious: adaptive methods buy their tight
 marginal calibration by narrowing intervals on average, and average behaviour is
 dominated by the 74% of county-years in the normal class. The narrowing is
 withdrawn from precisely the stratum that needed it.
+
+The strong form of this — that marginal calibration quality *predicts* conditional
+failure — is not something a 202-row stratum can establish, and §1.8 shows the
+rank correlation collapsing under a one-row perturbation. The weak form is enough
+for the practical conclusion and is not in doubt: marginal adequacy carries no
+information about conditional adequacy, because all six methods have the former
+and none has the latter. A practitioner who reads only PICP cannot distinguish
+the best method here from the worst.
 
 Recent applied work reports marginal coverage and stops. Two 2026 examples:
 a conformalised graph-ensemble yield model reports "80.72% empirical coverage"
@@ -415,7 +433,10 @@ correction necessary is disclosed verbatim in
 
 1. `comprehensive_metrics.csv` and `backbone_benchmark.csv` place raw model
    coverage and conformally calibrated coverage in one column. Split them.
-2. `predictions.csv` stores values at 4 dp, which is coarse for shortfall
-   arithmetic in t/ha. Widen before recomputing any consequence metric from it.
+2. `predictions.csv` stores values at 4 dp. We checked what this can affect: of
+   14 070 rows, six lie within 5e-4 of an interval bound and **all six are at the
+   upper bound**, so no unsafe-miss flag is ambiguous and no consequence metric
+   in this draft is at risk. Widen it anyway before any future recomputation, and
+   do not assume the margin holds after a rerun.
 3. `loso_summary.csv` reports a macro 95% CI across six folds; with six clusters
    this is a wide interval and should be labelled as such wherever quoted.
