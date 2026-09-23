@@ -1,0 +1,37 @@
+{
+  "generated": "2026-09-23 10:47:23",
+  "seeds": [
+    42,
+    7,
+    123,
+    2024,
+    3407
+  ],
+  "origins": 16,
+  "interval_metrics_max_abs_delta_across_seeds": {
+    "picp": 0.0,
+    "unsafe_miss_rate": 0.0,
+    "mpiw": 0.0,
+    "winkler": 0.0
+  },
+  "interval_invariance": "exact; the quantile learners carry no stochastic parameters",
+  "cells_compared": 244,
+  "beats_baseline_per_seed": {
+    "7": 16,
+    "42": 16,
+    "123": 16,
+    "2024": 16,
+    "3407": 16
+  },
+  "mean_model_r2_over_origins_and_seeds": 0.5852,
+  "mean_baseline_r2": 0.283,
+  "seed_sd_of_across_origin_mean_r2": 0.0054,
+  "largest_per_origin_seed_sd": {
+    "origin": 2009,
+    "sd": 0.0629
+  },
+  "tightest_margin": {
+    "origin": 2015,
+    "worst_case_margin": 0.0064
+  }
+}

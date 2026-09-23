@@ -69,12 +69,25 @@ the calibrated figures below. This mixing is a known defect in
 
 ### 1.3 Baselines
 
-*Source: `outputs_diagnostics/reports/rolling_origin_raw.csv`.*
+*Sources: `rolling_origin_raw.csv`, `rolling_origin_seed_sweep.json` (5 seeds).*
 
 Across the 16 rolling origins the model beats a trend + county-mean baseline in
 **16 of 16** origins, mean R² 0.585 against 0.283. The margin is widest in 2012,
 where the baseline is actively harmful (R² −1.190 against the model's 0.430) —
 a county mean plus a linear trend cannot represent a drought year at all.
+
+Unlike the interval results (§2.5), point accuracy does depend on the seed, so
+this count was checked rather than assumed. Repeating all 16 origins at five
+seeds (42, 7, 123, 2024, 3407) returns **16 of 16 under every seed**; the
+across-origin mean R² is 0.5852 with a seed standard deviation of 0.0054. The
+claim is nonetheless narrower than the headline count suggests: at the 2015
+origin the worst-case margin over seeds is **0.0064** (model 0.4131 against
+baseline 0.4067), so a sixth seed could plausibly overturn that one origin. We
+report it as 16 of 16 across five seeds with the tightest margin named, rather
+than as a clean sweep.
+
+Per-origin seed dispersion is largest where the year is hardest — sd 0.063 at
+2009, the lowest-R² origin — and below 0.023 everywhere else.
 
 The locked window's 0.703 sits at the optimistic end of the rolling range
 (0.248–0.769), which is worth stating when comparing against published
@@ -417,9 +430,11 @@ either.* The rolling-origin intervals are reported from one seed, and averaging
 over more would change nothing: the quantile learners that generate them specify
 no `subsample` and no `colsample_bytree`, and LightGBM disables bagging without
 `subsample_freq`, so they are deterministic functions of their training data.
-Refitting origin 2012 at seeds 42 and 7 reproduces PICP, unsafe miss rate, MPIW
-and Winkler to every printed digit (max |Δ| = 0.0 across all four calibrators);
-the property is asserted as a regression test in
+Repeating all 16 origins at five seeds (42, 7, 123, 2024, 3407) reproduces PICP,
+unsafe miss rate, MPIW and Winkler exactly — max |Δ| = 0.0 over 244
+origin × method × stratum cells, for all four calibrators including the two ACI
+variants that receive the point predictions. The property is asserted as a
+regression test in
 `code/diagnostics_loso/verify_seed_sensitivity.py`, which also fails if a
 stochastic parameter is ever added to that learner. The single-seed objection
 therefore does not apply to RO1, RO2, RO4 or RO5.
@@ -430,7 +445,9 @@ reproducibility here is not evidence of correctness. The point predictions are a
 separate matter: they use the 80%-feature-subsampling configuration and do move
 with the seed (R² by 0.024 and bias by 0.099 t/ha at origin 2012), so the
 point-accuracy statements in §1.3 carry seed uncertainty that the coverage
-statements do not.
+statements do not. Those statements were therefore re-run over five seeds and
+are reported with that dispersion; the sweep is in
+`rolling_origin_seed_sweep.csv` and `_by_origin.csv`.
 
 *The CDHW predictor null is a null.* Three seeds and five model families cannot
 establish the absence of a small effect, only bound it as smaller than seed
