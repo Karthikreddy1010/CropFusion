@@ -23,6 +23,7 @@ Run:  python code/objectives_ro.py
 from __future__ import annotations
 
 import json
+import logging
 import sys
 import time
 from pathlib import Path
@@ -489,15 +490,53 @@ def build_report() -> Dict[str, Any]:
     return report
 
 
+_RO_KEYS = ("RO1", "RO2", "RO3", "RO4", "RO5")
+
+
+def _n_computed(report: Dict[str, Any]) -> int:
+    return sum(1 for k in _RO_KEYS if "status" not in report.get(k, {"status": 1}))
+
+
+def persist_report(report: Dict[str, Any], path: Path) -> Path:
+    """Write the report, unless the file already there knows more than it does.
+
+    RO1, RO2, RO4 and RO5 need rolling_origin_rows.csv, which is produced locally
+    and is absent on a fresh Colab session. A run there legitimately reports four
+    of the five as unavailable -- and when those outputs are synced back, that
+    degraded report replaces the complete one. It has happened twice.
+
+    So a writer holding strictly less information than the file on disk loses,
+    and its output is kept alongside as *.partial.json rather than dropped. An
+    equal-coverage write is a refresh and proceeds normally.
+    """
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    blob = json.dumps(report, indent=2, default=str)
+    mine = _n_computed(report)
+    if path.exists():
+        try:
+            theirs = _n_computed(json.loads(path.read_text(encoding="utf-8")))
+        except Exception:                                  # unreadable: ours is better
+            theirs = -1
+        if mine < theirs:
+            side = path.with_suffix(".partial.json")
+            side.write_text(blob, encoding="utf-8")
+            logging.getLogger("paper3").warning(
+                "objectives report: keeping %s (%d objectives) rather than overwriting it with "
+                "%d; the partial result is in %s. RO1/RO2/RO4/RO5 need "
+                "rolling_origin_rows.csv, which this machine does not have.",
+                path.name, theirs, mine, side.name)
+            return side
+    path.write_text(blob, encoding="utf-8")
+    return path
+
+
 def write_report() -> Dict[str, Any]:
     """Entry point for main.py: compute and persist the RO report."""
     report = build_report()
-    DIAG.mkdir(parents=True, exist_ok=True)
-    (DIAG / "objectives_RO_report.json").write_text(
-        json.dumps(report, indent=2, default=str), encoding="utf-8")
+    persist_report(report, DIAG / "objectives_RO_report.json")
     try:
-        (Path(cfg.REPORT_DIR) / "objectives_RO_report.json").write_text(
-            json.dumps(report, indent=2, default=str), encoding="utf-8")
+        persist_report(report, Path(cfg.REPORT_DIR) / "objectives_RO_report.json")
     except Exception:
         pass
     return report
