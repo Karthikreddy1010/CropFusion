@@ -1,7 +1,7 @@
 held_out_state,NeuralCQR_weight,LightGBM_weight,dev_r2_neural_alone,dev_r2_lgb_alone,dev_r2_selected_blend,dev_RMSE_selected_blend,dev_MAE_selected_blend,weight_selection_partition,selected_objective
-Illinois,0.6,0.4,0.4363,0.4173,0.4517,1.1986,0.9657,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV
+Illinois,1.0,0.0,0.5137,0.4173,0.5137,1.1288,0.8999,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV
 Indiana,0.4,0.6,0.48,0.5142,0.5319,1.1434,0.9155,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV
-Iowa,0.9,0.1,0.5738,0.4189,0.5753,1.1257,0.8675,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV
-Minnesota,0.8,0.2,0.4697,0.3949,0.4739,1.1557,0.9283,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV
-Missouri,0.8,0.2,0.526,0.4623,0.5288,1.0873,0.8648,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV
-Ohio,0.7,0.3,0.5399,0.4665,0.5534,1.102,0.8767,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV
+Iowa,0.5,0.5,0.4388,0.4189,0.481,1.2444,0.9969,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV
+Minnesota,1.0,0.0,0.5148,0.3949,0.5148,1.1099,0.8702,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV
+Missouri,0.6,0.4,0.4863,0.4623,0.5007,1.1192,0.8919,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV
+Ohio,0.5,0.5,0.4807,0.4665,0.5095,1.1549,0.918,LOSO_DEV_2014_2015,Maximize R2 on LOSO DEV

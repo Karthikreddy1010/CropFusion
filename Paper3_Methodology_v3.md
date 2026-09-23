@@ -231,17 +231,49 @@ partition and asserts disjointness; `leakage_provenance_audit.json`.
 
 **Corrections applied during the audit**, all disclosed rather than silently fixed:
 LOSO detrending (§4); SA-ACI severity direction (§8); multiple-comparison
-corrections moved to year-level p-values (§10); the LOSO ensemble-weight table read
+corrections moved to year-level p-values (§10); LOSO hyperparameters re-derived on
+each fold's own DEV rows (C7, below); the LOSO ensemble-weight table read
 key names the pipeline never wrote, so it was empty; an ablation distinctness check
 failed on correct post-hoc behaviour; and the artefact-presence audit was labelled
 as methodological compliance.
 
-**Held-out-informed tuning (unresolved).** The LOSO hyperparameters descend from six
-rounds selected by watching LOSO R² rise — that is tuning on held-out states. The
-history is disclosed verbatim in `docs/supplement/development_history.md`, the
-frozen protocol marks the values `PENDING` re-derivation on each fold's own DEV
-rows, and until that run the LOSO estimates should be read as optimistic by an
-unknown amount.
+**Held-out-informed tuning (resolved, 2026-09-22).** The LOSO hyperparameters used
+to descend from six rounds selected by watching LOSO R² rise — tuning on held-out
+states. The history is disclosed verbatim in
+`docs/supplement/development_history.md`. They have now been re-derived:
+`code/loso_dev_tuning.py` scores a grid of four configurations, fixed before the
+run, on each fold's **own DEV partition** (2014–15 of that fold's five training
+states), training on the fold's FIT rows and early-stopping on a carve-out of FIT.
+The held-out state enters none of the three roles. `main.py` performs this itself
+via `ensure_loso_dev_hyperparameters()` and caches the result, so the selection is
+an artefact — `loso_dev_selected_hyperparams.json` — rather than a memory. Frozen
+protocol 1.3.0-2026-09-22, hash `d7089a2e7e1db551`.
+
+**The correction raised the LOSO estimates rather than lowering them.** Macro R²
+moved from 0.6976 to **0.7186** and macro PICP from 0.9160 to **0.9267**; per-state
+PICP improved or held in five of six folds (Illinois 0.8862 → 0.9058, Indiana
+0.9781 → 0.9781, Iowa 0.9130 → 0.9361, Minnesota 0.8453 → 0.8544, Ohio 0.9467 →
+0.9626) and slipped marginally in Missouri (0.9269 → 0.9231). This was the opposite
+of the pre-stated expectation: both the tuning module and the protocol changelog
+recorded that the estimates *should* fall once the held-out-informed advantage was
+removed, and that a fall would be the correct outcome. It is reported here as
+observed, not as predicted.
+
+The mechanism is visible in the selection itself. The incumbent configuration won
+only one of the six folds on honest DEV data, and on the Ohio fold it was 34% worse
+than the configuration selected (DEV RMSE 1.6693 against 1.2470); four folds chose
+a smaller, more slowly trained network. The six rounds of held-out-informed tuning
+had therefore not bought the advantage they appeared to — they had settled on a
+configuration that was mediocre on each fold's own development data while looking
+acceptable in aggregate on the held-out states. Removing the contamination was a
+validity correction whose direction happened to be favourable; the validity claim
+does not depend on the direction.
+
+Two limits on this. The grid holds four configurations at one seed each, so it is a
+coarse search and part of the 0.021 R² change could be seed noise rather than
+configuration. And the search space was fixed in advance and must not be extended
+after seeing these results without a protocol version bump. The figures reproduced
+identically across two independent Colab runs.
 
 **SPEI reference period in the rolling-origin extension.** SPI/SPEI standardisation
 is fixed to 1985–2013. Rolling origins move, so for the six origins with test years

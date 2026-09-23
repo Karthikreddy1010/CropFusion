@@ -1,5 +1,5 @@
 {
-  "files_scanned": 124,
+  "files_scanned": 125,
   "scan_root": "C:\\Users\\dukar\\OneDrive\\Desktop\\Paper3\\outputs_master",
   "claim_types_checked": [
     "full_compliance",
@@ -59,7 +59,7 @@
       "file": "pipeline.log",
       "line": 401,
       "claim_type": "joint_improves",
-      "matched_text": "[2026-09-22 18:54:18] INFO     paper3 :: Objective O4 exported \u2014 verdict: Partially supported \u2014 joint training improves interval quality only",
+      "matched_text": "[2026-09-22 22:46:07] INFO     paper3 :: Objective O4 exported \u2014 verdict: Partially supported \u2014 joint training improves interval quality only",
       "requires": "objective_O4_report.json shows a supported improvement",
       "supported_by_results": true,
       "evidence": "O4 verdict=Partially supported \u2014 joint training improves interval quality only",

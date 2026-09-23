@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-22 15:41:50",
+  "generated": "2026-09-22 20:36:16",
   "replaces": [
     "objective_O1_report",
     "objective_O4_report",
@@ -14,8 +14,8 @@
       "rolling_origin_raw.csv"
     ],
     "loso_state_years": 234,
-    "corr_abs_bias_vs_coverage": -0.7686,
-    "corr_width_vs_coverage": 0.0045,
+    "corr_abs_bias_vs_coverage": -0.7518,
+    "corr_width_vs_coverage": -0.0933,
     "case_2012": {
       "model_bias_t_ha": -0.9874,
       "extreme_rows": 448,
@@ -27,7 +27,7 @@
       },
       "note": "every calibrator fails together; width adjustment cannot repair a level error"
     },
-    "headline": "coverage tracks |bias| (r = -0.7686) and not width (r = 0.0045)"
+    "headline": "coverage tracks |bias| (r = -0.7518) and not width (r = -0.0933)"
   },
   "RO1": {
     "objective": "RO1",
@@ -80,17 +80,17 @@
       "inference_supported": true
     },
     "loso": {
-      "macro_r2": 0.6976,
-      "macro_picp": 0.916,
+      "macro_r2": 0.7186,
+      "macro_picp": 0.9267,
       "per_state_picp": {
-        "Illinois": 0.8862,
+        "Illinois": 0.9058,
         "Indiana": 0.9781,
-        "Iowa": 0.913,
-        "Minnesota": 0.8453,
-        "Missouri": 0.9269,
-        "Ohio": 0.9467
+        "Iowa": 0.9361,
+        "Minnesota": 0.8544,
+        "Missouri": 0.9231,
+        "Ohio": 0.9626
       },
-      "caveat": "config defaults (C7 caveat applies)"
+      "caveat": "DEV-selected (loso_dev_selected_hyperparams.json)"
     },
     "headline": "extreme-class coverage is 0.7584 against a nominal 0.90 (95% CI [0.651482, 0.911507], 16 origins), an interval that includes the nominal level; the Normal-minus-Extreme contrast is 0.147283 (95% CI [-0.00988, 0.256939]), which includes zero",
     "interpretation": "two-sided coverage in the extreme class does not separate from the nominal level under origin-level resampling, and the between-class contrast includes zero. Two-sided coverage spends half its power on the upper tail, where an observation above the interval is a good harvest; the deficit that does survive is the one-sided one, tested against its alpha/2 target in RO4. RO1 should be read as the descriptive stratification and RO4 as the test."

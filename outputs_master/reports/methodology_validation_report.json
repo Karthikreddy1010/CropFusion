@@ -290,9 +290,9 @@
       "artifact": "loso_ensemble_weight_search.csv",
       "details": {
         "Illinois": {
-          "selected_weight": 0.6,
+          "selected_weight": 1.0,
           "n_candidates": 11,
-          "best_dev_r2": 0.4517
+          "best_dev_r2": 0.5137
         },
         "Indiana": {
           "selected_weight": 0.4,
@@ -300,24 +300,24 @@
           "best_dev_r2": 0.5319
         },
         "Iowa": {
-          "selected_weight": 0.9,
+          "selected_weight": 0.5,
           "n_candidates": 11,
-          "best_dev_r2": 0.5753
+          "best_dev_r2": 0.481
         },
         "Minnesota": {
-          "selected_weight": 0.8,
+          "selected_weight": 1.0,
           "n_candidates": 11,
-          "best_dev_r2": 0.4739
+          "best_dev_r2": 0.5148
         },
         "Missouri": {
-          "selected_weight": 0.8,
+          "selected_weight": 0.6,
           "n_candidates": 11,
-          "best_dev_r2": 0.5288
+          "best_dev_r2": 0.5007
         },
         "Ohio": {
-          "selected_weight": 0.7,
+          "selected_weight": 0.5,
           "n_candidates": 11,
-          "best_dev_r2": 0.5534
+          "best_dev_r2": 0.5095
         }
       }
     },

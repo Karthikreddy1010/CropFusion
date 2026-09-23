@@ -1,0 +1,707 @@
+{
+  "generated": "2026-09-22 23:18:03",
+  "purpose": "audit C7 - replace LOSO hyperparameters selected on held-out R2",
+  "grid_declared_in": "code/loso_dev_tuning.py GRID (fixed before running)",
+  "epochs": 200,
+  "seeds": [
+    42
+  ],
+  "folds": [
+    {
+      "state": "Illinois",
+      "selected": "small_slow",
+      "selected_params": {
+        "hidden_dims": [
+          64,
+          32
+        ],
+        "lr": 0.0003,
+        "dropout": 0.2,
+        "weight_decay": 0.001,
+        "batch_size": 128
+      },
+      "all_results": [
+        {
+          "name": "incumbent",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.4156620502471924,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.4156620502471924,
+              "best_epoch": 4,
+              "seconds": 47.1
+            }
+          ]
+        },
+        {
+          "name": "small_slow",
+          "lr": 0.0003,
+          "dropout": 0.2,
+          "weight_decay": 0.001,
+          "batch_size": 128,
+          "hidden_dims": [
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.389676570892334,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.389676570892334,
+              "best_epoch": 93,
+              "seconds": 79.8
+            }
+          ]
+        },
+        {
+          "name": "wide_fast",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.4156620502471924,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.4156620502471924,
+              "best_epoch": 4,
+              "seconds": 48.0
+            }
+          ]
+        },
+        {
+          "name": "mid",
+          "lr": 0.0005,
+          "dropout": 0.2,
+          "weight_decay": 0.0005,
+          "batch_size": 96,
+          "hidden_dims": [
+            128,
+            64
+          ],
+          "dev_rmse_mean": 1.487449049949646,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.487449049949646,
+              "best_epoch": 19,
+              "seconds": 36.1
+            }
+          ]
+        }
+      ],
+      "selection_rule": "lowest mean DEV RMSE on this fold's own DEV rows; the held-out state was not used"
+    },
+    {
+      "state": "Indiana",
+      "selected": "incumbent",
+      "selected_params": {
+        "hidden_dims": [
+          256,
+          128,
+          64,
+          32
+        ],
+        "lr": 0.001,
+        "dropout": 0.25,
+        "weight_decay": 0.0001,
+        "batch_size": 64
+      },
+      "all_results": [
+        {
+          "name": "incumbent",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.3497074842453003,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.3497074842453003,
+              "best_epoch": 8,
+              "seconds": 57.0
+            }
+          ]
+        },
+        {
+          "name": "small_slow",
+          "lr": 0.0003,
+          "dropout": 0.2,
+          "weight_decay": 0.001,
+          "batch_size": 128,
+          "hidden_dims": [
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.4221315383911133,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.4221315383911133,
+              "best_epoch": 37,
+              "seconds": 41.8
+            }
+          ]
+        },
+        {
+          "name": "wide_fast",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.3497074842453003,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.3497074842453003,
+              "best_epoch": 8,
+              "seconds": 56.6
+            }
+          ]
+        },
+        {
+          "name": "mid",
+          "lr": 0.0005,
+          "dropout": 0.2,
+          "weight_decay": 0.0005,
+          "batch_size": 96,
+          "hidden_dims": [
+            128,
+            64
+          ],
+          "dev_rmse_mean": 1.61150062084198,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.61150062084198,
+              "best_epoch": 10,
+              "seconds": 28.1
+            }
+          ]
+        }
+      ],
+      "selection_rule": "lowest mean DEV RMSE on this fold's own DEV rows; the held-out state was not used"
+    },
+    {
+      "state": "Iowa",
+      "selected": "small_slow",
+      "selected_params": {
+        "hidden_dims": [
+          64,
+          32
+        ],
+        "lr": 0.0003,
+        "dropout": 0.2,
+        "weight_decay": 0.001,
+        "batch_size": 128
+      },
+      "all_results": [
+        {
+          "name": "incumbent",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.2901772260665894,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.2901772260665894,
+              "best_epoch": 6,
+              "seconds": 51.8
+            }
+          ]
+        },
+        {
+          "name": "small_slow",
+          "lr": 0.0003,
+          "dropout": 0.2,
+          "weight_decay": 0.001,
+          "batch_size": 128,
+          "hidden_dims": [
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.1513252258300781,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.1513252258300781,
+              "best_epoch": 26,
+              "seconds": 32.8
+            }
+          ]
+        },
+        {
+          "name": "wide_fast",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.2901772260665894,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.2901772260665894,
+              "best_epoch": 6,
+              "seconds": 52.9
+            }
+          ]
+        },
+        {
+          "name": "mid",
+          "lr": 0.0005,
+          "dropout": 0.2,
+          "weight_decay": 0.0005,
+          "batch_size": 96,
+          "hidden_dims": [
+            128,
+            64
+          ],
+          "dev_rmse_mean": 1.2446365356445312,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.2446365356445312,
+              "best_epoch": 17,
+              "seconds": 33.1
+            }
+          ]
+        }
+      ],
+      "selection_rule": "lowest mean DEV RMSE on this fold's own DEV rows; the held-out state was not used"
+    },
+    {
+      "state": "Minnesota",
+      "selected": "small_slow",
+      "selected_params": {
+        "hidden_dims": [
+          64,
+          32
+        ],
+        "lr": 0.0003,
+        "dropout": 0.2,
+        "weight_decay": 0.001,
+        "batch_size": 128
+      },
+      "all_results": [
+        {
+          "name": "incumbent",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.3577377796173096,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.3577377796173096,
+              "best_epoch": 7,
+              "seconds": 57.3
+            }
+          ]
+        },
+        {
+          "name": "small_slow",
+          "lr": 0.0003,
+          "dropout": 0.2,
+          "weight_decay": 0.001,
+          "batch_size": 128,
+          "hidden_dims": [
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.2674094438552856,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.2674094438552856,
+              "best_epoch": 37,
+              "seconds": 42.2
+            }
+          ]
+        },
+        {
+          "name": "wide_fast",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.3577377796173096,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.3577377796173096,
+              "best_epoch": 7,
+              "seconds": 56.5
+            }
+          ]
+        },
+        {
+          "name": "mid",
+          "lr": 0.0005,
+          "dropout": 0.2,
+          "weight_decay": 0.0005,
+          "batch_size": 96,
+          "hidden_dims": [
+            128,
+            64
+          ],
+          "dev_rmse_mean": 1.3326495885849,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.3326495885849,
+              "best_epoch": 21,
+              "seconds": 39.7
+            }
+          ]
+        }
+      ],
+      "selection_rule": "lowest mean DEV RMSE on this fold's own DEV rows; the held-out state was not used"
+    },
+    {
+      "state": "Missouri",
+      "selected": "small_slow",
+      "selected_params": {
+        "hidden_dims": [
+          64,
+          32
+        ],
+        "lr": 0.0003,
+        "dropout": 0.2,
+        "weight_decay": 0.001,
+        "batch_size": 128
+      },
+      "all_results": [
+        {
+          "name": "incumbent",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.3940402269363403,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.3940402269363403,
+              "best_epoch": 8,
+              "seconds": 57.8
+            }
+          ]
+        },
+        {
+          "name": "small_slow",
+          "lr": 0.0003,
+          "dropout": 0.2,
+          "weight_decay": 0.001,
+          "batch_size": 128,
+          "hidden_dims": [
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.255540370941162,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.255540370941162,
+              "best_epoch": 64,
+              "seconds": 60.1
+            }
+          ]
+        },
+        {
+          "name": "wide_fast",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.3940402269363403,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.3940402269363403,
+              "best_epoch": 8,
+              "seconds": 56.4
+            }
+          ]
+        },
+        {
+          "name": "mid",
+          "lr": 0.0005,
+          "dropout": 0.2,
+          "weight_decay": 0.0005,
+          "batch_size": 96,
+          "hidden_dims": [
+            128,
+            64
+          ],
+          "dev_rmse_mean": 1.3780393600463867,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.3780393600463867,
+              "best_epoch": 14,
+              "seconds": 31.6
+            }
+          ]
+        }
+      ],
+      "selection_rule": "lowest mean DEV RMSE on this fold's own DEV rows; the held-out state was not used"
+    },
+    {
+      "state": "Ohio",
+      "selected": "mid",
+      "selected_params": {
+        "hidden_dims": [
+          128,
+          64
+        ],
+        "lr": 0.0005,
+        "dropout": 0.2,
+        "weight_decay": 0.0005,
+        "batch_size": 96
+      },
+      "all_results": [
+        {
+          "name": "incumbent",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.6693094968795776,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.6693094968795776,
+              "best_epoch": 9,
+              "seconds": 59.5
+            }
+          ]
+        },
+        {
+          "name": "small_slow",
+          "lr": 0.0003,
+          "dropout": 0.2,
+          "weight_decay": 0.001,
+          "batch_size": 128,
+          "hidden_dims": [
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.31669020652771,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.31669020652771,
+              "best_epoch": 23,
+              "seconds": 32.3
+            }
+          ]
+        },
+        {
+          "name": "wide_fast",
+          "lr": 0.001,
+          "dropout": 0.25,
+          "weight_decay": 0.0001,
+          "batch_size": 64,
+          "hidden_dims": [
+            256,
+            128,
+            64,
+            32
+          ],
+          "dev_rmse_mean": 1.6693094968795776,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.6693094968795776,
+              "best_epoch": 9,
+              "seconds": 59.3
+            }
+          ]
+        },
+        {
+          "name": "mid",
+          "lr": 0.0005,
+          "dropout": 0.2,
+          "weight_decay": 0.0005,
+          "batch_size": 96,
+          "hidden_dims": [
+            128,
+            64
+          ],
+          "dev_rmse_mean": 1.2469723224639893,
+          "dev_rmse_sd": 0.0,
+          "per_seed": [
+            {
+              "seed": 42,
+              "dev_rmse": 1.2469723224639893,
+              "best_epoch": 14,
+              "seconds": 32.9
+            }
+          ]
+        }
+      ],
+      "selection_rule": "lowest mean DEV RMSE on this fold's own DEV rows; the held-out state was not used"
+    }
+  ],
+  "per_state_selection": {
+    "Illinois": {
+      "hidden_dims": [
+        64,
+        32
+      ],
+      "lr": 0.0003,
+      "dropout": 0.2,
+      "weight_decay": 0.001,
+      "batch_size": 128
+    },
+    "Indiana": {
+      "hidden_dims": [
+        256,
+        128,
+        64,
+        32
+      ],
+      "lr": 0.001,
+      "dropout": 0.25,
+      "weight_decay": 0.0001,
+      "batch_size": 64
+    },
+    "Iowa": {
+      "hidden_dims": [
+        64,
+        32
+      ],
+      "lr": 0.0003,
+      "dropout": 0.2,
+      "weight_decay": 0.001,
+      "batch_size": 128
+    },
+    "Minnesota": {
+      "hidden_dims": [
+        64,
+        32
+      ],
+      "lr": 0.0003,
+      "dropout": 0.2,
+      "weight_decay": 0.001,
+      "batch_size": 128
+    },
+    "Missouri": {
+      "hidden_dims": [
+        64,
+        32
+      ],
+      "lr": 0.0003,
+      "dropout": 0.2,
+      "weight_decay": 0.001,
+      "batch_size": 128
+    },
+    "Ohio": {
+      "hidden_dims": [
+        128,
+        64
+      ],
+      "lr": 0.0005,
+      "dropout": 0.2,
+      "weight_decay": 0.0005,
+      "batch_size": 96
+    }
+  }
+}

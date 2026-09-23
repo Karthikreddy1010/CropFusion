@@ -15,9 +15,18 @@ not be extended after seeing results; add to it only with a protocol version bum
 The selection is written to `loso_dev_selected_hyperparams.json` so the provenance
 of every fold's configuration is a file rather than a memory.
 
-The LOSO estimates are expected to get WORSE, not better. The current macro R² of
-0.6976 was produced with held-out-informed settings; an honest re-derivation
-removes that advantage. A drop is the correct outcome, not a regression.
+We expected the LOSO estimates to get WORSE: the macro R² of 0.6976 was produced
+with held-out-informed settings, and an honest re-derivation removes that advantage,
+so a drop would have been the correct outcome rather than a regression.
+
+They improved instead — macro R² 0.7186, macro PICP 0.9267, reproduced across two
+runs on 2026-09-22. The selection shows why: the incumbent configuration won only
+one of the six folds on their own DEV rows, and on the Ohio fold it scored DEV RMSE
+1.6693 against the selected 1.2470. Six rounds of watching held-out performance had
+settled on a configuration that was mediocre on honest development data while
+looking acceptable in aggregate on the states it was scored against. The direction
+is not the point and was not predictable; the held-out state entering no part of the
+selection is.
 
 Run (full, GPU strongly preferred):
     python code/loso_dev_tuning.py
