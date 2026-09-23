@@ -509,3 +509,37 @@ blocks; and a provenance test proving row-ID checks catch overlap between
 misses.
 
 **WHY:** Item 22.
+
+---
+
+## 2026-09-23 — the git directory now lives outside OneDrive
+
+**WHAT:** `.git` has been moved to `C:\Users\dukar\git-repos\Paper3.git`. The
+project keeps a 44-byte `.git` *file* in its place containing
+`gitdir: C:/Users/dukar/git-repos/Paper3.git`, which is git's own redirect
+mechanism — the same one `git worktree` and submodules use. `core.worktree` in
+the moved config points back at the project. Nothing about how you use git
+changes: run the same commands from the same directory.
+
+**WHY:** Three incidents in two days, all with the same signature — a Colab sync
+writing into the project directory while OneDrive was syncing it.
+
+1. `outputs_diagnostics/` deleted (51 tracked files), recovered from git.
+2. `outputs_master/` half-replaced, leaving it 43 files short.
+3. `.git` itself reduced to `objects/` and `refs/` with no HEAD, config or
+   index, and an object store missing a tree — the repository could not be read
+   at all. `.git/objects` was modified at 11:11 while the sync ran 11:12–11:20.
+
+The third was recoverable only because the remote was current. A repository is
+not a place to find out whether your backup strategy works, and a sync client
+has no business inside `.git`.
+
+OneDrive cannot exclude an arbitrary subfolder, and a directory junction depends
+on OneDrive continuing to skip reparse points. The `gitdir:` file needs neither:
+OneDrive now syncs 44 bytes of text and cannot touch the object store.
+
+**Still exposed:** `outputs_master/` and `outputs_diagnostics/` remain inside the
+synced tree, so incidents 1 and 2 can recur. Both are reproducible from a
+pipeline run and both are committed, so the cost is time rather than data. When
+syncing results down from Colab, pull `outputs_master/` only and never
+`outputs_diagnostics/`, which Colab creates as an empty scaffold.
