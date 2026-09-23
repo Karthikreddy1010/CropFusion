@@ -5,8 +5,9 @@ that was not run: its numbers came from the ERA5-era dataset, it referred to
 evidence files that do not exist, and it presented an architecture (PhenoFormer),
 inputs (NDVI, DSSAT) and a proposed calibrator that are absent from the code. This
 version is written from the code as it stands, and every number resolves to a file
-produced by the run of 2026-09-18 (frozen protocol `1.1.0-2026-09-18`, hash
-`d07d31512391047c`).
+produced by the run of 2026-09-22 (frozen protocol `1.4.0-2026-09-23`, hash
+`9ea6b15d86c6ebef`). Results and discussion are in
+`Paper3_Results_and_Discussion_v1.md`.
 
 Draft status: sections marked **[C9]** await static-layer provenance; section 12
 lists what is still outstanding.
@@ -247,7 +248,7 @@ states), training on the fold's FIT rows and early-stopping on a carve-out of FI
 The held-out state enters none of the three roles. `main.py` performs this itself
 via `ensure_loso_dev_hyperparameters()` and caches the result, so the selection is
 an artefact — `loso_dev_selected_hyperparams.json` — rather than a memory. Frozen
-protocol 1.3.0-2026-09-22, hash `d7089a2e7e1db551`.
+protocol 1.4.0-2026-09-23, hash `9ea6b15d86c6ebef`. The correction itself landed in 1.3.0; 1.4.0 is documentation only and moves no metric.
 
 **The correction raised the LOSO estimates rather than lowering them.** Macro R²
 moved from 0.6976 to **0.7186** and macro PICP from 0.9160 to **0.9267**; per-state

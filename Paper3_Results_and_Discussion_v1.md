@@ -1,7 +1,7 @@
 # Paper 3 — Results and Discussion (draft v1, 2026-09-22)
 
-Companion to `Paper3_Methodology_v3.md` (protocol 1.3.0-2026-09-22, hash
-`d7089a2e7e1db551`). Every figure below is quoted from an artefact on disk; the
+Companion to `Paper3_Methodology_v3.md` (protocol 1.4.0-2026-09-23, hash
+`9ea6b15d86c6ebef`). Every figure below is quoted from an artefact on disk; the
 source file is named at the head of each subsection. Pooled rolling-origin
 figures carry 95% intervals that resample whole origins, because the origin is
 the unit of independence (§10 of the methodology).
@@ -456,7 +456,7 @@ noise on this feature set.
 ### 2.6 Reproducibility
 
 The protocol is hashed and verified against the live configuration on every run
-(1.3.0-2026-09-22, `d7089a2e7e1db551`). The full pipeline was executed
+(1.4.0-2026-09-23, `9ea6b15d86c6ebef`). The full pipeline was executed
 independently on two platforms; every point metric, coverage figure and interval
 reproduced exactly, with differences confined to inference latency. The
 hyperparameter selection resolving audit item C7 is a committed artefact rather

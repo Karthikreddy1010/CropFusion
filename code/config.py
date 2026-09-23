@@ -267,9 +267,11 @@ ACI_SEVERITY_LAMBDA: float = 0.05     # lambda in E_i * (1 + lambda * log1p(S_i)
 # held-out information. It now lives in
 # docs/supplement/development_history.md, disclosed rather than deleted.
 #
-# These values are PENDING re-derivation on each fold's own DEV rows. Until
-# that lands, every LOSO number carries the C7 caveat, and
-# code/frozen_protocol.py records them as PENDING.
+# As of 2026-09-22 these are FALLBACKS, not the operative values. C7 is
+# resolved: each fold's hyperparameters are re-derived on its own DEV rows and
+# read from loso_dev_selected_hyperparams.json. These are used only when that
+# file is absent or does not cover a state, and a fold that falls back records
+# the C7 caveat in its hyperparameter_source.
 LOSO_LEARNING_RATE: float = 1e-3
 LOSO_BATCH_SIZE: int = 64
 LOSO_WEIGHT_DECAY: float = 1e-4
@@ -279,7 +281,7 @@ LOSO_EARLY_STOPPING_MODE: str = "pinball"
 
 # LOSO architecture: kept separate from the temporal-split net. Selection
 # history (including the round that motivated the larger net) is in
-# docs/supplement/development_history.md. Also PENDING re-derivation on DEV.
+# docs/supplement/development_history.md. Also a fallback only; see above.
 LOSO_HIDDEN_DIMS: Tuple[int, ...] = (256, 128, 64, 32)
 LOSO_DROPOUT: float = 0.25
 
