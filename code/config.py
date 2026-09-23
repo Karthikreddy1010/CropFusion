@@ -241,13 +241,14 @@ NEURAL_MONOTONE_HEADS: bool = False
 LGBM_DEV_EARLY_STOPPING: bool = False
 
 # C7 — use LOSO hyperparameters re-derived on each fold's own DEV rows.
-#   Produce the selection file first:  python code/loso_dev_tuning.py
-#   Then set this True and rerun. Off by default so results do not change
-#   until the tuning run exists. The LOSO macro R2 is expected to FALL: the
-#   incumbent settings were chosen by watching held-out performance.
-#   main.ensure_loso_dev_hyperparameters() runs the tuning automatically when no
-#   selection file exists and reuses it afterwards, so a single pipeline run is
-#   enough and reruns stay deterministic.
+#   main.ensure_loso_dev_hyperparameters() runs code/loso_dev_tuning.py when no
+#   selection file exists and reuses it afterwards, so one pipeline run is enough
+#   and reruns stay deterministic.
+#   Outcome (2026-09-22, reproduced twice): macro R2 0.6976 -> 0.7186, macro PICP
+#   0.9160 -> 0.9267. We expected a FALL, since the incumbent settings were chosen
+#   by watching held-out performance; it rose. The incumbent won only 1 of 6 folds
+#   on honest DEV data and was 34% worse than the selection on the Ohio fold, so
+#   the held-out-informed rounds had not bought the advantage they appeared to.
 LOSO_USE_DEV_SELECTED_HP: bool = True
 
 # C5 — SA-ACI severity weighting (audit blocker).
