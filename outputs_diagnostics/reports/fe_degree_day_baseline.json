@@ -1,0 +1,151 @@
+{
+  "generated": "2026-09-23 14:50:20",
+  "specification": "county FE + GDD + days>35C + precip + precip^2 + year",
+  "caveat": "growing-season aggregates, not a flexible daily degree-day bin schedule; see the module docstring",
+  "source": "code/fe_degree_day_baseline.py",
+  "locked_temporal": {
+    "n_fit": 15751,
+    "n_counties": 578,
+    "n_test": 2345,
+    "fe_panel": {
+      "rmse": 1.2179,
+      "mae": 0.9876,
+      "bias": 0.4913,
+      "r2": 0.4838
+    },
+    "trend_county_mean": {
+      "rmse": 1.2962,
+      "mae": 1.0779,
+      "bias": 0.699,
+      "r2": 0.4153
+    },
+    "coefficients": {
+      "gdd": 0.00038469,
+      "heat": -0.15560438,
+      "precip": 0.00824534,
+      "precip_sq": -6.19e-06,
+      "year": 0.10709726
+    },
+    "r2_in_sample": 0.6826
+  },
+  "rolling_origin": [
+    {
+      "test_year": 2008,
+      "n_test": 522,
+      "fe_r2": -0.0317,
+      "fe_rmse": 1.516,
+      "trend_county_r2": 0.3649
+    },
+    {
+      "test_year": 2009,
+      "n_test": 524,
+      "fe_r2": -0.7824,
+      "fe_rmse": 1.6404,
+      "trend_county_r2": 0.1488
+    },
+    {
+      "test_year": 2010,
+      "n_test": 536,
+      "fe_r2": 0.6272,
+      "fe_rmse": 1.0172,
+      "trend_county_r2": 0.4271
+    },
+    {
+      "test_year": 2011,
+      "n_test": 506,
+      "fe_r2": 0.6144,
+      "fe_rmse": 1.1085,
+      "trend_county_r2": 0.3516
+    },
+    {
+      "test_year": 2012,
+      "n_test": 510,
+      "fe_r2": 0.3376,
+      "fe_rmse": 2.1154,
+      "trend_county_r2": -1.1904
+    },
+    {
+      "test_year": 2013,
+      "n_test": 490,
+      "fe_r2": 0.5595,
+      "fe_rmse": 1.0107,
+      "trend_county_r2": 0.518
+    },
+    {
+      "test_year": 2014,
+      "n_test": 500,
+      "fe_r2": 0.2387,
+      "fe_rmse": 1.2786,
+      "trend_county_r2": 0.2155
+    },
+    {
+      "test_year": 2015,
+      "n_test": 478,
+      "fe_r2": 0.3988,
+      "fe_rmse": 1.3547,
+      "trend_county_r2": 0.4067
+    },
+    {
+      "test_year": 2016,
+      "n_test": 489,
+      "fe_r2": 0.4024,
+      "fe_rmse": 1.3063,
+      "trend_county_r2": 0.4035
+    },
+    {
+      "test_year": 2017,
+      "n_test": 504,
+      "fe_r2": 0.3601,
+      "fe_rmse": 1.2536,
+      "trend_county_r2": -0.025
+    },
+    {
+      "test_year": 2018,
+      "n_test": 440,
+      "fe_r2": 0.266,
+      "fe_rmse": 1.6057,
+      "trend_county_r2": 0.2011
+    },
+    {
+      "test_year": 2019,
+      "n_test": 410,
+      "fe_r2": 0.4721,
+      "fe_rmse": 1.0721,
+      "trend_county_r2": 0.5521
+    },
+    {
+      "test_year": 2020,
+      "n_test": 532,
+      "fe_r2": 0.4273,
+      "fe_rmse": 1.0673,
+      "trend_county_r2": 0.4514
+    },
+    {
+      "test_year": 2021,
+      "n_test": 450,
+      "fe_r2": 0.6137,
+      "fe_rmse": 1.1234,
+      "trend_county_r2": 0.5492
+    },
+    {
+      "test_year": 2022,
+      "n_test": 491,
+      "fe_r2": 0.5326,
+      "fe_rmse": 1.1949,
+      "trend_county_r2": 0.5764
+    },
+    {
+      "test_year": 2023,
+      "n_test": 462,
+      "fe_r2": 0.5862,
+      "fe_rmse": 1.158,
+      "trend_county_r2": 0.5775
+    }
+  ],
+  "rolling_origin_summary": {
+    "n_origins": 16,
+    "fe_r2_mean": 0.3514,
+    "trend_county_r2_mean": 0.283,
+    "fe_beats_trend_county": 9
+  }
+}

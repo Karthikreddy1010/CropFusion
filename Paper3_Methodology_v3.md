@@ -147,6 +147,21 @@ temporal R² 0.731 against 0.703 for the ensemble, and that is reported.
 
 ## 8. Calibration methods compared
 
+**Baselines.** Trend + county mean, the comparator the conformal literature uses,
+and a county fixed-effects degree-day panel — the reduced form standard in
+crop–climate econometrics since Schlenker & Roberts (2009) — with a beneficial
+degree-day term, a harmful extreme-heat term and a concave precipitation response,
+fitted by the within transformation on FIT rows only. It uses growing-season
+aggregates rather than a flexible daily degree-day bin schedule, because the
+engineered frame carries seasonal aggregates and not daily distributions.
+`code/fe_degree_day_baseline.py`; estimator checks in
+`code/diagnostics_loso/verify_fe_baseline.py`.
+
+**Exposure attribution.** `code/phenology_coverage.py` asks which component of the
+exposure is followed by interval failure, and in which growth stage, by the same
+year-clustered bootstrap used elsewhere. Each variable is read from its stressed
+tail, which for SPEI and precipitation is the lower one.
+
 Static split conformal; rolling-refresh split conformal; **group-conditional
 (Mondrian) conformal** with the pre-specified exposure classes (Vovk 2013; Gibbs,
 Cherian & Candès 2025); standard ACI (Gibbs & Candès 2021); severity-aware ACI;
@@ -326,6 +341,7 @@ additionally repeated at five seeds: all interval metrics are bit-identical
 across them for the structural reason given in §11, and the point metrics are
 reported with their seed dispersion.
 
-**Outstanding before submission:** [C9] static-layer provenance; a fixed-effects
-degree-day panel baseline; and DtACI/AgACI comparators. The DEV-only
-re-derivation of LOSO hyperparameters (C7) is complete — see §11.
+**Outstanding before submission:** [C9] static-layer provenance, and DtACI/AgACI
+comparators. The DEV-only re-derivation of LOSO hyperparameters (C7) is complete
+(§11), and the fixed-effects degree-day panel baseline is implemented in
+`code/fe_degree_day_baseline.py` and reported in the results.

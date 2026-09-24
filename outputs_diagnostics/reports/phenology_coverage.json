@@ -1,0 +1,179 @@
+{
+  "generated": "2026-09-23 20:50:33",
+  "statistic": "excess unsafe-miss rate, top quintile of the exposure variable minus the remaining four fifths",
+  "inference": "year-clustered bootstrap over the 16 rolling origins, 2000 resamples",
+  "n_rows": 7844,
+  "n_rows_complete": 7844,
+  "calibrator": "rolling_static_cp",
+  "by_exposure": [
+    {
+      "variable": "prism_tmax_days_gt35_veg",
+      "label": "days >35C, vegetative",
+      "threshold": 1.0,
+      "stressed_tail": "upper",
+      "excess_unsafe": -0.015584,
+      "ci_95": [
+        -0.062422,
+        0.049428
+      ],
+      "excludes_zero": false,
+      "p_value": 0.594,
+      "stage": "vegetative"
+    },
+    {
+      "variable": "prism_tmax_days_gt35_silk",
+      "label": "days >35C, silking",
+      "threshold": 2.0,
+      "stressed_tail": "upper",
+      "excess_unsafe": 0.16606,
+      "ci_95": [
+        0.025228,
+        0.273159
+      ],
+      "excludes_zero": true,
+      "p_value": 0.01,
+      "stage": "silking"
+    },
+    {
+      "variable": "prism_tmax_days_gt35_grain",
+      "label": "days >35C, grain fill",
+      "threshold": 1.0,
+      "stressed_tail": "upper",
+      "excess_unsafe": 0.135997,
+      "ci_95": [
+        0.017197,
+        0.303752
+      ],
+      "excludes_zero": true,
+      "p_value": 0.014,
+      "stage": "grain fill"
+    },
+    {
+      "variable": "CDHW_Veg_Severity",
+      "label": "CDHW severity, vegetative",
+      "threshold": 0.0,
+      "stressed_tail": "upper",
+      "excess_unsafe": 0.027565,
+      "ci_95": [
+        -0.05268,
+        0.08288
+      ],
+      "excludes_zero": false,
+      "p_value": 0.472,
+      "stage": "season"
+    },
+    {
+      "variable": "CDHW_Silking_Severity",
+      "label": "CDHW severity, silking",
+      "threshold": 0.0,
+      "stressed_tail": "upper",
+      "excess_unsafe": 0.147886,
+      "ci_95": [
+        0.008803,
+        0.258827
+      ],
+      "excludes_zero": true,
+      "p_value": 0.021,
+      "stage": "season"
+    },
+    {
+      "variable": "CDHW_GrainFill_Severity",
+      "label": "CDHW severity, grain fill",
+      "threshold": 0.0,
+      "stressed_tail": "upper",
+      "excess_unsafe": 0.14552,
+      "ci_95": [
+        -0.008919,
+        0.331791
+      ],
+      "excludes_zero": false,
+      "p_value": 0.078,
+      "stage": "season"
+    },
+    {
+      "variable": "Tmax_Days_Above_35",
+      "label": "days >35C, whole season",
+      "threshold": 4.0,
+      "stressed_tail": "upper",
+      "excess_unsafe": 0.155531,
+      "ci_95": [
+        0.018479,
+        0.274501
+      ],
+      "excludes_zero": true,
+      "p_value": 0.011,
+      "stage": "season"
+    },
+    {
+      "variable": "CDHW_Event_Count",
+      "label": "CDHW event count (the paper's stratifier)",
+      "threshold": 1.0,
+      "stressed_tail": "upper",
+      "excess_unsafe": 0.150773,
+      "ci_95": [
+        0.021014,
+        0.262769
+      ],
+      "excludes_zero": true,
+      "p_value": 0.01,
+      "stage": "season"
+    },
+    {
+      "variable": "CDHW_Severity_Score",
+      "label": "CDHW severity score",
+      "threshold": 1.3004,
+      "stressed_tail": "upper",
+      "excess_unsafe": 0.13559,
+      "ci_95": [
+        0.005976,
+        0.248741
+      ],
+      "excludes_zero": true,
+      "p_value": 0.031,
+      "stage": "season"
+    },
+    {
+      "variable": "spei90_prism_nldas_min_gs",
+      "label": "SPEI-90 minimum (drought)",
+      "threshold": -1.8515,
+      "stressed_tail": "lower",
+      "excess_unsafe": 0.114875,
+      "ci_95": [
+        -0.006538,
+        0.222147
+      ],
+      "excludes_zero": false,
+      "p_value": 0.099,
+      "stage": "season"
+    },
+    {
+      "variable": "Precip_growseason_mm",
+      "label": "season precipitation",
+      "threshold": 588.4482,
+      "stressed_tail": "lower",
+      "excess_unsafe": 0.068666,
+      "ci_95": [
+        -0.028633,
+        0.164622
+      ],
+      "excludes_zero": false,
+      "p_value": 0.331,
+      "stage": "season"
+    }
+  ],
+  "silking_minus_vegetative": {
+    "estimate": 0.152528,
+    "ci_95": [
+      0.006061,
+      0.231826
+    ],
+    "excludes_zero": true,
+    "p_value": 0.038,
+    "reads": "unsafe-miss rate among heat-stressed silking county-years minus that among heat-stressed vegetative county-years; the same exposure in a different developmental window"
+  },
+  "compound_vs_simple_heat": {
+    "simple_heat_excess": 0.155531,
+    "compound_count_excess": 0.150773,
+    "note": "the compound event count does not separate interval failure better than days above 35 C alone; the compound construction is not doing the work here and the paper should not claim that it is"
+  }
+}

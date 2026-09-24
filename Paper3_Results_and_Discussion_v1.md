@@ -93,6 +93,46 @@ The locked window's 0.703 sits at the optimistic end of the rolling range
 (0.248–0.769), which is worth stating when comparing against published
 single-window results.
 
+**A fixed-effects degree-day panel is the harder baseline, and it is the one an
+agricultural economist would ask for.** Trend + county mean is the comparator the
+conformal literature uses; the reduced form that has framed crop–climate
+estimation since Schlenker & Roberts (2009) is a county fixed-effects panel with
+a beneficial degree-day term, a harmful extreme-heat term and a concave
+precipitation response. Fitted on FIT rows only
+(`code/fe_degree_day_baseline.py`, verified in `verify_fe_baseline.py`):
+
+| | locked TEST 2019–23 | 16 rolling origins |
+|---|---|---|
+| LightGBM alone | **0.7313** | — |
+| ML ensemble | 0.7031 | **0.5849** |
+| FE degree-day panel | 0.4838 | 0.3514 |
+| trend + county mean | 0.4153 | 0.2830 |
+
+The model beats the FE panel on the locked window by 0.22 R² and in **15 of 16**
+rolling origins. Its coefficients are physically sensible, which is the check that
+matters for a baseline: **−0.156 t/ha per day above 35 °C**, a concave
+precipitation response with an implied optimum near **666 mm**, and a year term of
+**+0.107 t/ha/yr** that recovers the 0.1094 trend the pipeline fits
+independently. This is a working specification, not a strawman.
+
+Two qualifications, both of which cut against the simple reading:
+
+- The FE panel beats trend + county mean in only **9 of 16** origins, and fails
+  badly at the two earliest (2008 R² −0.03, 2009 −0.78) where the FIT window is
+  shortest. A panel with 579 county effects needs years to identify them.
+- **In 2012 the ordering nearly closes.** FE reaches 0.338 against the model's
+  0.430, while trend + county mean collapses to −1.190. The extreme-heat term is
+  doing real work in the drought year — exactly the regime this paper is about —
+  so the model's advantage there (0.09 R²) is a quarter of its advantage on
+  average (0.23). The machine-learning model is better, and it is least better
+  where the paper's own argument is concentrated.
+
+The specification uses growing-season aggregates (accumulated GDD, days above
+35 °C, season precipitation) rather than the flexible 1–3 °C daily degree-day bin
+schedule of the published form, because the engineered frame carries seasonal
+aggregates and not daily distributions. It is the standard reduced form, and less
+flexible than the canonical one.
+
 ### 1.4 Marginal interval calibration: every method looks adequate
 
 *Source: `outputs_master/reports/conformal_comparison.csv`, TEST 2019–23,
@@ -311,6 +351,59 @@ deficit, with the Extreme class also the most dispersed (sd 2.29 against 1.54).
 The classes identify where yield is low and variable, which is what a
 stratification variable is for, whether or not it adds predictive signal on top
 of 88 other features.
+
+### 1.11 Which exposure breaks the intervals, and in which growth stage
+
+*Source: `outputs_diagnostics/reports/phenology_coverage.json`,
+`code/phenology_coverage.py`. Statistic: excess unsafe-miss rate in the stressed
+quintile of each variable over the remaining four fifths, year-clustered over the
+16 origins. Each variable is read from its stressed tail — the upper quintile for
+heat and event counts, the lower for SPEI and precipitation, where a high value
+means a wet season.*
+
+RO1–RO5 establish that intervals fail in the compound-exposure class. They do not
+say which part of that exposure is responsible, or whether the timing within the
+crop's development matters. Both turn out to be answerable, and the answers are
+sharper than the exposure class itself.
+
+| exposure | stage | excess unsafe | 95% CI | excludes 0 |
+|---|---|---|---|---|
+| days > 35 °C | vegetative | −0.016 | [−0.062, +0.049] | no |
+| days > 35 °C | **silking** | **+0.166** | [+0.025, +0.273] | **yes** |
+| days > 35 °C | grain fill | +0.136 | [+0.017, +0.304] | yes |
+| CDHW severity | vegetative | +0.028 | [−0.053, +0.083] | no |
+| CDHW severity | **silking** | +0.148 | [+0.009, +0.259] | yes |
+| CDHW severity | grain fill | +0.146 | [−0.009, +0.332] | no |
+| days > 35 °C | whole season | +0.156 | [+0.019, +0.275] | yes |
+| CDHW event count | whole season | +0.151 | [+0.021, +0.263] | yes |
+| SPEI-90 minimum | whole season | +0.115 | [−0.007, +0.222] | no |
+| season precipitation | whole season | +0.069 | [−0.029, +0.165] | no |
+
+**The failure is heat-driven and phenologically specific.** Heat concentrated in
+the silking window is followed by a 16.6-point excess in the downward failure
+rate; the same measure in the vegetative window shows nothing, with a point
+estimate slightly below zero. The contrast is direct: among heat-stressed
+county-years, those stressed at silking miss low **0.153 more often**
+(95% CI [0.006, 0.232]) than those stressed during vegetative growth. Maize
+anthesis sensitivity to heat is long established physiologically; what is new here
+is that it propagates into the *reliability of the interval*, not merely into the
+conditional mean.
+
+Drought measured alone does not clear its null — SPEI-90 minimum gives
++0.115 [−0.007, +0.222], suggestive and not established — and season
+precipitation gives +0.069 [−0.029, +0.165]. On this evidence the mechanism is
+extreme heat at a sensitive developmental stage, with drought a likely but
+unproven co-factor.
+
+**This qualifies the paper's own stratifier.** Days above 35 °C over the whole
+season separates interval failure at least as well as the CDHW event count
+(+0.156 against +0.151), and the CDHW severity score does slightly worse
+(+0.136). The compound construction is not doing the work: a single-variable heat
+count would have served as well. We keep the CDHW class as the pre-specified
+stratification because it was fixed in advance and the frozen protocol records it,
+and because changing the stratifier after seeing coverage results is exactly the
+practice this paper argues against — but we do not claim the compound index is
+superior to simple heat exposure, because on this data it is not.
 
 ---
 

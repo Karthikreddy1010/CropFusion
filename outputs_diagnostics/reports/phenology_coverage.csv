@@ -1,0 +1,12 @@
+variable,label,threshold,stressed_tail,excess_unsafe,ci_95,excludes_zero,p_value,stage
+prism_tmax_days_gt35_veg,"days >35C, vegetative",1.0,upper,-0.015584,"[-0.062422, 0.049428]",False,0.594,vegetative
+prism_tmax_days_gt35_silk,"days >35C, silking",2.0,upper,0.16606,"[0.025228, 0.273159]",True,0.01,silking
+prism_tmax_days_gt35_grain,"days >35C, grain fill",1.0,upper,0.135997,"[0.017197, 0.303752]",True,0.014,grain fill
+CDHW_Veg_Severity,"CDHW severity, vegetative",0.0,upper,0.027565,"[-0.05268, 0.08288]",False,0.472,season
+CDHW_Silking_Severity,"CDHW severity, silking",0.0,upper,0.147886,"[0.008803, 0.258827]",True,0.021,season
+CDHW_GrainFill_Severity,"CDHW severity, grain fill",0.0,upper,0.14552,"[-0.008919, 0.331791]",False,0.078,season
+Tmax_Days_Above_35,"days >35C, whole season",4.0,upper,0.155531,"[0.018479, 0.274501]",True,0.011,season
+CDHW_Event_Count,CDHW event count (the paper's stratifier),1.0,upper,0.150773,"[0.021014, 0.262769]",True,0.01,season
+CDHW_Severity_Score,CDHW severity score,1.3004,upper,0.13559,"[0.005976, 0.248741]",True,0.031,season
+spei90_prism_nldas_min_gs,SPEI-90 minimum (drought),-1.8515,lower,0.114875,"[-0.006538, 0.222147]",False,0.099,season
+Precip_growseason_mm,season precipitation,588.4482,lower,0.068666,"[-0.028633, 0.164622]",False,0.331,season
