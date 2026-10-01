@@ -83,7 +83,7 @@ desktop.ini
 *~
 
 # ─────────────────────────────────────────────────────────────
-# Negations: the scientific record IS tracked.
+# Negations (SUPERSEDED 2026-10-01 by the code-only block at the end of this file):
 # JSON/CSV reports are small, human-readable, and are the
 # evidence behind every claim in the paper. Figures are not --
 # they are regenerable and large.
@@ -113,7 +113,7 @@ data/
 docs/*
 !docs/supplement/
 
-# ---- Master-pipeline outputs --------------------------------
+# ---- Master-pipeline outputs (SUPERSEDED 2026-10-01, see the code-only block below) ----
 # Same policy as outputs/ above: the run REPORTS are the
 # scientific record and stay tracked; everything else (63 MB of
 # processed CSVs, predictions, caches, figures) is regenerable.
@@ -127,3 +127,19 @@ outputs_diagnostics/*
 
 # Cached partition bundles from the W3 ladder (regenerable, ~53 MB each)
 *.joblib
+
+# ---- Code-only repository (author's decision, 2026-10-01) ----------
+# Only code and its configuration are tracked. Documents, Markdown,
+# spreadsheets, the manuscript and all run results stay out of git; they
+# are kept on disk and deposited separately. This block is last so that it
+# overrides the negations above that re-included the run reports.
+*.md
+*.docx
+*.xlsx
+*.pdf
+manuscript/
+docs/
+outputs/
+outputs_master/
+outputs_diagnostics/
+outputs_diagnostics_archive/
