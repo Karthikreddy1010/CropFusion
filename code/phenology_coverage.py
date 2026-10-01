@@ -117,9 +117,11 @@ def build() -> Dict[str, Any]:
                       "stressed_tail": tail,
                       "excess_unsafe": o["estimate"], "ci_95": o["ci_95"],
                       "excludes_zero": o["significant_at_0.05"], "p_value": o.get("p_value"),
-                      "stage": ("vegetative" if "veg" in col else
-                                "silking" if "silk" in col else
-                                "grain fill" if "grain" in col else "season")})
+                      # lower-cased: the CDHW columns are CamelCase (CDHW_Veg_Severity),
+                      # and a case-sensitive match labelled all three "season"
+                      "stage": ("vegetative" if "veg" in col.lower() else
+                                "silking" if "silk" in col.lower() else
+                                "grain fill" if "grain" in col.lower() else "season")})
     out["by_exposure"] = table
 
     # the contrast that carries the finding: same heat, different growth stage

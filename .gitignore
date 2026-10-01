@@ -99,7 +99,8 @@ desktop.ini
 
 # ---- Raw / intermediate data (1.5 GB + 2.6 GB on disk) ------
 data/
-master_dataset/
+# root data folder only (anchored): code/pipelines/master_dataset/ holds the panel-building scripts
+/master_dataset/
 *.nc
 *.nc4
 *.parquet

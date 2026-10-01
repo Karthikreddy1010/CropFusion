@@ -608,9 +608,13 @@ def holm_bonferroni_correction(
     sorted_idx = np.argsort(p_values)
     results = []
 
+    # Step-down: an adjusted p-value may not fall below the one before it. Without the running
+    # maximum (runs up to 2026-09-23) a later, larger raw p could get a smaller adjusted p.
+    running = 0.0
     for rank, idx in enumerate(sorted_idx):
         raw_p = p_values[idx]
-        corrected_p = min(raw_p * (m - rank), 1.0)
+        running = max(running, min(raw_p * (m - rank), 1.0))
+        corrected_p = running
         results.append({
             "baseline": baseline_names[idx],
             "raw_p_value": round(raw_p, 6) if raw_p is not None else None,

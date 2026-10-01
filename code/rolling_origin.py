@@ -201,11 +201,14 @@ class YearWindow:
 
     KEYS = ("FIT_YEARS", "DEV_YEARS", "CAL_YEARS", "TEST_YEARS")
 
-    def __init__(self, test_year: int, test_window: int = 1, fit_start: int = 1985) -> None:
+    def __init__(self, test_year: int, test_window: int = 1, fit_start: int = 1985, cal_seasons: int = 2) -> None:
+        # cal_seasons = 2 is the primary design (FIT ..Y-5, DEV Y-4..Y-3, CAL Y-2..Y-1);
+        # larger values shift DEV and FIT back so the three windows stay contiguous.
+        k = cal_seasons
         self.windows = {
-            "FIT_YEARS": (fit_start, test_year - 5),
-            "DEV_YEARS": (test_year - 4, test_year - 3),
-            "CAL_YEARS": (test_year - 2, test_year - 1),
+            "FIT_YEARS": (fit_start, test_year - k - 3),
+            "DEV_YEARS": (test_year - k - 2, test_year - k - 1),
+            "CAL_YEARS": (test_year - k, test_year - 1),
             "TEST_YEARS": (test_year, test_year + test_window - 1),
         }
         self._saved: Dict[str, Any] = {}
@@ -247,7 +250,7 @@ def run_origin(test_year: int, args: argparse.Namespace,
     alpha = 1.0 - cfg.NOMINAL_COVERAGE
     rows: List[Dict[str, Any]] = []
 
-    with YearWindow(test_year, args.test_window, args.fit_start) as win:
+    with YearWindow(test_year, args.test_window, args.fit_start, getattr(args, "cal_seasons", 2)) as win:
         t0 = time.time()
         data = lab.build_temporal()
         frames, X, y_det, trend = data["frames"], data["X"], data["y_detrended"], data["trend"]
@@ -275,6 +278,27 @@ def run_origin(test_year: int, args: argparse.Namespace,
                       random_state=seed, verbose=-1)
             lo_m = lgb.LGBMRegressor(alpha=alpha / 2, **qp).fit(X["fit"], y_det["fit"])
             hi_m = lgb.LGBMRegressor(alpha=1 - alpha / 2, **qp).fit(X["fit"], y_det["fit"])
+            pred = {k: point.predict(X[k]) for k in ("cal", "test")}
+            qlo = {k: lo_m.predict(X[k]) for k in ("cal", "test")}
+            qhi = {k: hi_m.predict(X[k]) for k in ("cal", "test")}
+        elif args.model in ("catboost", "xgboost"):
+            # Sensitivity backbones (manuscript/SENSITIVITY_PLAN_2026-09-26.md): the fixed
+            # settings of the locked-window benchmark (model_training.train_catboost_quantile /
+            # train_xgb_quantile), fitted on FIT only as LightGBM is here. No tuning.
+            if args.model == "catboost":
+                from catboost import CatBoostRegressor as CB
+                common = dict(iterations=500, learning_rate=0.05, verbose=0, random_seed=seed)
+                point = CB(**common).fit(X["fit"], y_det["fit"])
+                lo_m = CB(loss_function=f"Quantile:alpha={alpha / 2}", **common).fit(X["fit"], y_det["fit"])
+                hi_m = CB(loss_function=f"Quantile:alpha={1 - alpha / 2}", **common).fit(X["fit"], y_det["fit"])
+            else:
+                import xgboost as xgb
+                common = dict(n_estimators=300, learning_rate=0.05, random_state=seed)
+                point = xgb.XGBRegressor(**common).fit(X["fit"], y_det["fit"])
+                lo_m = xgb.XGBRegressor(objective="reg:quantileerror", quantile_alpha=alpha / 2,
+                                        **common).fit(X["fit"], y_det["fit"])
+                hi_m = xgb.XGBRegressor(objective="reg:quantileerror", quantile_alpha=1 - alpha / 2,
+                                        **common).fit(X["fit"], y_det["fit"])
             pred = {k: point.predict(X[k]) for k in ("cal", "test")}
             qlo = {k: lo_m.predict(X[k]) for k in ("cal", "test")}
             qhi = {k: hi_m.predict(X[k]) for k in ("cal", "test")}
@@ -328,6 +352,23 @@ def run_origin(test_year: int, args: argparse.Namespace,
             cdhw_severity_test=sev_test, cdhw_severity_cal=sev_cal)
         variants["sa_aci"] = (r.q_lo, r.q_hi)
 
+        if getattr(args, "sensitivity_calibrators", False):
+            # manuscript/SENSITIVITY_PLAN_2026-09-26.md, calibrators 5-7. Added after the
+            # primary analysis; they never replace or alter the four primary variants above.
+            col = "CDHW_Severity_Score"
+            sev_cal_s = frames["cal"].get(col, pd.Series(np.zeros(len(y_cal)))).fillna(0).values
+            sev_test_s = frames["test"].get(col, pd.Series(np.zeros(len(y_test)))).fillna(0).values
+            r = aci.severity_aware_adaptive_conformal(
+                y_cal, qlo["cal"], qhi["cal"], y_test, qlo["test"], qhi["test"],
+                pred["test"], years_test, alpha=alpha,
+                cdhw_severity_test=sev_test_s, cdhw_severity_cal=sev_cal_s)
+            variants["sa_aci_severity_score"] = (r.q_lo, r.q_hi)
+            lo, hi, _ = bl.asymmetric_cqr(y_cal, qlo["cal"], qhi["cal"], qlo["test"], qhi["test"], alpha=alpha)
+            variants["asymmetric_cqr"] = (lo, hi)
+            lo, hi, _ = bl.asymmetric_cqr(y_cal, qlo["cal"], qhi["cal"], qlo["test"], qhi["test"], alpha=alpha,
+                                          groups_cal=grp_cal, groups_test=grp_test)
+            variants["asymmetric_group_cqr"] = (lo, hi)
+
         # ── metrics, overall and by exposure class ───────────────────
         base_pred = bl.trend_county_mean(frames["fit"], frames["test"])
         base_pm = point_metrics(y_test, base_pred)
@@ -379,7 +420,11 @@ def main() -> int:
     ap.add_argument("--fit-start", type=int, default=1985)
     ap.add_argument("--test-window", type=int, default=1,
                     help="test years per origin; >1 gives ACI room to adapt but overlaps")
-    ap.add_argument("--model", choices=("lgbm", "neural"), default="lgbm")
+    ap.add_argument("--model", choices=("lgbm", "neural", "catboost", "xgboost"), default="lgbm")
+    ap.add_argument("--cal-seasons", type=int, default=2,
+                    help="calibration seasons per origin (primary: 2); DEV and FIT shift back to stay contiguous")
+    ap.add_argument("--sensitivity-calibrators", action="store_true",
+                    help="also run the calibrators of manuscript/SENSITIVITY_PLAN_2026-09-26.md")
     ap.add_argument("--seed", type=int, default=cfg.RANDOM_SEED)
     ap.add_argument("--tag", type=str, default="rolling_origin")
     ap.add_argument("--out-dir", type=str, default=None)

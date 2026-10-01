@@ -135,6 +135,61 @@ def group_conditional_cp(
     return lo, hi, meta
 
 
+def asymmetric_cqr(
+    y_cal: np.ndarray,
+    q_lo_cal: np.ndarray,
+    q_hi_cal: np.ndarray,
+    q_lo_test: np.ndarray,
+    q_hi_test: np.ndarray,
+    alpha: float = 1.0 - cfg.NOMINAL_COVERAGE,
+    groups_cal: np.ndarray | None = None,
+    groups_test: np.ndarray | None = None,
+    min_group_n: int = 20,
+) -> Tuple[np.ndarray, np.ndarray, Dict[str, Any]]:
+    """CQR with each tail calibrated separately at alpha/2 (Romano, Patterson & Candes 2019).
+
+    The symmetric CQR score max(q_lo - y, y - q_hi) controls total miscoverage only;
+    it does not control how the misses divide between the tails. Here the lower
+    bound is calibrated on q_lo - y and the upper bound on y - q_hi, each at level
+    ceil((1 - alpha/2)(n + 1))/n, so under exchangeability P(y < lower) <= alpha/2
+    marginally. With groups, the two thresholds are computed within each group
+    (same fallback to pooled as group_conditional_cp below min_group_n rows).
+    Added 2026-09-26 for the sensitivity analyses in
+    manuscript/SENSITIVITY_PLAN_2026-09-26.md; the primary analysis does not use it.
+    """
+    e_lo = q_lo_cal - y_cal
+    e_hi = y_cal - q_hi_cal
+    a_tail = alpha / 2.0
+
+    def _thr(s: np.ndarray) -> float:
+        n = len(s)
+        if n == 0:
+            return float("nan")
+        level = min(np.ceil((1.0 - a_tail) * (n + 1)) / n, 1.0)
+        return float(np.quantile(s, max(level, 0.0)))
+
+    t_lo = np.full(len(q_lo_test), _thr(e_lo))
+    t_hi = np.full(len(q_hi_test), _thr(e_hi))
+    per_group: Dict[str, Any] = {}
+    if groups_cal is not None and groups_test is not None:
+        for g in np.unique(groups_test):
+            m_cal, m_test = groups_cal == g, groups_test == g
+            n_cal = int(m_cal.sum())
+            fallback = n_cal < min_group_n
+            if not fallback:
+                t_lo[m_test], t_hi[m_test] = _thr(e_lo[m_cal]), _thr(e_hi[m_cal])
+            per_group[str(g)] = {"n_cal": n_cal, "fell_back_to_pooled": fallback,
+                                 "threshold_lo": round(float(t_lo[m_test][0]), 4) if m_test.any() else None,
+                                 "threshold_hi": round(float(t_hi[m_test][0]), 4) if m_test.any() else None}
+    lo, hi = q_lo_test - t_lo, q_hi_test + t_hi
+    cross = hi < lo
+    if cross.any():
+        mid = 0.5 * (lo[cross] + hi[cross])
+        lo[cross], hi[cross] = mid, mid
+    return lo, hi, {"method": "asymmetric_cqr" + ("_group" if per_group else ""), "alpha_per_tail": a_tail,
+                    "groups": per_group}
+
+
 def rolling_static_cp(
     y_cal: np.ndarray,
     q_lo_cal: np.ndarray,
