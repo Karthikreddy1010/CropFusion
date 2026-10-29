@@ -166,10 +166,8 @@ def summarise_group(g: pd.DataFrame) -> pd.Series:
 def loo_sensitivity(real: pd.DataFrame) -> pd.DataFrame:
     """Leave-one-origin-out: how much does a single year move the pooled figure?
 
-    The 2012 drought supplies 40% of all extreme-exposure rows, and dropping it
-    moves pooled extreme coverage from 0.758 to 0.863. A pooled number quoted
-    without this is an over-claim by aggregation, so the harness computes it
-    rather than leaving it to be noticed by hand.
+    A single season can supply a large share of the extreme-exposure rows, so the
+    harness reports how far dropping each origin moves the pooled figure.
     """
     out = []
     for (method, stratum), g in real.groupby(["method", "stratum"]):

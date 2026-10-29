@@ -274,7 +274,7 @@ def fig_marginal_vs_extreme_coverage() -> None:
     for yi, v in zip(y, t.picp):
         a1.text(v + 0.0015, yi + 0.18, f"{v:.3f}", fontsize=6, color=INK)
     a1.set_xlim(0.885, 0.965); a1.set_xlabel("Marginal PICP, all county-years")
-    a1.set_yticks(y); a1.set_yticklabels(t.m); a1.set_title("Marginal: all six reach 0.90", loc="left")
+    a1.set_yticks(y); a1.set_yticklabels(t.m); a1.set_title("Marginal coverage", loc="left")
     a2.axvline(0.05, color=INK2, lw=0.8, ls="--")
     a2.text(0.0505, len(t) - 0.35, "reference 0.05", fontsize=6, color=INK2, va="bottom")
     a2.hlines(y, 0.05, t.umr, color=ORANGE, lw=1.2, alpha=0.5)
@@ -282,7 +282,7 @@ def fig_marginal_vs_extreme_coverage() -> None:
     for yi, v in zip(y, t.umr):
         a2.text(v + 0.002, yi + 0.18, f"{v:.3f}", fontsize=6, color=INK)
     a2.set_xlim(0.0, 0.16); a2.set_xlabel("Unsafe miss rate, Extreme class")
-    a2.set_title("Extreme class: all six exceed it", loc="left")
+    a2.set_title("Extreme-class unsafe miss rate", loc="left")
     a2.tick_params(axis="y", length=0)
     for a in (a1, a2):
         a.grid(axis="x", alpha=0.6); a.set_ylim(-0.6, len(t) - 0.1)
@@ -419,7 +419,7 @@ def graphical_abstract() -> None:
     umr = [float(ex.loc[key[m], "unsafe_miss_rate"]) for m in methods]
     fig = plt.figure(figsize=(13 / 2.54, 5.2 / 2.54))
     gs = fig.add_gridspec(1, 3, left=0.055, right=0.985, top=0.70, bottom=0.2, wspace=0.55)
-    fig.text(0.5, 0.955, "Conformal yield intervals: valid on average, unreliable in drought–heat seasons",
+    fig.text(0.5, 0.955, "Conformal yield intervals: marginal and Extreme-class coverage",
              ha="center", va="top", fontsize=7.6, fontweight="bold", color=INK)
     fig.text(0.5, 0.855, "583 US Corn Belt counties, 1985–2023 · six conformal methods · "
              "locked test, leave-one-state-out, 16 rolling origins", ha="center", va="top", fontsize=5.6, color=INK2)
@@ -429,13 +429,13 @@ def graphical_abstract() -> None:
     a1.plot(picp, y, "o", color=BLUE, ms=3.6, mec="white", mew=0.4)
     a1.set_xlim(0.88, 0.96); a1.set_yticks([]); a1.set_xticks([0.90, 0.92, 0.94, 0.96])
     a1.set_xlabel("Coverage, all county-years", fontsize=5.6, labelpad=1.5)
-    a1.set_title("1. All six meet 0.90 on average", loc="left", fontsize=6.2)
+    a1.set_title("1. Marginal coverage", loc="left", fontsize=6.2)
     a2 = fig.add_subplot(gs[1])
     a2.axvline(0.05, color=INK2, lw=0.7, ls="--")
     a2.plot(umr, y, "D", color=ORANGE, ms=3.2, mec="white", mew=0.4)
     a2.set_xlim(0.0, 0.16); a2.set_yticks([]); a2.set_xticks([0, 0.05, 0.10, 0.15])
     a2.set_xlabel("Share below lower bound, Extreme class", fontsize=5.6, labelpad=1.5)
-    a2.set_title("2. All six exceed the 0.05 reference", loc="left", fontsize=6.2)
+    a2.set_title("2. Extreme-class unsafe miss rate", loc="left", fontsize=6.2)
     a3 = fig.add_subplot(gs[2])
     classes = ["Normal", "Extreme"]
     for dx, (m, lab, colr, mk) in zip((-0.12, 0.12), (("rolling_static_cp", "Static", BLUE, "o"),
@@ -451,7 +451,7 @@ def graphical_abstract() -> None:
     a3.axhline(0.90, color=INK2, lw=0.7, ls="--")
     a3.set_xticks([0, 1]); a3.set_xticklabels(classes); a3.set_xlim(-0.85, 1.6); a3.set_ylim(0.62, 1.0)
     a3.set_ylabel("Coverage, 16 origins", fontsize=5.6, labelpad=1.5)
-    a3.set_title("3. Group-conditional: partial fix", loc="left", fontsize=6.2)
+    a3.set_title("3. Static vs group-conditional", loc="left", fontsize=6.2)
     a3.legend(loc="lower left", fontsize=4.8, handletextpad=0.3, borderaxespad=0.2)
     for a in (a1, a2, a3):
         a.tick_params(labelsize=5.2, length=2, pad=1.5)

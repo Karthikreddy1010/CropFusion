@@ -1,8 +1,7 @@
 # CropFusion: Reproducibility and Analysis Code
 
-**Study:** *Marginal coverage hides conditional failure: conformal
-prediction intervals for county maize yield under compound drought and
-heat*
+**Study:** conformal prediction intervals for county maize yield under
+compound drought and heat (manuscript under review)
 
 **Repository:** https://github.com/Karthikreddy1010/CropFusion\
 **Archive:** https://doi.org/10.5281/zenodo.23600496\
@@ -11,15 +10,14 @@ heat*
 **Study area:** 583 counties across Illinois, Indiana, Iowa, Minnesota,
 Missouri, and Ohio, USA
 
-This repository contains the code, the derived county-year data, and the
-result files supporting the study of conformal prediction intervals for
+This repository contains the code and the derived county-year data
+supporting the study of conformal prediction intervals for
 county-level maize yield. The analysis evaluates whether prediction
 intervals that achieve acceptable overall (marginal) coverage remain
 reliable during compound drought--heat conditions.
 
 > **Reproducibility note:** The paper's main runs used protocol version
-> `1.3.0` (configuration hash `d7089a2e7e1db551`, recorded in
-> `outputs_master/reports/frozen_protocol.json`). The later version
+> `1.3.0` (configuration hash `d7089a2e7e1db551`). The later version
 > `1.4.0` (configuration hash `9ea6b15d86c6ebef`) changes only the
 > protocol's wording. These are hashes of the locked configuration, not
 > Git commit identifiers. For exact reproduction, use the code,
@@ -164,15 +162,15 @@ code/                        analysis code (paths cited in Supplementary Section
   diagnostics_loso/          verification scripts and development diagnostics
   legacy/                    scripts not used for the paper, kept for the record (see code/legacy/README.md)
 master_dataset/              county-year panel and its metadata (see master_dataset/README.md)
-outputs_master/              results of the main run (see outputs_master/README.md)
-outputs_diagnostics/         results of the rolling-origin, sensitivity and diagnostic runs
 tests/                       unit tests of the split, leakage and protocol rules
 requirements.txt             pinned package versions used for the reported runs
 ```
 
-Every figure in the paper, and the graphical abstract, is produced by
-code from the result files in this repository; no figure is drawn by
-hand or by an image generator.
+The runs write their results to `outputs_master/` and
+`outputs_diagnostics/`; these result files are not part of the
+repository before the paper is published. Every figure in the paper, and
+the graphical abstract, is produced by code from those result files; no
+figure is drawn by hand or by an image generator.
 
 ## Requirements
 
@@ -218,17 +216,15 @@ From the repository root:
 
 ``` bash
 python -m pytest tests                       # protocol and leakage tests
-python code/make_manuscript_figures.py       # all figures, from the result files
-python code/make_graphical_abstract_pptx.py  # graphical abstract
 python code/main.py                          # locked temporal, LOSO and random-split evaluations
 python code/rolling_origin.py                # rolling origin, LightGBM, two calibration seasons
 bash code/run_rolling_sensitivity.sh         # the four pre-declared sensitivity runs
+python code/make_manuscript_figures.py       # figures, from the result files written by the runs
+python code/make_graphical_abstract_pptx.py  # graphical abstract
 ```
 
-The tests and the figure scripts were checked on a fresh clone of this
-repository: the tests pass and the figures are identical to those in the
-paper. Because the result files of the reported runs are included, the
-figures can be rebuilt without rerunning the models. Rerunning the
+The tests were checked on a fresh clone of this repository. The figure
+scripts need the result files written by the analysis runs. Rerunning the
 models reproduces the reported point metrics, coverage figures and
 intervals (Supplementary Section S10); run times depend on the hardware.
 
@@ -241,17 +237,11 @@ The repository includes:
     an observed yield, 95 columns), the full panel of all 22,737
     county-years (`master_dataset/full/`), a catalog of every variable
     and a provenance record (`master_dataset/metadata/`).
--   The evaluation splits and county geometry
-    (`outputs_master/splits/`, `outputs_master/geo_cache/`).
--   Result files in CSV and JSON formats behind every table and figure:
-    point accuracy, prediction-interval coverage, interval width and
-    interval scores, unsafe lower-bound miss rates and yield shortfalls by
-    compound drought--heat exposure, temporal, LOSO and rolling-origin
-    results, and year-clustered bootstrap intervals
-    (`outputs_master/`, `outputs_diagnostics/`).
+-   The analysis code that writes the result files (point accuracy,
+    prediction-interval coverage, interval width and scores, lower-bound
+    miss rates and shortfalls, and year-clustered bootstrap intervals).
 
-Each data folder has a README that lists its files and links them to the
-tables and figures of the paper.
+The result files themselves will be released with the published paper.
 
 ## Reproducibility and interpretation
 
@@ -276,7 +266,8 @@ Please follow these principles when reproducing the study:
 All inputs are public: PRISM, NLDAS-2, NOAA Storm Events, USDA NASS
 Quick Stats and NLCD. Their availability and terms are governed by their
 providers; please cite them when using the panel. The derived
-county-year panel and all result files are included here. The raw
+county-year panel is included here; the result files will be released
+with the published paper. The raw
 downloads and intermediate daily files (about 4 GB) are not; the scripts
 in `code/pipelines/` download and process them. The provenance of some
 static soil and terrain descriptors is only partly documented (see
@@ -286,10 +277,9 @@ Supplementary Section S1).
 
 If you use this code or data, please cite the associated study:
 
-> Duddukunta, K. R., Chung, K., & Lal, P. *Marginal coverage hides
-> conditional failure: conformal prediction intervals for county maize
-> yield under compound drought and heat.* Manuscript citation details
-> (journal, year, volume, pages, and DOI) will be added when available.
+> Duddukunta, K. R., Chung, K., & Lal, P. Manuscript under review;
+> citation details (title, journal, year, volume, pages, and DOI) will be
+> added on publication.
 
 and the archived release: CropFusion, https://doi.org/10.5281/zenodo.23600496.
 

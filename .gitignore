@@ -145,10 +145,11 @@ outputs_diagnostics/
 outputs_diagnostics_archive/
 
 # ---- Data release (author's decision, 2026-10-29) ------------------
-# The derived county-year panel, its metadata, the evaluation splits and the
-# result files behind every table and figure are tracked, at the paths the
-# code reads them from. Raw downloads (data/, master_dataset/intermediate/),
-# logs, Markdown other than READMEs, documents and the manuscript stay out.
+# The derived county-year panel and its metadata are tracked, at the paths the
+# code reads them from. The result folders (outputs_master/, outputs_diagnostics/)
+# are not published before the paper (author's decision, 2026-10-29). Raw
+# downloads (data/, master_dataset/intermediate/), logs, Markdown other than
+# READMEs, documents and the manuscript stay out.
 !README.md
 !**/README.md
 !/master_dataset/
@@ -158,17 +159,6 @@ outputs_diagnostics_archive/
 !/master_dataset/metadata/
 !/master_dataset/model_ready/*.parquet
 !/master_dataset/full/*.parquet
-!outputs_master/
-outputs_master/*
-!outputs_master/reports/
-!outputs_master/predictions/
-!outputs_master/splits/
-!outputs_master/geo_cache/
-!outputs_master/calibration/
-!outputs_master/random_split/
-!outputs_diagnostics/
-outputs_diagnostics/*
-!outputs_diagnostics/reports/
 !/master_dataset/README.md
-!outputs_master/README.md
-!outputs_diagnostics/README.md
+outputs_master/
+outputs_diagnostics/

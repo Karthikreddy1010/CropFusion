@@ -244,11 +244,8 @@ LGBM_DEV_EARLY_STOPPING: bool = False
 #   main.ensure_loso_dev_hyperparameters() runs code/loso_dev_tuning.py when no
 #   selection file exists and reuses it afterwards, so one pipeline run is enough
 #   and reruns stay deterministic.
-#   Outcome (2026-09-22, reproduced twice): macro R2 0.6976 -> 0.7186, macro PICP
-#   0.9160 -> 0.9267. We expected a FALL, since the incumbent settings were chosen
-#   by watching held-out performance; it rose. The incumbent won only 1 of 6 folds
-#   on honest DEV data and was 34% worse than the selection on the Ohio fold, so
-#   the held-out-informed rounds had not bought the advantage they appeared to.
+#   The selected configurations are written to
+#   outputs_master/reports/loso_dev_selected_hyperparams.json.
 LOSO_USE_DEV_SELECTED_HP: bool = True
 
 # C5 — SA-ACI severity weighting (audit blocker).

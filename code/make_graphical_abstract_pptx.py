@@ -274,20 +274,20 @@ def build(parts: dict) -> Path:
     text(sl, x + 0.1, top + 0.38, w - 0.2, 0.25, "Locked window 2019–2023: six methods", size=9, bold=True)
     sl.shapes.add_picture(str(parts["locked"]), Inches(x + 0.12), Inches(top + 0.62), width=Inches(w - 0.24), height=Inches(1.36))
     box(sl, x + 0.12, top + 2.03, w - 0.24, 0.42, fill="FFFFFF", line="E3A0A0", radius=0.1)
-    text(sl, x + 0.12, top + 2.03, w - 0.24, 0.42, "All six meet 0.90 on average, yet all six exceed the 0.05 "
-         "reference rate in compound drought–heat county-years", size=7.8, bold=True, color="B23A3A",
+    text(sl, x + 0.12, top + 2.03, w - 0.24, 0.42, "Marginal coverage and Extreme-class unsafe miss rate "
+         "(nominal 0.90; reference rate 0.05)", size=7.8, bold=True, color="B23A3A",
          align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
     text(sl, x + 0.1, top + 2.52, w - 0.2, 0.25, "Group-conditional calibration (16 origins)", size=9,
          bold=True)
     sl.shapes.add_picture(str(parts["gc"]), Inches(x + 0.12), Inches(top + 2.78), width=Inches(w - 0.24), height=Inches(1.18))
     v = parts["gc_vals"]
-    text(sl, x + 0.1, top + 3.98, w - 0.2, 0.3, f"Cost: Normal-class coverage falls from {v['normal_st']:.3f} to "
-         f"{v['normal_gc']:.3f}, below the nominal 0.90", size=7.6, color=INK2, align=PP_ALIGN.CENTER)
-    text(sl, x + 0.1, top + 4.36, w - 0.2, 0.25, "Failure follows bias, not width", size=9, bold=True)
+    text(sl, x + 0.1, top + 3.98, w - 0.2, 0.3, f"Normal-class coverage: {v['normal_st']:.3f} (static), "
+         f"{v['normal_gc']:.3f} (group-conditional); nominal 0.90", size=7.6, color=INK2, align=PP_ALIGN.CENTER)
+    text(sl, x + 0.1, top + 4.36, w - 0.2, 0.25, "Coverage against |bias| and against width", size=9, bold=True)
     sl.shapes.add_picture(str(parts["bw"]), Inches(x + 0.12), Inches(top + 4.6), width=Inches(w - 0.24), height=Inches(0.76))
     box(sl, x + 0.12, top + 5.42, w - 0.24, 0.42, fill="B23A3A", radius=0.12)
-    text(sl, x + 0.12, top + 5.42, w - 0.24, 0.42, "Marginal coverage alone cannot show whether yield "
-         "intervals are reliable", size=8.6, bold=True, color="FFFFFF", align=PP_ALIGN.CENTER,
+    text(sl, x + 0.12, top + 5.42, w - 0.24, 0.42, "Coverage evaluated overall and within "
+         "exposure classes", size=8.6, bold=True, color="FFFFFF", align=PP_ALIGN.CENTER,
          anchor=MSO_ANCHOR.MIDDLE)
 
     out = FIG / "Graphical_Abstract.pptx"

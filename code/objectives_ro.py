@@ -343,11 +343,11 @@ def ro3(rows: pd.DataFrame) -> Dict[str, Any]:
                 "model_bias_t_ha": float(y2012.model_bias.iloc[0]),
                 "extreme_rows": int(y2012.n.iloc[0]),
                 "picp_by_method": {r.method: round(float(r.picp), 4) for r in y2012.itertuples()},
-                "note": "every calibrator fails together; width adjustment cannot repair a level error"}
+                "note": "Extreme-class PICP of each calibration method in the 2012 origin"}
     else:
         out["case_2012"] = {"status": "requires rolling_origin_raw.csv"}
-    out["headline"] = (f"coverage tracks |bias| (r = {out['corr_abs_bias_vs_coverage']}) and not "
-                       f"width (r = {out['corr_width_vs_coverage']})")
+    out["headline"] = (f"corr(|bias|, coverage) = {out['corr_abs_bias_vs_coverage']}; "
+                       f"corr(width, coverage) = {out['corr_width_vs_coverage']}")
     return out
 
 
