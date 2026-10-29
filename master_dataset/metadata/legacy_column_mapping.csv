@@ -1,0 +1,86 @@
+old_variable,decision,era5_derived,new_master_variable,reason
+GEOID,KEEP,NO,county_fips,Primary spatial key (5-digit FIPS string in master).
+County_Name,KEEP,NO,county,County name identifier.
+State,KEEP,NO,state_name,State name identifier (needed by locked LOSO folds).
+STATEFP,KEEP,NO,state_fips,Join key component.
+COUNTYFP,KEEP,NO,county_code,3-digit county code.
+Lat,KEEP,NO,county_lat,Static geographic context used by the existing model (STATIC_CONTEXT_COLS).
+Lon,KEEP,NO,county_lon,Static geographic context used by the existing model.
+Year,KEEP,NO,year,Primary temporal key.
+Split,EXCLUDE,NO,,Split assignment belongs to the locked code (splitting.py); a stored label could desynchronise the protocol.
+Corn_Yield_tha,VALIDATION ONLY,NO,corn_yield_bu_acre,Target re-sourced from data/usda_nass processed parquet; old value used only to verify agreement.
+Corn_Yield_buacre,VALIDATION ONLY,NO,corn_yield_bu_acre,Replaced by the processed USDA NASS corn grain yield; used to verify agreement.
+Soy_Yield_tha,EXCLUDE,NO,,Same-season outcome of another crop; co-determined with corn yield and released at the same time (proxy leakage).
+Soy_Yield_buacre,EXCLUDE,NO,,Same-season outcome of another crop (proxy leakage).
+Has_Corn_Yield,RECOMPUTE,NO,has_corn_yield,Recomputed from the new USDA target.
+Has_Soy_Yield,EXCLUDE,NO,,Soybean not part of this master.
+CDHW_Flag,REPLACE,YES,cdhw_any_gs,ERA5-SPEI/ERA5-Tmax CDHW; replaced by PRISM-NLDAS CDHW (SPEI-30 PRISM-NLDAS < -1 AND PRISM Tmax > 35 C).
+CDHW_Event_Count,REPLACE,YES,cdhw_total_days_gs / cdhw_count_gs,"ERA5 CDHW; methodology audit notes it is a day count, not an episode count. Replaced by explicit day and episode counts."
+CDHW_Severity_Score,REPLACE,YES,cdhw_cumulative_severity_gs,ERA5 CDHW severity replaced by PRISM-NLDAS severity.
+CDHW_Severity_vegetative,REPLACE,YES,cdhw_cumulative_severity_veg,Replaced by PRISM-NLDAS phenology-window CDHW.
+CDHW_Severity_silking,REPLACE,YES,cdhw_cumulative_severity_silk,Replaced by PRISM-NLDAS phenology-window CDHW.
+CDHW_Severity_grainfill,REPLACE,YES,cdhw_cumulative_severity_grain,Replaced by PRISM-NLDAS phenology-window CDHW.
+CDHW_Silking_Flag,REPLACE,YES,cdhw_total_days_silk,Replaced by PRISM-NLDAS silking-window CDHW.
+SPEI_30_min,REPLACE,YES,spei30_prism_nldas_min_gs,Old ERA5 SPEI-30; replaced by PRISM-NLDAS SPEI-30. Never mixed.
+SPEI_30_mean,REPLACE,YES,spei30_prism_nldas_mean_gs,Old ERA5 SPEI-30; replaced.
+SPI_30_min,REPLACE,YES,spi1_prism_min_gs,Old ERA5 SPI-30; replaced by PRISM SPI.
+SPI_30_mean,REPLACE,YES,spi1_prism_mean_gs,Old ERA5 SPI-30; replaced by PRISM SPI.
+ET0_growseason_mm,REPLACE,YES,nldas_et0_total_gs,ERA5 ET0; replaced by NLDAS FAO-56 ET0.
+ET0_growseason_mean,REPLACE,YES,nldas_et0_mean_gs,ERA5 ET0; replaced by NLDAS FAO-56 ET0.
+WaterBalance_growseason_mm,REPLACE,YES,water_balance_total_gs,ERA5 P - ERA5 ET0; replaced by PRISM P - NLDAS ET0.
+GDD_Accumulated,RECOMPUTE,YES,prism_gdd_gs,"Recomputed from PRISM Tmax/Tmin (base 10 C, cap 30 C, 1 Apr-31 Oct)."
+Tmax_Days_Above_35,RECOMPUTE,YES,prism_tmax_days_gt35_gs,Recomputed from PRISM Tmax.
+Precip_growseason_mm,REPLACE,YES,prism_ppt_total_gs,Replaced by PRISM precipitation.
+ERA5d_Tmax_mean_C,REPLACE,YES,prism_tmax_mean_gs,ERA5 temperature replaced by PRISM (validation comparison only).
+ERA5d_Tmax_max_C,REPLACE,YES,prism_tmax_max_gs,ERA5 temperature replaced by PRISM.
+ERA5d_Tmin_mean_C,REPLACE,YES,prism_tmin_mean_gs,ERA5 temperature replaced by PRISM.
+ERA5d_DiurnalRange_C,REPLACE,YES,prism_dtr_mean_gs,ERA5 temperature replaced by PRISM.
+ONI_annual_mean,KEEP,NO,oni_annual_mean,"Year-level; annual mean includes the NDJ season (January of year+1) -> after harvest. FULL only, excluded from MODEL-READY."
+ONI_annual_max,KEEP,NO,oni_annual_max,Includes post-harvest seasons. FULL only.
+ONI_annual_min,KEEP,NO,oni_annual_min,Includes post-harvest seasons. FULL only.
+ONI_growseason_mean,KEEP,NO,oni_growseason_mean,Year-level large-scale climate context during the season (not ERA5).
+ONI_DJF,KEEP,NO,oni_djf,"Dec(y-1)-Feb(y) ONI, known before planting (verified against CPC table)."
+ENSO_Phase,VALIDATION ONLY,NO,enso_phase,Evaluation stratification used by code/evaluation.py; derived from annual ONI (post-harvest months) so never a predictor.
+ENSO_Anomalous_Year,VALIDATION ONLY,NO,enso_anomalous_year,Evaluation stratification only; not a predictor.
+DSCI_growseason_mean,VALIDATION ONLY,NO,usdm_dsci_gs_mean,Present only 2005-2023 in the old file (USDM itself starts 2000); expert-blended product partly informed by observed impacts. Used to validate new SPEI; FULL only.
+DSCI_growseason_max,VALIDATION ONLY,NO,usdm_dsci_gs_max,2005-2023 only; FULL only.
+Drought_Severe_Flag,VALIDATION ONLY,NO,usdm_drought_severe_flag,2005-2023 only; FULL only.
+Storm_Events_Total,REPLACE,NO,noaa_storm_count,Old extract covers 2005-2023 only; replaced by data/noaa_storm_pipeline county-year product (1985-2023).
+Storm_Hail_Count,REPLACE,NO,noaa_hail_count,Replaced by NOAA pipeline.
+Storm_Flood_Count,REPLACE,NO,noaa_flood_count,Replaced by NOAA pipeline.
+Storm_Heat_Count,REPLACE,NO,noaa_heat_count,Replaced by NOAA pipeline (old column constant).
+Storm_Drought_Event_Count,REPLACE,NO,noaa_drought_count,Replaced by NOAA pipeline (old column constant).
+Storm_Tornado_Count,REPLACE,NO,noaa_tornado_count,Replaced by NOAA pipeline.
+Storm_Wind_Count,REPLACE,NO,noaa_thunderstorm_wind_count,Replaced by NOAA pipeline.
+DEM_Mean,KEEP,NO,elevation_mean_m,Validated against NASA GSFC NLDAS fixed elevation county means (see evidence).
+Slope_Mean,KEEP,NO,slope_mean,Terrain / drainage modifier; checked against NLDAS GSFC slope grid.
+Soil_AWC_Mean,RECOMPUTE,NO,soil_awc,"Nodata dilution detected (masked water/urban pixels averaged as 0). Recomputed as value / f_texture, f_texture = (clay+silt+sand)/closure of clean counties (texture-closure dilution factor); counties with f_texture < 0.25 set missing."
+Soil_BD_Mean,RECOMPUTE,NO,soil_bulk_density,Dilution-corrected; corrected BD also serves as the QC diagnostic (raw min 13.9 is not physical).
+Soil_Clay_Mean,RECOMPUTE,NO,soil_clay,Dilution-corrected clay (texture).
+Soil_Sand_Mean,RECOMPUTE,NO,soil_sand,"Missing for all 99 Iowa counties in the old dataset because the ArcGIS Iowa sand table ('Soil') was never joined; filled from that table (validated: texture closes to ~1000 g/kg), then dilution-corrected. FULL only (sand ~ 1000 - clay - silt)."
+Soil_Silt_Mean,RECOMPUTE,NO,soil_silt,Dilution-corrected silt (texture).
+Soil_OC_Mean,RECOMPUTE,NO,soil_organic_carbon,Dilution-corrected organic carbon (organic-matter proxy).
+Open_Water_frac,KEEP,NO,nlcd_open_water_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+Developed_Openspace_frac,KEEP,NO,nlcd_developed_openspace_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+Developed_lowintensity_frac,KEEP,NO,nlcd_developed_lowintensity_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+Developed_mediumintensity_frac,KEEP,NO,nlcd_developed_mediumintensity_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+Developed_highintensity_frac,KEEP,NO,nlcd_developed_highintensity_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+BarrenLand_frac,KEEP,NO,nlcd_barrenland_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+DeciduousForest_frac,KEEP,NO,nlcd_deciduousforest_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+EvergreenForest_frac,KEEP,NO,nlcd_evergreenforest_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+MixedForest_frac,KEEP,NO,nlcd_mixedforest_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+Shrub_frac,KEEP,NO,nlcd_shrub_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+Grassland_frac,KEEP,NO,nlcd_grassland_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+Pasture_frac,KEEP,NO,nlcd_pasture_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+CultivatedCrops_frac,KEEP,NO,nlcd_cultivatedcrops_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+WoodyWetlands_frac,KEEP,NO,nlcd_woodywetlands_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+HerbaceousWetlands_frac,KEEP,NO,nlcd_herbaceouswetlands_frac,"Static snapshot (constant across all 39 years). NLCD has no pre-2001 epoch, so it describes present-day land cover, not year-specific cover."
+ALAND,KEEP,NO,county_land_area_m2,Static administrative area; FULL only (not an environmental modifier).
+AWATER,KEEP,NO,county_water_area_m2,Static; FULL only.
+Has_Drought,EXCLUDE,NO,,Old availability flag.
+Has_Storm,EXCLUDE,NO,,Old availability flag.
+Has_ERA5,EXCLUDE,YES,,ERA5 availability flag.
+Has_ERA5_daily,EXCLUDE,YES,,ERA5 availability flag.
+Has_CDHW,EXCLUDE,YES,,ERA5 CDHW availability flag.
+Has_SPEI,EXCLUDE,YES,,ERA5 SPEI availability flag.
+SPEI_30_min_dailycheck,EXCLUDE,YES,,Duplicate QC recomputation of ERA5 SPEI_30_min.

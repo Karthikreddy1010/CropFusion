@@ -1,4 +1,3 @@
-[README(20261023-154518).md](https://github.com/user-attachments/files/33880482/README.20261023-154518.md)
 # CropFusion: Reproducibility and Analysis Code
 
 **Study:** *Marginal coverage hides conditional failure: conformal
@@ -6,24 +5,25 @@ prediction intervals for county maize yield under compound drought and
 heat*
 
 **Repository:** https://github.com/Karthikreddy1010/CropFusion\
-**Language:** Python\
+**Archive:** https://doi.org/10.5281/zenodo.23600496\
+**Language:** Python 3.13\
 **Study period:** 1985--2023\
 **Study area:** 583 counties across Illinois, Indiana, Iowa, Minnesota,
 Missouri, and Ohio, USA
 
-This repository contains code and computational workflows supporting the
-study of conformal prediction intervals for county-level maize yield.
-The analysis evaluates whether prediction intervals that achieve
-acceptable overall (marginal) coverage remain reliable during compound
-drought--heat conditions.
+This repository contains the code, the derived county-year data, and the
+result files supporting the study of conformal prediction intervals for
+county-level maize yield. The analysis evaluates whether prediction
+intervals that achieve acceptable overall (marginal) coverage remain
+reliable during compound drought--heat conditions.
 
-> **Reproducibility note:** The paper reports that its main runs used
-> protocol version `1.3.0` (commit `d7089a2e7e1db551`). The repository's
-> later version `1.4.0` (commit `9ea6b15d86c6ebef`) is reported to
-> change protocol wording only. Verify these identifiers against the Git
-> history before citing them as permanent identifiers. For exact
-> reproduction, use the code, configuration, data-processing inputs, and
-> dependencies corresponding to the reported run.
+> **Reproducibility note:** The paper's main runs used protocol version
+> `1.3.0` (configuration hash `d7089a2e7e1db551`, recorded in
+> `outputs_master/reports/frozen_protocol.json`). The later version
+> `1.4.0` (configuration hash `9ea6b15d86c6ebef`) changes only the
+> protocol's wording. These are hashes of the locked configuration, not
+> Git commit identifiers. For exact reproduction, use the code,
+> configuration, data and dependencies of the archived release.
 
 ## Research objectives
 
@@ -51,7 +51,7 @@ and evaluates the frozen models under predefined evaluation designs.
 
 ### Study data
 
-The manuscript describes the following input sources:
+The study uses the following input sources:
 
 -   **PRISM:** daily maximum and minimum temperature and precipitation,
     using the 4 km daily product and county-area-weighted aggregation.
@@ -64,27 +64,25 @@ The manuscript describes the following input sources:
 -   **National Land Cover Database (NLCD):** county land-cover
     fractions.
 -   **Soil and terrain descriptors:** soil properties, mean elevation,
-    and slope. The manuscript notes that the provenance of some static
-    descriptors is incomplete; consult Supplementary Section S1 and
-    Table S1.
+    and slope. The provenance of some static descriptors is incomplete;
+    consult Supplementary Section S1 and Table S1.
 
 The final study panel covers 583 counties in six Corn Belt states over
-39 growing seasons (1985--2023). The reported modelling unit is the
-county-year. County-years without published yield observations were
-excluded rather than imputed.
+39 growing seasons (1985--2023). The modelling unit is the county-year.
+County-years without published yield observations were excluded rather
+than imputed.
 
-The repository should be used alongside the source datasets and the
-paper's supplementary information. Do not assume that all raw source
-data are included in this GitHub repository unless the repository
-contents confirm that.
+The derived county-year panel is included in this repository
+(`master_dataset/`); the raw source downloads are not (see
+[Data availability](#data-availability-and-limitations)).
 
 ### Feature engineering
 
-The manuscript describes growing-season summaries for 1 April--31
-October, as well as degree-day windows and features derived from drought
-indices, compound drought--heat exposure, storm events, yield lags,
-calendar year, county climate normals, and static county descriptors.
-Feature selection and collinearity pruning left 94 features.
+Growing-season summaries cover 1 April--31 October, together with
+degree-day windows and features derived from drought indices, compound
+drought--heat exposure, storm events, yield lags, calendar year, county
+climate normals, and static county descriptors. Feature selection and
+collinearity pruning left 94 features.
 
 A compound drought--heat day is defined as a day with maximum
 temperature above 35 °C and 30-day SPEI below −1. The Extreme exposure
@@ -147,46 +145,43 @@ origins. See the manuscript and supplementary material for full details.
 
 ## Repository contents
 
-The repository currently includes Python code and Google Colab
-notebooks. The visible repository listing includes:
+```
+code/                        analysis code (paths cited in Supplementary Section S12)
+  main.py                    locked temporal, leave-one-state-out and random-split evaluations
+  rolling_origin.py          rolling-origin evaluation (16 test years, 2008–2023)
+  run_rolling_sensitivity.sh, sensitivity_rolling.py   pre-declared sensitivity runs and their analysis
+  run_rolling_seeds.sh       seed runs of the rolling origin
+  dependence_aware_stats.py  year-clustered bootstrap
+  phenology_coverage.py      exposure and growth-stage analysis
+  objectives_ro.py           research-objective tests (bias versus width, the 2012 case, ...)
+  fe_degree_day_baseline.py  fixed-effects degree-day baseline
+  config.py, frozen_protocol.py   settings and the locked-protocol check
+  make_manuscript_figures.py        every figure in the paper, drawn from the result files
+  make_graphical_abstract_pptx.py   the graphical abstract (PowerPoint, PNG, TIFF), drawn from the result files
+  pipelines/                 building the county-year panel from the raw sources
+    prism/, nldas/, noaa_storm/   download and county aggregation of each source
+    master_dataset/          steps 01–11 that assemble, check and document the panel
+  diagnostics_loso/          verification scripts and development diagnostics
+  legacy/                    scripts not used for the paper, kept for the record (see code/legacy/README.md)
+master_dataset/              county-year panel and its metadata (see master_dataset/README.md)
+outputs_master/              results of the main run (see outputs_master/README.md)
+outputs_diagnostics/         results of the rolling-origin, sensitivity and diagnostic runs
+tests/                       unit tests of the split, leakage and protocol rules
+requirements.txt             pinned package versions used for the reported runs
+```
 
--   `code/` --- analysis and panel-building code.
--   `main.py` --- Python entry point; inspect the file before using it
-    to determine the supported command-line interface.
--   `Run_Paper3_Colab.ipynb` --- Colab notebook associated with the
-    study.
--   `Run_Paper3_Colab_Master.ipynb` --- Colab notebook associated with
-    the master-data pipeline and LOSO diagnostics.
--   `Run_Paper3_Remaining_Colab.ipynb` --- additional Colab workflow.
--   `Run_W3_DEV_Ladder_Colab.ipynb` --- development/evaluation workflow.
-
-Notebook names and repository contents may change. Inspect the current
-repository before relying on this list. Supplementary Section S12
-describes the scripts associated with reported results.
+Every figure in the paper, and the graphical abstract, is produced by
+code from the result files in this repository; no figure is drawn by
+hand or by an image generator.
 
 ## Requirements
 
-The manuscript specifies Python 3.13 and the following main packages:
-
--   NumPy
--   pandas
--   scikit-learn
--   LightGBM
--   CatBoost
--   XGBoost
--   PyTorch
--   GeoPandas
-
-A CUDA-compatible GPU can accelerate neural-network components when
-available. A GPU is not stated to be mandatory for all parts of the
-workflow.
-
-The manuscript does not provide a complete, pinned dependency
-specification in the information summarized here. Before a
-reproducibility release, add a tested `requirements.txt`,
-`environment.yml`, or equivalent file with the actual package versions
-used. Do not treat an unpinned installation as an exact reproduction
-environment.
+Python 3.13 with the package versions in `requirements.txt` (NumPy,
+pandas, scikit-learn, LightGBM, CatBoost, XGBoost, PyTorch, GeoPandas and
+others). A CUDA-compatible GPU accelerates the neural-network components
+when available but is not required. Exporting the graphical abstract to
+PNG and TIFF also needs `pywin32` and Microsoft PowerPoint on Windows;
+the PowerPoint file itself is built without them.
 
 ## Getting started
 
@@ -206,62 +201,57 @@ git clone https://github.com/Karthikreddy1010/CropFusion.git
 cd CropFusion
 ```
 
-The repository is currently private according to the repository
-screenshot supplied by the author. Users must have permission to access
-it unless its visibility is changed.
+The repository is public.
 
 ### 2. Set up Python
 
-Create and activate a Python 3.13 environment using your preferred
-environment manager. Install the project's tested dependencies after the
-repository's dependency file is available.
-
-For example, if a verified `requirements.txt` is provided:
+Create and activate a Python 3.13 environment, then install the pinned
+dependencies:
 
 ``` bash
 python -m pip install -r requirements.txt
 ```
 
-Do not run the full analysis until you have checked the notebook
-instructions, configuration files, required data paths, and any
-credentials or external-data download steps.
+### 3. Run
 
-### 3. Identify the workflow and data paths
+From the repository root:
 
-Review `README.md`, `main.py`, the `code/` directory, and the relevant
-notebook before running an experiment. Confirm:
+``` bash
+python -m pytest tests                       # protocol and leakage tests
+python code/make_manuscript_figures.py       # all figures, from the result files
+python code/make_graphical_abstract_pptx.py  # graphical abstract
+python code/main.py                          # locked temporal, LOSO and random-split evaluations
+python code/rolling_origin.py                # rolling origin, LightGBM, two calibration seasons
+bash code/run_rolling_sensitivity.sh         # the four pre-declared sensitivity runs
+```
 
--   where the raw source data are expected to reside;
--   whether the derived county-year panel is included or must be
-    generated;
--   where output artifacts are written;
--   how configuration and random seeds are set;
--   which notebook or script corresponds to each table and figure in the
-    manuscript.
-
-The exact run commands and path configuration should be documented after
-they have been tested against the current repository. No unverified
-command is provided here.
+The tests and the figure scripts were checked on a fresh clone of this
+repository: the tests pass and the figures are identical to those in the
+paper. Because the result files of the reported runs are included, the
+figures can be rebuilt without rerunning the models. Rerunning the
+models reproduces the reported point metrics, coverage figures and
+intervals (Supplementary Section S10); run times depend on the hardware.
 
 ## Outputs and reported artifacts
 
-The manuscript describes these derived outputs:
+The repository includes:
 
--   A county-year panel stored in Apache Parquet format, approximately 6
-    MB.
--   Result artifacts in CSV and JSON formats, approximately 90 MB in
-    total.
--   Point-accuracy results, prediction-interval coverage, interval-width
-    and interval-score metrics.
--   Unsafe lower-bound miss rates and yield shortfalls, including
-    analyses by compound drought--heat exposure.
--   Results from temporal, LOSO, and rolling-origin evaluations.
--   Year-clustered bootstrap intervals for pooled rolling-origin
-    results.
+-   The county-year panel in Apache Parquet format
+    (`master_dataset/model_ready/`, about 6 MB; 20,507 county-years with
+    an observed yield, 95 columns), the full panel of all 22,737
+    county-years (`master_dataset/full/`), a catalog of every variable
+    and a provenance record (`master_dataset/metadata/`).
+-   The evaluation splits and county geometry
+    (`outputs_master/splits/`, `outputs_master/geo_cache/`).
+-   Result files in CSV and JSON formats behind every table and figure:
+    point accuracy, prediction-interval coverage, interval width and
+    interval scores, unsafe lower-bound miss rates and yield shortfalls by
+    compound drought--heat exposure, temporal, LOSO and rolling-origin
+    results, and year-clustered bootstrap intervals
+    (`outputs_master/`, `outputs_diagnostics/`).
 
-These sizes are those reported by the author and may vary by release.
-Confirm that each artifact is present in the repository or archive
-before stating that it is publicly downloadable.
+Each data folder has a README that lists its files and links them to the
+tables and figures of the paper.
 
 ## Reproducibility and interpretation
 
@@ -281,50 +271,37 @@ Please follow these principles when reproducing the study:
 7.  Report the code version, configuration, data version, package
     versions, and any deviations from the paper's protocol.
 
-The reported results should not be assumed to reproduce simply by
-running the current branch. Reproduction requires the corresponding
-data, configuration, software environment, and protocol version.
-
 ## Data availability and limitations
 
-The manuscript identifies PRISM, NLDAS-2, NOAA Storm Events, USDA NASS
-Quick Stats, and NLCD as data sources. Their availability and terms are
-governed by their respective providers. The provenance of some static
-soil and terrain descriptors is only partly documented in the
-manuscript; this should be resolved in the supplementary material and
-data documentation to improve reproducibility.
-
-Before describing the repository as a complete public data archive,
-verify which raw inputs, processed files, and result artifacts are
-actually included. Do not commit credentials, restricted data, or files
-whose redistribution terms have not been checked.
+All inputs are public: PRISM, NLDAS-2, NOAA Storm Events, USDA NASS
+Quick Stats and NLCD. Their availability and terms are governed by their
+providers; please cite them when using the panel. The derived
+county-year panel and all result files are included here. The raw
+downloads and intermediate daily files (about 4 GB) are not; the scripts
+in `code/pipelines/` download and process them. The provenance of some
+static soil and terrain descriptors is only partly documented (see
+Supplementary Section S1).
 
 ## Citation
 
-If you use this code, please cite the associated study:
+If you use this code or data, please cite the associated study:
 
 > Duddukunta, K. R., Chung, K., & Lal, P. *Marginal coverage hides
 > conditional failure: conformal prediction intervals for county maize
 > yield under compound drought and heat.* Manuscript citation details
-> (journal, year, volume, pages, and DOI) should be added when
-> available.
+> (journal, year, volume, pages, and DOI) will be added when available.
 
-For software citation, cite the exact archived release and its
-persistent identifier once available:
-
-> CropFusion, version \[VERSION\], \[ARCHIVE DOI\], \[YEAR\].
+and the archived release: CropFusion, https://doi.org/10.5281/zenodo.23600496.
 
 ## Version and licence
 
--   **Reported experimental protocol:** `1.3.0` (reported commit
-    `d7089a2e7e1db551`; verify against Git history).
--   **Later protocol version:** `1.4.0` (reported commit
-    `9ea6b15d86c6ebef`; verify against Git history).
--   **Licence:** Not specified here. Add the repository's actual licence
-    and include a `LICENSE` file before presenting the software as
-    openly licensed.
--   **Archived release / DOI:** To be added after archiving the exact
-    code and data used for the reported results.
+-   **Reported experimental protocol:** `1.3.0` (configuration hash
+    `d7089a2e7e1db551`).
+-   **Later protocol version:** `1.4.0` (configuration hash
+    `9ea6b15d86c6ebef`; wording only).
+-   **Licence:** Not yet specified. A `LICENSE` file will be added
+    before the software is presented as openly licensed.
+-   **Archived release / DOI:** https://doi.org/10.5281/zenodo.23600496
 
 ## Contact
 
