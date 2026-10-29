@@ -299,8 +299,9 @@ and the archived release: CropFusion, https://doi.org/10.5281/zenodo.23600496.
     `d7089a2e7e1db551`).
 -   **Later protocol version:** `1.4.0` (configuration hash
     `9ea6b15d86c6ebef`; wording only).
--   **Licence:** Not yet specified. A `LICENSE` file will be added
-    before the software is presented as openly licensed.
+-   **Licence:** MIT (see `LICENSE`). The licence covers the code and the
+    derived files produced by it; the underlying PRISM, NLDAS-2, NOAA,
+    USDA NASS and NLCD data remain under their providers' terms.
 -   **Archived release / DOI:** https://doi.org/10.5281/zenodo.23600496
 
 ## Contact
