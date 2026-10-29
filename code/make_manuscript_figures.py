@@ -457,14 +457,14 @@ def graphical_abstract() -> None:
         a.tick_params(labelsize=5.2, length=2, pad=1.5)
         a.grid(axis="x" if a is not a3 else "y", alpha=0.5)
     OUT.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT / "graphical_abstract.pdf", facecolor="white")
-    fig.savefig(OUT / "graphical_abstract.png", dpi=600, facecolor="white")
-    fig.savefig(OUT / "graphical_abstract.tif", dpi=600, facecolor="white", pil_kwargs={"compression": "tiff_lzw"})
+    fig.savefig(OUT / "graphical_abstract_simple.pdf", facecolor="white")
+    fig.savefig(OUT / "graphical_abstract_simple.png", dpi=600, facecolor="white")
+    fig.savefig(OUT / "graphical_abstract_simple.tif", dpi=600, facecolor="white", pil_kwargs={"compression": "tiff_lzw"})
     plt.close(fig)
     SOURCES["graphical_abstract"] = ["outputs_master/reports/conformal_comparison.csv",
                                      "outputs_diagnostics/reports/decision_impact_by_stratum.csv",
                                      "outputs_diagnostics/reports/rolling_origin_summary.csv"]
-    print("  wrote graphical_abstract.pdf/.png/.tif")
+    print("  wrote graphical_abstract_simple.pdf/.png/.tif (the full graphical abstract is make_graphical_abstract_pptx.py)")
 
 
 def main() -> int:
